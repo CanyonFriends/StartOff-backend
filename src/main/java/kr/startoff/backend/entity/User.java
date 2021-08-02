@@ -1,4 +1,4 @@
-package kr.startoff.backend.model;
+package kr.startoff.backend.entity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -31,16 +31,16 @@ public class User implements UserDetails {
     String nickname;
 
     @Column(name = "github_url")
-    String githubUrl;
+    String githubUrl="";
 
     @Column(name = "blog_url")
-    String blogUrl;
+    String blogUrl="";
 
     @Column(name = "baekjoon_id")
-    String baekjoonId;
+    String baekjoonId="";
 
     @Column(name = "introduce")
-    String introduce;
+    String introduce="";
 
     @Builder
     public User(String email,String nickname,String password){
@@ -48,6 +48,7 @@ public class User implements UserDetails {
         this.nickname = nickname;
         this.password = password;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
