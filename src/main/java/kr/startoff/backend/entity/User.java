@@ -1,5 +1,6 @@
 package kr.startoff.backend.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,7 +42,12 @@ public class User implements UserDetails {
     @Column(name = "introduce")
     String introduce;
 
-
+    @Builder
+    public User(String email,String nickname,String password){
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
