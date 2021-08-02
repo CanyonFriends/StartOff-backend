@@ -1,5 +1,5 @@
 jwt:
   header: Authorization
-  secret: YzNSaGNuUnZabVp6ZEdGeWRHOW1abk4wWVhKMGIyWm1jM1JoY25SdlptWnpkR0Z5ZEc5bVpuTjBZWEowYjJabWMzUmhjblJ2Wm1aemRHRnlkRzltWmc9PQ
-  token-validity-in-seconds: 7200    # 2시간
-  refresh-validity-in-seconds: 1209600 # 2주
+  secretKey: YzNSaGNuUnZabVp6ZEdGeWRHOW1abk4wWVhKMGIyWm1jM1JoY25SdlptWnpkR0Z5ZEc5bVpuTjBZWEowYjJabWMzUmhjblJ2Wm1aemRHRnlkRzltWmc9PQ
+  expirationMs: 7200000    # 2시간
+  refreshExpirationMs: 1209600000 # 2주
