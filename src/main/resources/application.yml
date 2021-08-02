@@ -1,3 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/testtest
+    username: root
+    password:
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
 jwt:
   header: Authorization
   secretKey: YzNSaGNuUnZabVp6ZEdGeWRHOW1abk4wWVhKMGIyWm1jM1JoY25SdlptWnpkR0Z5ZEc5bVpuTjBZWEowYjJabWMzUmhjblJ2Wm1aemRHRnlkRzltWmc9PQ
