@@ -1,10 +1,10 @@
 package kr.startoff.backend.exception;
 
-public class UserNotFoundException extends RuntimeException{
-    public UserNotFoundException() {
-    }
+public class UserNotFoundException extends RuntimeException {
+	public UserNotFoundException() {
+	}
 
-    public UserNotFoundException(String message) {
-        super(message);
-    }
+	public UserNotFoundException(String message) {
+		super(message);
+	}
 }
