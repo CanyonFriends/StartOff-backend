@@ -6,10 +6,12 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
 
 jwt:
-  header: Authorization
-  secretKey: YzNSaGNuUnZabVp6ZEdGeWRHOW1abk4wWVhKMGIyWm1jM1JoY25SdlptWnpkR0Z5ZEc5bVpuTjBZWEowYjJabWMzUmhjblJ2Wm1aemRHRnlkRzltWmc9PQ
-  expirationMs: 7200000    # 2시간
-  refreshExpirationMs: 1209600000 # 2주
+  secret-key: YzNSaGNuUnZabVp6ZEdGeWRHOW1abk4wWVhKMGIyWm1jM1JoY25SdlptWnpkR0Z5ZEc5bVpuTjBZWEowYjJabWMzUmhjblJ2Wm1aemRHRnlkRzltWmc9PQ
