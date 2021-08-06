@@ -56,6 +56,14 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
+	public void updatePassword(String password) {
+		this.password = password;
+	}
+
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
