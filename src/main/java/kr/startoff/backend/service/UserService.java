@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.UserNotFoundException;
 import kr.startoff.backend.model.request.SignupRequest;
+import kr.startoff.backend.model.request.UserInfoUpdateRequest;
+import kr.startoff.backend.model.response.UserInfoResponse;
+import kr.startoff.backend.model.response.UserProfileResponse;
 import kr.startoff.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -34,5 +37,50 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public boolean isDuplicateNickname(String nickname) {
 		return userRepository.existsUserByNickname(nickname);
+	}
+
+	@Transactional(readOnly = true)
+	public UserInfoResponse getUserInformation(Long id) {
+		User user = getUserOrThrowException(id);
+		return UserInfoResponse.builder()
+			.email(user.getEmail())
+			.nickname(user.getNickname())
+			.build();
+	}
+
+	@Transactional(readOnly = true)
+	public UserProfileResponse getUserProfile(Long id) {
+		User user = getUserOrThrowException(id);
+		return UserProfileResponse.builder()
+			.nickname(user.getNickname())
+			.introduce(user.getIntroduce())
+			.githubUrl(user.getGithubUrl())
+			.blogUrl(user.getBlogUrl())
+			.baekjoonId(user.getBaekjoonId())
+			.build();
+	}
+
+	@Transactional
+	public UserInfoResponse updateUser(UserInfoUpdateRequest updateRequest, Long id) {
+		User user = getUserOrThrowException(id);
+		user.updateNickname(updateRequest.getNickname());
+		user.updatePassword(encoder.encode(updateRequest.getPassword()));
+		return UserInfoResponse.builder()
+			.email(user.getEmail())
+			.nickname(user.getNickname())
+			.build();
+	}
+
+	@Transactional
+	public Long deleteUser(Long id) {
+		User user = getUserOrThrowException(id);
+		userRepository.delete(user);
+		return id;
+	}
+
+	private User getUserOrThrowException(Long id) {
+		return userRepository.findById(id).orElseThrow(
+			() -> new UserNotFoundException("해당 ID를 가진 회원이 존재하지 않습니다.")
+		);
 	}
 }
