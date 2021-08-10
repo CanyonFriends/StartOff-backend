@@ -1,5 +1,6 @@
 package kr.startoff.backend.controller;
 
+import java.net.URI;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
@@ -17,15 +18,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.TokenRefreshException;
 import kr.startoff.backend.model.request.LoginRequest;
 import kr.startoff.backend.model.request.SignupRequest;
 import kr.startoff.backend.model.response.JwtResponse;
-import kr.startoff.backend.security.jwt.JwtUtils;
+import kr.startoff.backend.security.UserPrincipal;
+import kr.startoff.backend.security.jwt.JwtUtil;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
 import kr.startoff.backend.service.UserService;
+import kr.startoff.backend.util.CookieUtil;
 import kr.startoff.backend.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -36,13 +40,19 @@ public class AuthController {
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
 	private final UserDetailsServiceImpl userDetailsService;
-	private final JwtUtils jwtUtils;
+	private final JwtUtil jwtUtil;
 	private final RedisUtil redisUtil;
+	private final CookieUtil cookieUtil;
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequest signUpRequest) {
 		User user = userService.signUp(signUpRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(user.getId());
+
+		URI location = ServletUriComponentsBuilder
+			.fromCurrentContextPath().path("/users/")
+			.buildAndExpand(user.getId()).toUri();
+
+		return ResponseEntity.created(location).body(user.getId());
 	}
 
 	@PostMapping("/login")
@@ -51,26 +61,17 @@ public class AuthController {
 			new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		User user = (User)authentication.getPrincipal();
-		String accessToken = jwtUtils.generateJwtToken(user);
-		String refreshToken = jwtUtils.generateRefreshToken(user);
+		UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+		String accessToken = jwtUtil.generateJwtToken(userPrincipal);
+		String refreshToken = jwtUtil.generateRefreshToken(userPrincipal);
 
-		redisUtil.setDataExpire(user.getUsername(), refreshToken, JwtUtils.REFRESH_EXPIRATION_SECONDS);
+		redisUtil.setDataExpire(userPrincipal.getUsername(), refreshToken, JwtUtil.REFRESH_EXPIRATION_SECONDS);
 
-		Cookie cookie = convertRefreshTokenToCookie(refreshToken);
-		response.addCookie(cookie);
-		response.addHeader("Authorization", "Bearer " + accessToken);
-		JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, user.getId(), user.getEmail());
+		CookieUtil.addCookie(response,"Authorization",accessToken,(int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
+		CookieUtil.addCookie(response,"refresh",refreshToken,(int)JwtUtil.REFRESH_EXPIRATION_SECONDS);
+		JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, userPrincipal.getId(), userPrincipal.getEmail());
 
 		return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
-	}
-
-	private Cookie convertRefreshTokenToCookie(String refreshToken) {
-		Cookie cookie = new Cookie("refresh", refreshToken);
-		cookie.setHttpOnly(true);
-		cookie.setMaxAge((int)JwtUtils.REFRESH_EXPIRATION_SECONDS);
-		cookie.setPath("/");
-		return cookie;
 	}
 
 	@PostMapping("/refresh")
@@ -79,13 +80,13 @@ public class AuthController {
 			TokenRefreshException::new);
 
 		String refreshToken = refreshCookie.getValue();
-		String username = jwtUtils.getUserNameFromJwtToken(refreshToken);
+		String username = jwtUtil.getUserNameFromJwtToken(refreshToken);
 		if (redisUtil.getData(username).isEmpty()) {
 			throw new TokenRefreshException();
 		}
-		User user = (User)userDetailsService.loadUserByUsername(username);
+		UserPrincipal userPrincipal = (UserPrincipal)userDetailsService.loadUserByUsername(username);
 
-		String accessToken = jwtUtils.generateJwtToken(user);
+		String accessToken = jwtUtil.generateJwtToken(userPrincipal);
 		response.addHeader("Authorization", "Bearer " + accessToken);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -107,7 +108,7 @@ public class AuthController {
 			TokenRefreshException::new);
 
 		String refreshToken = refreshCookie.getValue();
-		String username = jwtUtils.getUserNameFromJwtToken(refreshToken);
+		String username = jwtUtil.getUserNameFromJwtToken(refreshToken);
 		redisUtil.deleteData(username);
 
 		return new ResponseEntity<>(true, HttpStatus.OK);
