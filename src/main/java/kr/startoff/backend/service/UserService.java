@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.UserNotFoundException;
 import kr.startoff.backend.model.request.SignupRequest;
@@ -24,7 +25,9 @@ public class UserService {
 		User user = User.builder()
 			.email(request.getEmail())
 			.nickname(request.getNickname())
-			.password(encoder.encode(request.getPassword())).build();
+			.password(encoder.encode(request.getPassword()))
+			.provider(AuthProvider.local)
+			.build();
 
 		return userRepository.save(user);
 	}
@@ -63,8 +66,8 @@ public class UserService {
 	@Transactional
 	public UserInfoResponse updateUser(UserInfoUpdateRequest updateRequest, Long id) {
 		User user = getUserOrThrowException(id);
-		user.updateNickname(updateRequest.getNickname());
-		user.updatePassword(encoder.encode(updateRequest.getPassword()));
+		user.setNickname(updateRequest.getNickname());
+		user.setPassword(encoder.encode(updateRequest.getPassword()));
 		return UserInfoResponse.builder()
 			.email(user.getEmail())
 			.nickname(user.getNickname())

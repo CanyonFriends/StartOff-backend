@@ -5,8 +5,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.UserNotFoundException;
 import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -17,7 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) {
-		return userRepository.findByEmail(username)
+		User user = userRepository.findByEmail(username)
 			.orElseThrow(UserNotFoundException::new);
+		return UserPrincipal.create(user);
 	}
 }

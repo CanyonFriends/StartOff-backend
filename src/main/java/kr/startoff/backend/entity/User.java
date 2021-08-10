@@ -5,10 +5,13 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,12 +20,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
 @Getter
-public class User implements UserDetails {
+@Setter
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
@@ -49,53 +54,26 @@ public class User implements UserDetails {
 	@Column(name = "introduce")
 	String introduce = "";
 
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "provider")
+	AuthProvider provider;
+
+	@Column(name = "provider_id")
+	String providerId;
+
+	@Column(name = "name")
+	String name;
+
+	@Column(name = "image_url")
+	String imageUrl;
+
 	@Builder
-	public User(String email, String nickname, String password) {
+	public User(String email, String nickname, String password,AuthProvider provider) {
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
+		this.provider = provider;
 	}
 
-	public void updatePassword(String password) {
-		this.password = password;
-	}
-
-	public void updateNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	@Override
-	public String getUsername() {
-		return email;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
 }
