@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class JwtUtils {
+public class JwtUtil {
 	@Value("${jwt.secret-key}")
 	private String secretKey;
 	public final static long TOKEN_EXPIRATION_SECONDS = 1000L * 10;
@@ -35,12 +35,12 @@ public class JwtUtils {
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public String generateJwtToken(UserPrincipal user) {
-		return doGenerateToken(user, TOKEN_EXPIRATION_SECONDS);
+	public String generateJwtToken(UserPrincipal userPrincipal) {
+		return doGenerateToken(userPrincipal, TOKEN_EXPIRATION_SECONDS);
 	}
 
-	public String generateRefreshToken(UserPrincipal user) {
-		return doGenerateToken(user, REFRESH_EXPIRATION_SECONDS);
+	public String generateRefreshToken(UserPrincipal userPrincipal) {
+		return doGenerateToken(userPrincipal, REFRESH_EXPIRATION_SECONDS);
 	}
 
 	private String doGenerateToken(UserPrincipal user, long expirationMs) {

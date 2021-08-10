@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
-	private final JwtUtils jwtUtils;
+	private final JwtUtil jwtUtil;
 	private final UserDetailsServiceImpl userDetailsService;
 
 	@Override
@@ -31,8 +31,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		throws ServletException, IOException {
 		try {
 			Optional<String> jwt = parseJwt(request);
-			if (jwt.isPresent() && jwtUtils.validateJwtToken(jwt.get())) {
-				String username = jwtUtils.getUserNameFromJwtToken(jwt.get());
+			if (jwt.isPresent() && jwtUtil.validateJwtToken(jwt.get())) {
+				String username = jwtUtil.getUserNameFromJwtToken(jwt.get());
 
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
