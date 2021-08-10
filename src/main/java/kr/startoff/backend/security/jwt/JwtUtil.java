@@ -16,6 +16,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import kr.startoff.backend.entity.User;
+import kr.startoff.backend.security.UserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,15 +35,15 @@ public class JwtUtils {
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public String generateJwtToken(User user) {
+	public String generateJwtToken(UserPrincipal user) {
 		return doGenerateToken(user, TOKEN_EXPIRATION_SECONDS);
 	}
 
-	public String generateRefreshToken(User user) {
+	public String generateRefreshToken(UserPrincipal user) {
 		return doGenerateToken(user, REFRESH_EXPIRATION_SECONDS);
 	}
 
-	private String doGenerateToken(User user, long expirationMs) {
+	private String doGenerateToken(UserPrincipal user, long expirationMs) {
 		Date now = new Date();
 		Date validity = new Date(now.getTime() + expirationMs);
 		return Jwts.builder()
