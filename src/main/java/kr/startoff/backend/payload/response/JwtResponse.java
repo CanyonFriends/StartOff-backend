@@ -1,4 +1,4 @@
-package kr.startoff.backend.model.response;
+package kr.startoff.backend.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

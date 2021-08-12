@@ -1,7 +1,6 @@
-package kr.startoff.backend.model.response;
+package kr.startoff.backend.payload.response;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

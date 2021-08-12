@@ -1,4 +1,4 @@
-package kr.startoff.backend.model.request;
+package kr.startoff.backend.payload.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -6,10 +6,12 @@ import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class LoginRequest {
+public class SignupRequest {
 	@NotBlank
 	@Email
 	private String email;
+	@NotBlank
+	private String nickname;
 	@NotBlank
 	private String password;
 }

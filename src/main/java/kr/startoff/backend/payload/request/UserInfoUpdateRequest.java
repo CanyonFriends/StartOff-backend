@@ -1,4 +1,4 @@
-package kr.startoff.backend.model.request;
+package kr.startoff.backend.payload.request;
 
 import javax.validation.constraints.NotBlank;
 
