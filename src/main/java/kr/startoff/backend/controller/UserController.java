@@ -2,6 +2,8 @@ package kr.startoff.backend.controller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.payload.request.UserInfoUpdateRequest;
+import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
 import kr.startoff.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -41,17 +43,15 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	// TODO : Design 이 결정 되면 확실하게 로직 설계
 	@GetMapping("/users/{user_id}")
 	public ResponseEntity<?> getUserInformation(@PathVariable(value = "user_id") Long userId) {
 		return ResponseEntity.ok(userService.getUserInformation(userId));
 	}
 
-	// TODO : Design 이 결정 되면 확실하게 로직 설계
 	@PutMapping("/users/{user_id}")
-	public ResponseEntity<?> updateUserInformation(@PathVariable(value = "user_id") Long userId,
-		@RequestBody UserInfoUpdateRequest updateRequest) {
-		return ResponseEntity.ok(userService.updateUser(updateRequest, userId));
+	public ResponseEntity<?> changeUserPassword(@PathVariable(value = "user_id") Long userId,
+		@Valid @RequestBody UserPasswordChangeRequest updateRequest) {
+		return ResponseEntity.ok(userService.changeUserPassword(updateRequest, userId));
 	}
 
 	@DeleteMapping("/users/{user_id}")
