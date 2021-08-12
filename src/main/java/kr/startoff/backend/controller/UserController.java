@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.startoff.backend.exception.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.model.request.UserInfoUpdateRequest;
 import kr.startoff.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +29,12 @@ public class UserController {
 		@RequestParam Optional<String> email, @RequestParam Optional<String> nickname) {
 		if (email.isPresent() && nickname.isEmpty()) {
 			if (userService.isDuplicateEmail(email.get())) {
-				return new ResponseEntity<>(HttpStatus.CONFLICT);
+				throw new EmailOrNicknameDuplicateException("Email이 중복되었습니다.");
 			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else if (email.isEmpty() && nickname.isPresent()) {
 			if (userService.isDuplicateNickname(nickname.get())) {
-				return new ResponseEntity<>(HttpStatus.CONFLICT);
+				throw new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다.");
 			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
