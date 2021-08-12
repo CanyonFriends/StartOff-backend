@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.startoff.backend.exception.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.model.request.UserInfoUpdateRequest;
+import kr.startoff.backend.payload.request.UserInfoUpdateRequest;
 import kr.startoff.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 
