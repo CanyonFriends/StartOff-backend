@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.exception.InvalidPasswordException;
-import kr.startoff.backend.exception.TokenRefreshException;
+import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.exception.custom.InvalidPasswordException;
+import kr.startoff.backend.exception.custom.TokenRefreshException;
 import kr.startoff.backend.payload.request.LoginRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
 import kr.startoff.backend.payload.response.JwtResponse;

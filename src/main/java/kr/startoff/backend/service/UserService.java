@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.UserNotFoundException;
+import kr.startoff.backend.exception.custom.UserNotFoundException;
 import kr.startoff.backend.payload.request.SignupRequest;
 import kr.startoff.backend.payload.request.UserInfoUpdateRequest;
 import kr.startoff.backend.payload.response.UserInfoResponse;

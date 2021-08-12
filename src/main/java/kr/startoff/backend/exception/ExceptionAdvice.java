@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.exception.custom.InvalidPasswordException;
+import kr.startoff.backend.exception.custom.TokenRefreshException;
+import kr.startoff.backend.exception.custom.UserNotFoundException;
+
 @RestControllerAdvice
 public class ExceptionAdvice {
 

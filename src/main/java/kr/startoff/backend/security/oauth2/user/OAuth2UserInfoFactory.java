@@ -3,7 +3,7 @@ package kr.startoff.backend.security.oauth2.user;
 import java.util.Map;
 
 import kr.startoff.backend.entity.AuthProvider;
-import kr.startoff.backend.exception.OAuth2AuthenticationProcessingException;
+import kr.startoff.backend.exception.custom.OAuth2AuthenticationProcessingException;
 
 public class OAuth2UserInfoFactory {
 	public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {

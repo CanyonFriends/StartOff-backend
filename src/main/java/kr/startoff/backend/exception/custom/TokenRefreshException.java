@@ -1,4 +1,4 @@
-package kr.startoff.backend.exception;
+package kr.startoff.backend.exception.custom;
 
 public class TokenRefreshException extends RuntimeException {
 	public TokenRefreshException() {
