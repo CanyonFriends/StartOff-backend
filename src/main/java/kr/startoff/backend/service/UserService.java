@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.User;
+import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 import kr.startoff.backend.payload.request.SignupRequest;
-import kr.startoff.backend.payload.request.UserInfoUpdateRequest;
+import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
 import kr.startoff.backend.payload.response.UserInfoResponse;
 import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.repository.UserRepository;
@@ -64,10 +65,12 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserInfoResponse updateUser(UserInfoUpdateRequest updateRequest, Long id) {
+	public UserInfoResponse changeUserPassword(UserPasswordChangeRequest updateRequest, Long id) {
 		User user = getUserOrThrowException(id);
-		user.setNickname(updateRequest.getNickname());
-		user.setPassword(encoder.encode(updateRequest.getPassword()));
+		if(!encoder.matches(updateRequest.getBeforePassword(),user.getPassword())){
+			throw new InvalidPasswordException();
+		}
+		user.setPassword(encoder.encode(updateRequest.getAfterPassword()));
 		return UserInfoResponse.builder()
 			.email(user.getEmail())
 			.nickname(user.getNickname())
