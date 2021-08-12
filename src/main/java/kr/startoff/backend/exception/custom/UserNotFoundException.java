@@ -1,4 +1,4 @@
-package kr.startoff.backend.exception;
+package kr.startoff.backend.exception.custom;
 
 public class UserNotFoundException extends RuntimeException {
 	public UserNotFoundException() {

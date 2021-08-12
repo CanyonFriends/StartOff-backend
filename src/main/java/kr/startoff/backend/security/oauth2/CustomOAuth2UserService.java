@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.OAuth2AuthenticationProcessingException;
+import kr.startoff.backend.exception.custom.OAuth2AuthenticationProcessingException;
 import kr.startoff.backend.repository.UserRepository;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.oauth2.user.OAuth2UserInfo;
