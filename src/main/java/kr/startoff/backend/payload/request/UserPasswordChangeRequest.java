@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public class UserInfoUpdateRequest {
 	@NotBlank
-	private String nickname;
-
+	private String beforePassword;
 	@NotBlank
-	private String password;
+	private String afterPassword;
 }
