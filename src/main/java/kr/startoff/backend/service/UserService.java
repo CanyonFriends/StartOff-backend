@@ -82,8 +82,6 @@ public class UserService {
 	}
 
 	private User getUserOrThrowException(Long id) {
-		return userRepository.findById(id).orElseThrow(
-			() -> new UserNotFoundException("해당 ID를 가진 회원이 존재하지 않습니다.")
-		);
+		return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 	}
 }
