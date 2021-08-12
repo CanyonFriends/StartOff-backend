@@ -39,3 +39,4 @@ out/
 application-oauth.yml
 application-db.yml
 application-local.yml
+application-test.yml
