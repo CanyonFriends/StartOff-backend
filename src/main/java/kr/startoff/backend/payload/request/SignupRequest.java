@@ -3,9 +3,12 @@ package kr.startoff.backend.payload.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class SignupRequest {
 	@NotBlank
 	@Email
@@ -14,4 +17,10 @@ public class SignupRequest {
 	private String nickname;
 	@NotBlank
 	private String password;
+
+	public SignupRequest(String email, String nickname, String password) {
+		this.email = email;
+		this.nickname = nickname;
+		this.password = password;
+	}
 }
