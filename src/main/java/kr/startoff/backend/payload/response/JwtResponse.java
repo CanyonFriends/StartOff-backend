@@ -12,13 +12,16 @@ public class JwtResponse {
 	@JsonProperty("token_type")
 	private final String TOKEN_TYPE = "Bearer";
 	private String accessToken;
-	private String refreshToken;
+	private String uuid;
 	private Long userId;
 	private String email;
-	public JwtResponse(String accessToken, String refreshToken, Long userId, String email) {
+	private String nickname;
+
+	public JwtResponse(String accessToken, String uuid, Long userId, String email, String nickname) {
 		this.accessToken = accessToken;
-		this.refreshToken = refreshToken;
+		this.uuid = uuid;
 		this.userId = userId;
 		this.email = email;
+		this.nickname = nickname;
 	}
 }
