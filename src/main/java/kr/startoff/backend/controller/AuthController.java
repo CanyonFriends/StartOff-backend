@@ -2,6 +2,7 @@ package kr.startoff.backend.controller;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -26,16 +27,18 @@ import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.TokenRefreshException;
 import kr.startoff.backend.payload.request.LoginRequest;
+import kr.startoff.backend.payload.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
 import kr.startoff.backend.payload.response.JwtResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.jwt.JwtUtil;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
 import kr.startoff.backend.service.UserService;
-import kr.startoff.backend.util.CookieUtil;
 import kr.startoff.backend.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -76,55 +79,49 @@ public class AuthController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
+		Long userId = userPrincipal.getId();
+		String email = userPrincipal.getEmail();
+		String nickname = userPrincipal.getNickname();
 		String accessToken = jwtUtil.generateJwtToken(userPrincipal);
 		String refreshToken = jwtUtil.generateRefreshToken(userPrincipal);
+		String uuid = UUID.randomUUID().toString();
 
-		redisUtil.setDataExpire(userPrincipal.getUsername(), refreshToken, JwtUtil.REFRESH_EXPIRATION_SECONDS);
+		redisUtil.setDataExpire(uuid, refreshToken,(int) JwtUtil.REFRESH_EXPIRATION_SECONDS);
 
-		CookieUtil.addCookie(response, "Refresh", refreshToken, (int)JwtUtil.REFRESH_EXPIRATION_SECONDS);
-		JwtResponse jwtResponse = new JwtResponse(accessToken, refreshToken, userPrincipal.getId(),
-			userPrincipal.getEmail());
+		JwtResponse jwtResponse = new JwtResponse(accessToken, uuid, userId, email, nickname);
 
 		return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> tokenRefresh(HttpServletRequest request, HttpServletResponse response) {
-		Cookie refreshCookie = getRefreshTokenAtCookie(request).orElseThrow(
-			() -> new TokenRefreshException("Refresh Token이 존재하지 않습니다."));
+	public ResponseEntity<?> tokenRefresh(@RequestBody RefreshOrLogoutRequest request, HttpServletResponse response) {
+		String email = request.getEmail();
+		String uuid = request.getUuid();
+		String oldAccessToken = request.getAccessToken();
+		Optional<String> refreshToken = redisUtil.getData(uuid);
 
-		String refreshToken = refreshCookie.getValue();
-		String username = jwtUtil.getUserNameFromJwtToken(refreshToken);
-		if (redisUtil.getData(username).isEmpty()) {
+		if (refreshToken.isEmpty()) {
 			throw new TokenRefreshException("유효한 Refresh Token이 아닙니다.");
 		}
-		UserPrincipal userPrincipal = (UserPrincipal)userDetailsService.loadUserByUsername(username);
+		if (!jwtUtil.validateJwtToken(refreshToken.get()) ||
+			!email.equals(jwtUtil.getUserNameFromJwtToken(refreshToken.get()))) {
+			throw new TokenRefreshException("유효한 Refresh Token이 아닙니다.");
+		}
+		UserPrincipal userPrincipal = (UserPrincipal)userDetailsService.loadUserByUsername(email);
+		String newAccessToken = jwtUtil.generateJwtToken(userPrincipal);
 
-		String accessToken = jwtUtil.generateJwtToken(userPrincipal);
-		response.addHeader("Authorization", "Bearer " + accessToken);
+		redisUtil.setDataExpire(oldAccessToken, "true", (int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
+
+		response.addHeader("Authorization", "Bearer " + newAccessToken);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	private Optional<Cookie> getRefreshTokenAtCookie(HttpServletRequest request) {
-		final Cookie[] cookies = request.getCookies();
-		if (cookies == null)
-			return Optional.empty();
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("Refresh"))
-				return Optional.of(cookie);
-		}
-		return Optional.empty();
-	}
-
 	@PostMapping("/logout")
-	public ResponseEntity<?> logout(HttpServletRequest request) {
-		Cookie refreshCookie = getRefreshTokenAtCookie(request).orElseThrow(
-			() -> new TokenRefreshException("Refresh Token이 존재하지 않습니다."));
-
-		String refreshToken = refreshCookie.getValue();
-		String username = jwtUtil.getUserNameFromJwtToken(refreshToken);
-		redisUtil.deleteData(username);
-
+	public ResponseEntity<?> logout(RefreshOrLogoutRequest request) {
+		String uuid = request.getUuid();
+		String accessToken = request.getAccessToken();
+		redisUtil.deleteData(uuid);
+		redisUtil.setDataExpire(accessToken, "true", (int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
 		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 }

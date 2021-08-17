@@ -1,6 +1,7 @@
 package kr.startoff.backend.security.jwt;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Optional;
 
 import javax.servlet.FilterChain;
@@ -8,15 +9,23 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.jsonwebtoken.ExpiredJwtException;
+import kr.startoff.backend.exception.ErrorInfo;
+import kr.startoff.backend.exception.custom.TokenRefreshException;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
+import kr.startoff.backend.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
 	private final JwtUtil jwtUtil;
+	private final RedisUtil redisUtil;
 	private final UserDetailsServiceImpl userDetailsService;
 
 	@Override
@@ -31,15 +41,24 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		throws ServletException, IOException {
 		try {
 			Optional<String> jwt = parseJwt(request);
-			if (jwt.isPresent() && jwtUtil.validateJwtToken(jwt.get())) {
-				String username = jwtUtil.getUserNameFromJwtToken(jwt.get());
+			if (jwt.isPresent()) {
+				if (jwtUtil.validateJwtToken(jwt.get())) {
+					Optional<String> isLockedAccessToken = redisUtil.getData(jwt.get());
+					if (isLockedAccessToken.isEmpty()) {
+						String username = jwtUtil.getUserNameFromJwtToken(jwt.get());
 
-				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-					userDetails, null, userDetails.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+						UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+							userDetails, null, userDetails.getAuthorities());
+						authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					} else {
+						response.setStatus(CustomStatus.IS_LOCKED_TOKEN.getCode());
+					}
+				} else {
+					response.setStatus(CustomStatus.INVALID_TOKEN.getCode());
+				}
 			}
 		} catch (ExpiredJwtException e) {
 			log.error("ExpiredJwtException : {}", e.getMessage());

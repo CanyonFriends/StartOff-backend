@@ -3,8 +3,10 @@ package kr.startoff.backend.security.oauth2;
 import static kr.startoff.backend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.*;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -16,13 +18,18 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.startoff.backend.payload.response.JwtResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.jwt.JwtUtil;
 import kr.startoff.backend.util.CookieUtil;
 import kr.startoff.backend.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final JwtUtil jwtUtil;
@@ -55,13 +62,22 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 		UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
+		Long userId = userPrincipal.getId();
+		String email = userPrincipal.getEmail();
+		String nickname = userPrincipal.getNickname();
+
 		String accessToken = jwtUtil.generateJwtToken(userPrincipal);
 		String refreshToken = jwtUtil.generateRefreshToken(userPrincipal);
-		redisUtil.setDataExpire(userPrincipal.getUsername(), refreshToken,JwtUtil.REFRESH_EXPIRATION_SECONDS);
+		String uuid = UUID.randomUUID().toString();
+
+		redisUtil.setDataExpire(uuid, refreshToken, JwtUtil.REFRESH_EXPIRATION_SECONDS);
 
 		return UriComponentsBuilder.fromUriString(targetUrl)
 			.queryParam("access_token", accessToken)
-			.queryParam("refresh_token",refreshToken)
+			.queryParam("uuid", uuid)
+			.queryParam("user_id", userId.toString())
+			.queryParam("email", email)
+			.queryParam("nickname", nickname)
 			.build().toUriString();
 	}
 

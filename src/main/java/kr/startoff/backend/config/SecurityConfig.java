@@ -22,6 +22,7 @@ import kr.startoff.backend.security.oauth2.HttpCookieOAuth2AuthorizationRequestR
 import kr.startoff.backend.security.oauth2.OAuth2AuthenticationFailureHandler;
 import kr.startoff.backend.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
+import kr.startoff.backend.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final UserDetailsServiceImpl userDetailsService;
 	private final JwtUtil jwtUtil;
+	private final RedisUtil redisUtil;
 	private final JwtAuthEntryPoint unauthorizedHandler;
 	private final JwtAccessDeniedHandler accessDeniedHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
@@ -50,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public AuthTokenFilter authTokenFilter() {
-		return new AuthTokenFilter(jwtUtil, userDetailsService);
+		return new AuthTokenFilter(jwtUtil, redisUtil, userDetailsService);
 	}
 
 	@Override
