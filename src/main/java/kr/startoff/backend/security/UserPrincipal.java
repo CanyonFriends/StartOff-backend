@@ -15,13 +15,16 @@ import kr.startoff.backend.entity.User;
 public class UserPrincipal implements OAuth2User, UserDetails {
 	private final Long id;
 	private final String email;
+	private final String nickname;
 	private final String password;
 	private final Collection<? extends GrantedAuthority> authorities;
 	private Map<String, Object> attributes;
 
-	public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+	public UserPrincipal(Long id, String email, String nickname, String password,
+		Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.email = email;
+		this.nickname = nickname;
 		this.password = password;
 		this.authorities = authorities;
 	}
@@ -33,6 +36,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 		return new UserPrincipal(
 			user.getId(),
 			user.getEmail(),
+			user.getNickname(),
 			user.getPassword(),
 			authorities
 		);
@@ -50,6 +54,10 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getNickname() {
+		return nickname;
 	}
 
 	@Override
