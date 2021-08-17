@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
+import kr.startoff.backend.payload.response.RefreshResponse;
+import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -64,4 +68,11 @@ public class UserController {
 		return ResponseEntity.ok(userService.getUserProfile(userId));
 	}
 
+	@GetMapping("/users/self")
+	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<?> getSelfInformation(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		RefreshResponse refreshResponse = new RefreshResponse(userPrincipal.getId(), userPrincipal.getEmail(),
+			userPrincipal.getNickname());
+		return ResponseEntity.ok(refreshResponse);
+	}
 }
