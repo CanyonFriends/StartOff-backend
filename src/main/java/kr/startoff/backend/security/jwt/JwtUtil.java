@@ -24,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUtil {
 	@Value("${jwt.secret-key}")
 	private String secretKey;
-	public final static long TOKEN_EXPIRATION_SECONDS = 1000L * 10;
-	public final static long REFRESH_EXPIRATION_SECONDS = 1000L * 60 * 24 * 2;
+	public final static long TOKEN_EXPIRATION_SECONDS = 1000L * 60 * 10;
+	public final static long REFRESH_EXPIRATION_SECONDS = 1000L * 60 * 120;
 
 	private Key key;
 
@@ -46,6 +46,11 @@ public class JwtUtil {
 	private String doGenerateToken(UserPrincipal user, long expirationMs) {
 		Date now = new Date();
 		Date validity = new Date(now.getTime() + expirationMs);
+		if (expirationMs == TOKEN_EXPIRATION_SECONDS) {
+			log.debug("AccessToken : " + now + "\n" + validity);
+		} else if (expirationMs == REFRESH_EXPIRATION_SECONDS) {
+			log.debug("RefreshToken : " + now + "\n" + validity);
+		}
 		return Jwts.builder()
 			.setSubject((user.getUsername()))
 			.setIssuedAt(now)
