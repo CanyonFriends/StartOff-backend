@@ -3,7 +3,6 @@ package kr.startoff.backend.security.oauth2;
 import static kr.startoff.backend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.*;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,9 +17,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import kr.startoff.backend.payload.response.JwtResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.jwt.JwtUtil;
 import kr.startoff.backend.util.CookieUtil;

@@ -8,16 +8,16 @@ import lombok.Getter;
 
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class JwtResponse {
+public class LoginResponse {
 	@JsonProperty("token_type")
-	private final String TOKEN_TYPE = "Bearer";
+	private static final String TOKEN_TYPE = "Bearer";
 	private String accessToken;
 	private String uuid;
 	private Long userId;
 	private String email;
 	private String nickname;
 
-	public JwtResponse(String accessToken, String uuid, Long userId, String email, String nickname) {
+	public LoginResponse(String accessToken, String uuid, Long userId, String email, String nickname) {
 		this.accessToken = accessToken;
 		this.uuid = uuid;
 		this.userId = userId;
