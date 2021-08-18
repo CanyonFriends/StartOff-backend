@@ -23,7 +23,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
-import kr.startoff.backend.exception.custom.TokenRefreshException;
+import kr.startoff.backend.exception.custom.AccessTokenException;
+import kr.startoff.backend.exception.custom.RefreshTokenException;
 import kr.startoff.backend.payload.request.LoginRequest;
 import kr.startoff.backend.payload.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
@@ -100,11 +101,11 @@ public class AuthController {
 		Optional<String> refreshToken = redisUtil.getData(uuid);
 
 		if (refreshToken.isEmpty()) {
-			throw new TokenRefreshException("유효한 Refresh Token이 아닙니다.");
+			throw new RefreshTokenException();
 		}
 		if (!jwtUtil.validateJwtToken(refreshToken.get()) ||
 			!email.equals(jwtUtil.getUserNameFromJwtToken(refreshToken.get()))) {
-			throw new TokenRefreshException("유효한 Refresh Token이 아닙니다.");
+			throw new RefreshTokenException();
 		}
 		UserPrincipal userPrincipal = (UserPrincipal)userDetailsService.loadUserByUsername(email);
 		String newAccessToken = jwtUtil.generateJwtToken(userPrincipal);
