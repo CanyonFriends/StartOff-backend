@@ -23,12 +23,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
-import kr.startoff.backend.exception.custom.AccessTokenException;
 import kr.startoff.backend.exception.custom.RefreshTokenException;
 import kr.startoff.backend.payload.request.LoginRequest;
 import kr.startoff.backend.payload.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
-import kr.startoff.backend.payload.response.JwtResponse;
+import kr.startoff.backend.payload.response.LoginResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.jwt.JwtUtil;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
@@ -66,7 +65,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
 		Authentication authentication;
 		try {
 			authentication = authenticationManager.authenticate(
@@ -87,7 +86,7 @@ public class AuthController {
 
 		redisUtil.setDataExpire(uuid, refreshToken, (int)JwtUtil.REFRESH_EXPIRATION_SECONDS);
 
-		JwtResponse jwtResponse = new JwtResponse(accessToken, uuid, userId, email, nickname);
+		LoginResponse jwtResponse = new LoginResponse(accessToken, uuid, userId, email, nickname);
 
 		return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 	}
