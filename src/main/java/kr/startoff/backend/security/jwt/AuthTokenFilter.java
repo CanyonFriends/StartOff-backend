@@ -1,7 +1,6 @@
 package kr.startoff.backend.security.jwt;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Optional;
 
 import javax.servlet.FilterChain;
@@ -9,21 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.jsonwebtoken.ExpiredJwtException;
-import kr.startoff.backend.exception.ErrorInfo;
-import kr.startoff.backend.exception.custom.TokenRefreshException;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
 import kr.startoff.backend.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
