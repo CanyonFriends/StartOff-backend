@@ -18,20 +18,20 @@ import kr.startoff.backend.util.CookieUtil;
 public class TokenTestController {
 	@GetMapping("/token/user")
 	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<?> getUser(){
+	public ResponseEntity<String> getUser() {
 		return ResponseEntity.ok("user");
 	}
 
 	@GetMapping("/token/admin")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<?> getAdmin(){
+	public ResponseEntity<String> getAdmin() {
 		return ResponseEntity.ok("admin");
 	}
 
 	@GetMapping("/cookie")
-	public ResponseEntity<?> getCookie(HttpServletRequest request){
-		Optional<Cookie> cookie = CookieUtil.getCookie(request,"react");
-		if(cookie.isEmpty()){
+	public ResponseEntity<String> getCookie(HttpServletRequest request) {
+		Optional<Cookie> cookie = CookieUtil.getCookie(request, "react");
+		if (cookie.isEmpty()) {
 			return ResponseEntity.badRequest().body("쿠키가 없어요.");
 		}
 		return ResponseEntity.ok(cookie.get().toString());

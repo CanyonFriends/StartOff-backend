@@ -39,7 +39,7 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	public void findByEmailTest() throws Exception {
+	void findByEmailTest() throws Exception {
 		//given
 		//when
 		Optional<User> foundUser = userRepository.findByEmail(EMAIL);
@@ -53,7 +53,7 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	public void existsUserByEmailTest() throws Exception {
+	void existsUserByEmailTest() throws Exception {
 		//given
 		//when
 		boolean result = userRepository.existsUserByEmail(EMAIL);
@@ -62,7 +62,7 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	public void existsUserByNicknameTest() throws Exception {
+	void existsUserByNicknameTest() throws Exception {
 		//given
 		//when
 		boolean result = userRepository.existsUserByNickname(NICKNAME);

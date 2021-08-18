@@ -34,7 +34,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	public void signUpTest() throws Exception {
+	void signUpTest() throws Exception {
 		//given
 		given(userRepository.save(any())).willReturn(user(encoder));
 		//when
@@ -47,7 +47,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	public void changeUserPasswordTest() throws Exception {
+	void changeUserPasswordTest() throws Exception {
 		//given
 		User user = user(encoder);
 		String beforePassword = user.getPassword();
@@ -64,7 +64,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	public void changeUserPasswordThrowInvalidPasswordExceptionTest() throws Exception {
+	void changeUserPasswordThrowInvalidPasswordExceptionTest() throws Exception {
 		//given
 		User user = user(encoder);
 		String InvalidPassword = "InvalidPassword";
@@ -80,7 +80,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	public void getUserInformationTest() throws Exception {
+	void getUserInformationTest() throws Exception {
 		//given
 		User user = user(encoder);
 		given(userRepository.findById(USER_ID)).willReturn(Optional.of(user));
@@ -95,7 +95,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	public void deleteUserThrowExceptionTest() throws Exception {
+	void deleteUserThrowExceptionTest() throws Exception {
 		when(userRepository.findById(USER_ID)).thenThrow(UserNotFoundException.class);
 
 		assertThrows(UserNotFoundException.class,
