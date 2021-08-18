@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,8 @@ import kr.startoff.backend.exception.custom.RefreshTokenException;
 import kr.startoff.backend.payload.request.LoginRequest;
 import kr.startoff.backend.payload.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
+import kr.startoff.backend.payload.response.AccessTokenResponse;
+import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.LoginResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.jwt.JwtUtil;
@@ -92,8 +93,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<Void> tokenRefresh(@RequestBody RefreshOrLogoutRequest request,
-		HttpServletResponse response) {
+	public ResponseEntity<AccessTokenResponse> tokenRefresh(@RequestBody RefreshOrLogoutRequest request) {
 		String email = request.getEmail();
 		String uuid = request.getUuid();
 		String oldAccessToken = request.getAccessToken();
@@ -111,16 +111,16 @@ public class AuthController {
 
 		redisUtil.setDataExpire(oldAccessToken, "true", (int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
 
-		response.addHeader("Authorization", "Bearer " + newAccessToken);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.ok(new AccessTokenResponse(userPrincipal.getId(), newAccessToken));
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<Boolean> logout(RefreshOrLogoutRequest request) {
+	public ResponseEntity<CommonResponse> logout(RefreshOrLogoutRequest request) {
 		String uuid = request.getUuid();
 		String accessToken = request.getAccessToken();
 		redisUtil.deleteData(uuid);
 		redisUtil.setDataExpire(accessToken, "true", (int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
-		return new ResponseEntity<>(true, HttpStatus.OK);
+		CommonResponse response = new CommonResponse(true, "로그아웃");
+		return ResponseEntity.ok(response);
 	}
 }
