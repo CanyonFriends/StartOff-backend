@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
 import kr.startoff.backend.payload.response.RefreshResponse;
+import kr.startoff.backend.payload.response.UserInfoResponse;
+import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,7 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping("/users/validation")
-	public ResponseEntity<?> validateDuplicationEmailOrNickname(
+	public ResponseEntity<Void> validateDuplicationEmailOrNickname(
 		@RequestParam Optional<String> email, @RequestParam Optional<String> nickname) {
 		if (email.isPresent() && nickname.isEmpty()) {
 			if (userService.isDuplicateEmail(email.get())) {
@@ -47,30 +49,25 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping("/users/{user_id}")
-	public ResponseEntity<?> getUserInformation(@PathVariable(value = "user_id") Long userId) {
-		return ResponseEntity.ok(userService.getUserInformation(userId));
-	}
-
 	@PutMapping("/users/{user_id}")
-	public ResponseEntity<?> changeUserPassword(@PathVariable(value = "user_id") Long userId,
+	public ResponseEntity<UserInfoResponse> changeUserPassword(@PathVariable(value = "user_id") Long userId,
 		@Valid @RequestBody UserPasswordChangeRequest updateRequest) {
 		return ResponseEntity.ok(userService.changeUserPassword(updateRequest, userId));
 	}
 
 	@DeleteMapping("/users/{user_id}")
-	public ResponseEntity<?> leaveMembership(@PathVariable(value = "user_id") Long userId) {
+	public ResponseEntity<Long> leaveMembership(@PathVariable(value = "user_id") Long userId) {
 		return ResponseEntity.ok(userService.deleteUser(userId));
 	}
 
 	@GetMapping("/users/profile/{user_id}")
-	public ResponseEntity<?> getUserProfile(@PathVariable(value = "user_id") Long userId) {
+	public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable(value = "user_id") Long userId) {
 		return ResponseEntity.ok(userService.getUserProfile(userId));
 	}
 
 	@GetMapping("/users/self")
 	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<?> getSelfInformation(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+	public ResponseEntity<RefreshResponse> getSelfInformation(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		RefreshResponse refreshResponse = new RefreshResponse(userPrincipal.getId(), userPrincipal.getEmail(),
 			userPrincipal.getNickname());
 		return ResponseEntity.ok(refreshResponse);

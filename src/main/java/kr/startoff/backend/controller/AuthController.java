@@ -4,8 +4,6 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -50,7 +48,7 @@ public class AuthController {
 	private final RedisUtil redisUtil;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequest signUpRequest) {
+	public ResponseEntity<Long> signUp(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userService.isDuplicateEmail(signUpRequest.getEmail())) {
 			throw new EmailOrNicknameDuplicateException("Email이 중복되었습니다.");
 		}
@@ -67,7 +65,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+	public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
 		Authentication authentication;
 		try {
 			authentication = authenticationManager.authenticate(
@@ -86,7 +84,7 @@ public class AuthController {
 		String refreshToken = jwtUtil.generateRefreshToken(userPrincipal);
 		String uuid = UUID.randomUUID().toString();
 
-		redisUtil.setDataExpire(uuid, refreshToken,(int) JwtUtil.REFRESH_EXPIRATION_SECONDS);
+		redisUtil.setDataExpire(uuid, refreshToken, (int)JwtUtil.REFRESH_EXPIRATION_SECONDS);
 
 		JwtResponse jwtResponse = new JwtResponse(accessToken, uuid, userId, email, nickname);
 
@@ -94,7 +92,8 @@ public class AuthController {
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> tokenRefresh(@RequestBody RefreshOrLogoutRequest request, HttpServletResponse response) {
+	public ResponseEntity<Void> tokenRefresh(@RequestBody RefreshOrLogoutRequest request,
+		HttpServletResponse response) {
 		String email = request.getEmail();
 		String uuid = request.getUuid();
 		String oldAccessToken = request.getAccessToken();
@@ -117,7 +116,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<?> logout(RefreshOrLogoutRequest request) {
+	public ResponseEntity<Boolean> logout(RefreshOrLogoutRequest request) {
 		String uuid = request.getUuid();
 		String accessToken = request.getAccessToken();
 		redisUtil.deleteData(uuid);

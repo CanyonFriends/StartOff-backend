@@ -1,8 +1,5 @@
 package kr.startoff.backend.entity;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,10 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -69,7 +62,7 @@ public class User {
 	String imageUrl;
 
 	@Builder
-	public User(String email, String nickname, String password,AuthProvider provider) {
+	public User(String email, String nickname, String password, AuthProvider provider) {
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
