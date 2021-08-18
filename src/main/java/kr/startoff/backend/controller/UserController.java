@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
-import kr.startoff.backend.payload.response.RefreshResponse;
+import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.UserInfoResponse;
 import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.security.UserPrincipal;
@@ -49,10 +49,12 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping("/users/{user_id}")
-	public ResponseEntity<UserInfoResponse> changeUserPassword(@PathVariable(value = "user_id") Long userId,
+	@PutMapping("/users/{user_id}/password")
+	public ResponseEntity<CommonResponse> changeUserPassword(@PathVariable(value = "user_id") Long userId,
 		@Valid @RequestBody UserPasswordChangeRequest updateRequest) {
-		return ResponseEntity.ok(userService.changeUserPassword(updateRequest, userId));
+		CommonResponse result = new CommonResponse(userService.changeUserPassword(updateRequest, userId),
+			"비밀번호가 변경되었습니다.");
+		return ResponseEntity.ok(result);
 	}
 
 	@DeleteMapping("/users/{user_id}")
@@ -67,9 +69,9 @@ public class UserController {
 
 	@GetMapping("/users/self")
 	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<RefreshResponse> getSelfInformation(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-		RefreshResponse refreshResponse = new RefreshResponse(userPrincipal.getId(), userPrincipal.getEmail(),
+	public ResponseEntity<UserInfoResponse> getSelfInformation(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		UserInfoResponse response = new UserInfoResponse(userPrincipal.getId(), userPrincipal.getEmail(),
 			userPrincipal.getNickname());
-		return ResponseEntity.ok(refreshResponse);
+		return ResponseEntity.ok(response);
 	}
 }

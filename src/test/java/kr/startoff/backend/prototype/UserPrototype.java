@@ -46,6 +46,6 @@ public class UserPrototype {
 	}
 
 	public static UserInfoResponse userInfo() {
-		return new UserInfoResponse(EMAIL,NICKNAME);
+		return new UserInfoResponse(USER_ID, EMAIL, NICKNAME);
 	}
 }
