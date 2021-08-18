@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
-import kr.startoff.backend.exception.custom.TokenRefreshException;
+import kr.startoff.backend.exception.custom.AccessTokenException;
+import kr.startoff.backend.exception.custom.RefreshTokenException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 
 @RestControllerAdvice
@@ -18,7 +19,7 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(UserNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private ResponseEntity<ErrorInfo> userNotFoundExceptionHandler(HttpServletRequest request,
+	private ResponseEntity<ErrorInfo> notFoundErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
 		ErrorInfo errorInfo = new ErrorInfo(e.getMessage(), HttpStatus.NOT_FOUND.toString(), request.getRequestURI());
 		return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
@@ -26,7 +27,7 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(EmailOrNicknameDuplicateException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
-	private ResponseEntity<ErrorInfo> emailOrNicknameDuplicateExceptionHandler(HttpServletRequest request,
+	private ResponseEntity<ErrorInfo> conflictErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
 		ErrorInfo errorInfo = new ErrorInfo(e.getMessage(), HttpStatus.CONFLICT.toString(), request.getRequestURI());
 		return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
@@ -34,17 +35,18 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(InvalidPasswordException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	private ResponseEntity<ErrorInfo> invalidPasswordExceptionHandler(HttpServletRequest request,
+	private ResponseEntity<ErrorInfo> badRequestErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
 		ErrorInfo errorInfo = new ErrorInfo(e.getMessage(), HttpStatus.BAD_REQUEST.toString(), request.getRequestURI());
 		return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(TokenRefreshException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	private ResponseEntity<ErrorInfo> tokenRefreshExceptionHandler(HttpServletRequest request,
+	@ExceptionHandler({AccessTokenException.class, RefreshTokenException.class})
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	private ResponseEntity<ErrorInfo> unauthorizedErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
-		ErrorInfo errorInfo = new ErrorInfo(e.getMessage(), HttpStatus.BAD_REQUEST.toString(), request.getRequestURI());
-		return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+		ErrorInfo errorInfo = new ErrorInfo(e.getMessage(), HttpStatus.UNAUTHORIZED.toString(),
+			request.getRequestURI());
+		return new ResponseEntity<>(errorInfo, HttpStatus.UNAUTHORIZED);
 	}
 }
