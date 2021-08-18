@@ -46,10 +46,7 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public UserInfoResponse getUserInformation(Long id) {
 		User user = getUserOrThrowException(id);
-		return UserInfoResponse.builder()
-			.email(user.getEmail())
-			.nickname(user.getNickname())
-			.build();
+		return new UserInfoResponse(user.getId(), user.getEmail(), user.getNickname());
 	}
 
 	@Transactional(readOnly = true)
@@ -65,16 +62,13 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserInfoResponse changeUserPassword(UserPasswordChangeRequest updateRequest, Long id) {
+	public boolean changeUserPassword(UserPasswordChangeRequest updateRequest, Long id) {
 		User user = getUserOrThrowException(id);
 		if(!encoder.matches(updateRequest.getBeforePassword(),user.getPassword())){
 			throw new InvalidPasswordException();
 		}
 		user.setPassword(encoder.encode(updateRequest.getAfterPassword()));
-		return UserInfoResponse.builder()
-			.email(user.getEmail())
-			.nickname(user.getNickname())
-			.build();
+		return true;
 	}
 
 	@Transactional
