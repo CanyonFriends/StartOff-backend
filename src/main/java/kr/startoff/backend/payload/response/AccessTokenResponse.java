@@ -7,14 +7,12 @@ import lombok.Getter;
 
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RefreshResponse {
+public class AccessTokenResponse {
 	private Long userId;
-	private String email;
-	private String nickname;
+	private String accessToken;
 
-	public RefreshResponse(Long userId, String email, String nickname) {
+	public AccessTokenResponse(Long userId, String accessToken) {
 		this.userId = userId;
-		this.email = email;
-		this.nickname = nickname;
+		this.accessToken = accessToken;
 	}
 }
