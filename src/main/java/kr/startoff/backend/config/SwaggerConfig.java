@@ -31,15 +31,17 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 			.select()
 			.apis(RequestHandlerSelectors.basePackage("kr.startoff.backend.controller"))
 			.paths(PathSelectors.any())
-			.build()
-			.pathMapping("/api");
+			.build();
+
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		//enabling swagger-ui part for visual documentation
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+		super.addResourceHandlers(registry);
+
 	}
 }
