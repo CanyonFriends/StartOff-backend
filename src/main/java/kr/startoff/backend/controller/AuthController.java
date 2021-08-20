@@ -115,10 +115,12 @@ public class AuthController {
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<CommonResponse> logout(RefreshOrLogoutRequest request) {
+	public ResponseEntity<CommonResponse> logout(@RequestBody RefreshOrLogoutRequest request) {
 		String uuid = request.getUuid();
 		String accessToken = request.getAccessToken();
-		redisUtil.deleteData(uuid);
+		if (redisUtil.getData(uuid).isPresent()) {
+			redisUtil.deleteData(uuid);
+		}
 		redisUtil.setDataExpire(accessToken, "true", (int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
 		CommonResponse response = new CommonResponse(true, "로그아웃");
 		return ResponseEntity.ok(response);
