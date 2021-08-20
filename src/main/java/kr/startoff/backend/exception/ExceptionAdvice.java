@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.AccessTokenException;
+import kr.startoff.backend.exception.custom.ProjectBadRequest;
+import kr.startoff.backend.exception.custom.ProjectNotFoundException;
 import kr.startoff.backend.exception.custom.RefreshTokenException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-	@ExceptionHandler(UserNotFoundException.class)
+	@ExceptionHandler({UserNotFoundException.class, ProjectNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private ResponseEntity<ErrorInfo> notFoundErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
@@ -33,7 +35,7 @@ public class ExceptionAdvice {
 		return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler(InvalidPasswordException.class)
+	@ExceptionHandler({InvalidPasswordException.class, ProjectBadRequest.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private ResponseEntity<ErrorInfo> badRequestErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
