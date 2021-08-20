@@ -29,8 +29,8 @@ public class ProjectController {
 
 	@PostMapping("/users/{user_id}/projects")
 	public ResponseEntity<ProjectResponse> saveProject(@PathVariable(value = "user_id") Long userId,
-		@RequestBody ProjectRequest request) {
-		ProjectResponse project = projectService.saveProject(request, userId);
+		@RequestBody ProjectRequest projectRequest) {
+		ProjectResponse project = projectService.saveProject(projectRequest, userId);
 
 		Map<String, Long> uriComponents = new HashMap<>();
 		uriComponents.put("user_id", userId);
@@ -46,8 +46,8 @@ public class ProjectController {
 
 	@PutMapping("/users/{user_id}/projects/{project_id}")
 	public ResponseEntity<ProjectResponse> updateProject(@PathVariable(value = "user_id") Long userId,
-		@PathVariable(value = "project_id") Long projectId, @RequestBody ProjectRequest request) {
-		ProjectResponse project = projectService.updateProject(request, userId, projectId);
+		@PathVariable(value = "project_id") Long projectId, @RequestBody ProjectRequest projectRequest) {
+		ProjectResponse project = projectService.updateProject(projectRequest, userId, projectId);
 		return new ResponseEntity<>(project, HttpStatus.OK);
 	}
 

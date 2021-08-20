@@ -21,19 +21,19 @@ public class ProjectService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public ProjectResponse saveProject(ProjectRequest request, Long userId) {
+	public ProjectResponse saveProject(ProjectRequest projectRequest, Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-		Project project = Project.createProject(user, request);
+		Project project = Project.createProject(user, projectRequest);
 		return new ProjectResponse(projectRepository.save(project));
 	}
 
 	@Transactional
-	public ProjectResponse updateProject(ProjectRequest request, Long userId, Long projectId) {
+	public ProjectResponse updateProject(ProjectRequest projectRequest, Long userId, Long projectId) {
 		Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
 		if (!project.getUser().getId().equals(userId)) {
 			throw new ProjectBadRequest();
 		}
-		project.updateProject(request);
+		project.updateProject(projectRequest);
 		return new ProjectResponse(project);
 	}
 
