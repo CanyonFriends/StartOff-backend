@@ -51,17 +51,17 @@ public class Project {
 	@Column(name = "end_date")
 	String endDate;
 
-	public static Project createProject(User user, ProjectRequest request) {
+	public static Project createProject(User user, ProjectRequest projectRequest) {
 		Project project = new Project();
 
 		project.setUser(user);
-		project.setTitle(request.getTitle());
-		project.setIntroduce(request.getIntroduce());
-		project.setContent(request.getContent());
-		project.setGithubUrl(request.getGithubUrl());
-		project.setDeployUrl(request.getDeployUrl());
-		project.setStartDate(request.getStartDate());
-		project.setEndDate(request.getEndDate());
+		project.setTitle(projectRequest.getTitle());
+		project.setIntroduce(projectRequest.getIntroduce());
+		project.setContent(projectRequest.getContent());
+		project.setGithubUrl(projectRequest.getGithubUrl());
+		project.setDeployUrl(projectRequest.getDeployUrl());
+		project.setStartDate(projectRequest.getStartDate());
+		project.setEndDate(projectRequest.getEndDate());
 		return project;
 	}
 
@@ -70,13 +70,13 @@ public class Project {
 		user.getProjects().add(this);
 	}
 
-	public void updateProject(ProjectRequest request) {
-		this.setTitle(request.getTitle());
-		this.setIntroduce(request.getIntroduce());
-		this.setContent(request.getContent());
-		this.setGithubUrl(request.getGithubUrl());
-		this.setDeployUrl(request.getDeployUrl());
-		this.setStartDate(request.getStartDate());
-		this.setEndDate(request.getEndDate());
+	public void updateProject(ProjectRequest projectRequest) {
+		this.setTitle(projectRequest.getTitle());
+		this.setIntroduce(projectRequest.getIntroduce());
+		this.setContent(projectRequest.getContent());
+		this.setGithubUrl(projectRequest.getGithubUrl());
+		this.setDeployUrl(projectRequest.getDeployUrl());
+		this.setStartDate(projectRequest.getStartDate());
+		this.setEndDate(projectRequest.getEndDate());
 	}
 }
