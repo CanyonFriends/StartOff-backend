@@ -10,7 +10,7 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class LoginResponse {
 	@JsonProperty("token_type")
-	private static final String TOKEN_TYPE = "Bearer";
+	private final String TOKEN_TYPE = "Bearer";
 	private String accessToken;
 	private String uuid;
 	private Long userId;
