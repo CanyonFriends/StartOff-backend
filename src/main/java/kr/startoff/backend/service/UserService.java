@@ -6,10 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.User;
+import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 import kr.startoff.backend.payload.request.SignupRequest;
 import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
+import kr.startoff.backend.payload.request.profile.BaekjoonIdRequest;
+import kr.startoff.backend.payload.request.profile.BlogUrlRequest;
+import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
+import kr.startoff.backend.payload.request.profile.IntroduceRequest;
+import kr.startoff.backend.payload.request.profile.NicknameRequest;
 import kr.startoff.backend.payload.response.UserInfoResponse;
 import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.repository.UserRepository;
@@ -52,19 +58,13 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public UserProfileResponse getUserProfile(Long id) {
 		User user = getUserOrThrowException(id);
-		return UserProfileResponse.builder()
-			.nickname(user.getNickname())
-			.introduce(user.getIntroduce())
-			.githubUrl(user.getGithubUrl())
-			.blogUrl(user.getBlogUrl())
-			.baekjoonId(user.getBaekjoonId())
-			.build();
+		return new UserProfileResponse(user);
 	}
 
 	@Transactional
 	public boolean changeUserPassword(UserPasswordChangeRequest updateRequest, Long id) {
 		User user = getUserOrThrowException(id);
-		if(!encoder.matches(updateRequest.getBeforePassword(),user.getPassword())){
+		if (!encoder.matches(updateRequest.getBeforePassword(), user.getPassword())) {
 			throw new InvalidPasswordException();
 		}
 		user.setPassword(encoder.encode(updateRequest.getAfterPassword()));
@@ -76,6 +76,49 @@ public class UserService {
 		User user = getUserOrThrowException(id);
 		userRepository.delete(user);
 		return id;
+	}
+
+	@Transactional
+	public String updateNickname(Long id, NicknameRequest nicknameRequest) {
+		User user = getUserOrThrowException(id);
+		String updateNickname = nicknameRequest.getNickname();
+		if (userRepository.existsUserByNickname(updateNickname)) {
+			throw new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다.");
+		}
+		user.setNickname(updateNickname);
+		return user.getNickname();
+	}
+
+	@Transactional
+	public String updateGithubUrl(Long id, GithubUrlRequest githubUrlRequest) {
+		User user = getUserOrThrowException(id);
+		String updateGithubUrl = githubUrlRequest.getGithubUrl();
+		user.setGithubUrl(updateGithubUrl);
+		return user.getGithubUrl();
+	}
+
+	@Transactional
+	public String updateBlogUrl(Long id, BlogUrlRequest blogUrlRequest) {
+		User user = getUserOrThrowException(id);
+		String updateBlogUrl = blogUrlRequest.getBlogUrl();
+		user.setBlogUrl(updateBlogUrl);
+		return user.getBlogUrl();
+	}
+
+	@Transactional
+	public String updateIntroduce(Long id, IntroduceRequest introduceRequest) {
+		User user = getUserOrThrowException(id);
+		String updateIntroduce = introduceRequest.getIntroduce();
+		user.setIntroduce(updateIntroduce);
+		return user.getIntroduce();
+	}
+
+	@Transactional
+	public String updateBaekjoonId(Long id, BaekjoonIdRequest baekjoonIdRequest) {
+		User user = getUserOrThrowException(id);
+		String updateBaekjoonId = baekjoonIdRequest.getBaekjoonId();
+		user.setBaekjoonId(updateBaekjoonId);
+		return user.getBaekjoonId();
 	}
 
 	private User getUserOrThrowException(Long id) {
