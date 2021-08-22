@@ -1,7 +1,6 @@
 package kr.startoff.backend.payload.request;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -20,9 +19,10 @@ public class ProjectRequest {
 	private String deployUrl;
 	private String startDate;
 	private String endDate;
+	private List<String> projectSkills;
 
 	public ProjectRequest(String title, String introduce, String content, String githubUrl, String deployUrl,
-		String startDate, String endDate) {
+		String startDate, String endDate, List<String> projectSkills) {
 		this.title = title;
 		this.introduce = introduce;
 		this.content = content;
@@ -30,5 +30,6 @@ public class ProjectRequest {
 		this.deployUrl = deployUrl;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.projectSkills = projectSkills;
 	}
 }

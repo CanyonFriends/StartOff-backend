@@ -1,9 +1,13 @@
 package kr.startoff.backend.payload.response;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import kr.startoff.backend.entity.Project;
+import kr.startoff.backend.entity.SkillTag;
 import lombok.Getter;
 
 @Getter
@@ -17,6 +21,7 @@ public class ProjectResponse {
 	private String deployUrl;
 	private String startDate;
 	private String endDate;
+	private List<SkillTagResponse> ProjectSkills;
 
 	public ProjectResponse(Project project) {
 		this.id = project.getId();
@@ -27,5 +32,9 @@ public class ProjectResponse {
 		this.deployUrl = project.getDeployUrl();
 		this.startDate = project.getStartDate();
 		this.endDate = project.getEndDate();
+		this.ProjectSkills = project.getProjectSkills()
+			.stream()
+			.map(SkillTagResponse::new)
+			.collect(Collectors.toList());
 	}
 }
