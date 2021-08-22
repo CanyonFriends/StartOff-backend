@@ -1,5 +1,9 @@
 package kr.startoff.backend.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -51,6 +57,13 @@ public class Project {
 	@Column(name = "end_date")
 	String endDate;
 
+	@ManyToMany
+	@JoinTable(
+		name = "project_skill_tag",
+		joinColumns = @JoinColumn(name = "project_id"),
+		inverseJoinColumns = @JoinColumn(name = "skill_tag_id"))
+	private List<SkillTag> projectSkills = new ArrayList<>();
+
 	public static Project createProject(User user, ProjectRequest projectRequest) {
 		Project project = new Project();
 
@@ -70,7 +83,7 @@ public class Project {
 		user.getProjects().add(this);
 	}
 
-	public void updateProject(ProjectRequest projectRequest) {
+	public void updateProject(ProjectRequest projectRequest, List<SkillTag> projectSkills) {
 		this.setTitle(projectRequest.getTitle());
 		this.setIntroduce(projectRequest.getIntroduce());
 		this.setContent(projectRequest.getContent());
@@ -78,5 +91,6 @@ public class Project {
 		this.setDeployUrl(projectRequest.getDeployUrl());
 		this.setStartDate(projectRequest.getStartDate());
 		this.setEndDate(projectRequest.getEndDate());
+		this.setProjectSkills(projectSkills);
 	}
 }
