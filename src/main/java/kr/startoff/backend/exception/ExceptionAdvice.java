@@ -14,12 +14,13 @@ import kr.startoff.backend.exception.custom.AccessTokenException;
 import kr.startoff.backend.exception.custom.ProjectBadRequest;
 import kr.startoff.backend.exception.custom.ProjectNotFoundException;
 import kr.startoff.backend.exception.custom.RefreshTokenException;
+import kr.startoff.backend.exception.custom.SkillTagNotFoundException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-	@ExceptionHandler({UserNotFoundException.class, ProjectNotFoundException.class})
+	@ExceptionHandler({UserNotFoundException.class, ProjectNotFoundException.class, SkillTagNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private ResponseEntity<ErrorInfo> notFoundErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
