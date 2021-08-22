@@ -21,7 +21,6 @@ import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
 import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.UserInfoResponse;
-import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -60,11 +59,6 @@ public class UserController {
 	@DeleteMapping("/users/{user_id}")
 	public ResponseEntity<Long> leaveMembership(@PathVariable(value = "user_id") Long userId) {
 		return ResponseEntity.ok(userService.deleteUser(userId));
-	}
-
-	@GetMapping("/users/profile/{user_id}")
-	public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable(value = "user_id") Long userId) {
-		return ResponseEntity.ok(userService.getUserProfile(userId));
 	}
 
 	@GetMapping("/users/self")
