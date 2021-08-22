@@ -11,6 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -71,6 +74,13 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Project> projects = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(
+		name="user_skill_tag",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name="skill_tag_id"))
+	private List<SkillTag> userSkills = new ArrayList<>();
 
 	@Builder
 	public User(String email, String nickname, String password, AuthProvider provider) {
