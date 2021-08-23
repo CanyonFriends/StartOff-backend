@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class IntroduceRequest {
+public class NicknameAndIntroduceRequest {
+	private String nickname;
 	private String introduce;
 
-	public IntroduceRequest(String introduce) {
+	public NicknameAndIntroduceRequest(String nickname, String introduce) {
+		this.nickname = nickname;
 		this.introduce = introduce;
 	}
 }

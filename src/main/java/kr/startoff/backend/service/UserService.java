@@ -14,8 +14,7 @@ import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
 import kr.startoff.backend.payload.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.payload.request.profile.BlogUrlRequest;
 import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
-import kr.startoff.backend.payload.request.profile.IntroduceRequest;
-import kr.startoff.backend.payload.request.profile.NicknameRequest;
+import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
 import kr.startoff.backend.payload.response.UserInfoResponse;
 import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.repository.UserRepository;
@@ -79,13 +78,18 @@ public class UserService {
 	}
 
 	@Transactional
-	public String updateNickname(Long id, NicknameRequest nicknameRequest) {
+	public String updateNicknameAndIntroduce(Long id, NicknameAndIntroduceRequest nicknameRequest) {
 		User user = getUserOrThrowException(id);
 		String updateNickname = nicknameRequest.getNickname();
-		if (userRepository.existsUserByNickname(updateNickname)) {
-			throw new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다.");
+		String updateIntroduce = nicknameRequest.getIntroduce();
+		if (!user.getNickname().equals(updateNickname)) {
+			if (userRepository.existsUserByNickname(updateNickname)) {
+				throw new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다.");
+			}
+			user.setNickname(updateNickname);
 		}
-		user.setNickname(updateNickname);
+		user.setIntroduce(updateIntroduce);
+
 		return user.getNickname();
 	}
 
@@ -103,14 +107,6 @@ public class UserService {
 		String updateBlogUrl = blogUrlRequest.getBlogUrl();
 		user.setBlogUrl(updateBlogUrl);
 		return user.getBlogUrl();
-	}
-
-	@Transactional
-	public String updateIntroduce(Long id, IntroduceRequest introduceRequest) {
-		User user = getUserOrThrowException(id);
-		String updateIntroduce = introduceRequest.getIntroduce();
-		user.setIntroduce(updateIntroduce);
-		return user.getIntroduce();
 	}
 
 	@Transactional

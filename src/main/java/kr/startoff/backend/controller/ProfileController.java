@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.startoff.backend.payload.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.payload.request.profile.BlogUrlRequest;
 import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
-import kr.startoff.backend.payload.request.profile.IntroduceRequest;
-import kr.startoff.backend.payload.request.profile.NicknameRequest;
+import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
 import kr.startoff.backend.payload.request.profile.SkillTagRequest;
 import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.SkillTagResponse;
@@ -37,11 +36,12 @@ public class ProfileController {
 		return ResponseEntity.ok(userService.getUserProfile(userId));
 	}
 
-	@PutMapping("/users/{user_id}/nickname")
-	public ResponseEntity<Map<String, String>> updateUserNickname(@PathVariable(value = "user_id") Long userId,
-		@RequestBody NicknameRequest nicknameRequest) {
-		String value = userService.updateNickname(userId, nicknameRequest);
+	@PutMapping("/users/{user_id}/introduce")
+	public ResponseEntity<Map<String, String>> updateUserNicknameAndIntroduce(@PathVariable(value = "user_id") Long userId,
+		@RequestBody NicknameAndIntroduceRequest nicknameAndIntroduceRequest) {
+		String value = userService.updateNicknameAndIntroduce(userId, nicknameAndIntroduceRequest);
 		Map<String, String> result = makeResponseBody("nickname", value);
+		result.put("introduce", nicknameAndIntroduceRequest.getIntroduce());
 		return ResponseEntity.ok(result);
 	}
 
@@ -58,14 +58,6 @@ public class ProfileController {
 		@RequestBody BlogUrlRequest blogUrlRequest) {
 		String value = userService.updateBlogUrl(userId, blogUrlRequest);
 		Map<String, String> result = makeResponseBody("blog_url", value);
-		return ResponseEntity.ok(result);
-	}
-
-	@PutMapping("/users/{user_id}/introduce")
-	public ResponseEntity<Map<String, String>> updateUserIntroduce(@PathVariable(value = "user_id") Long userId,
-		@RequestBody IntroduceRequest introduceRequest) {
-		String value = userService.updateIntroduce(userId, introduceRequest);
-		Map<String, String> result = makeResponseBody("introduce", value);
 		return ResponseEntity.ok(result);
 	}
 
