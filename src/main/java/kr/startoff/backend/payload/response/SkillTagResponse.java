@@ -9,11 +9,13 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SkillTagResponse {
+	private Long skillId;
 	private String skillName;
 	private String color;
 	private String textColor;
 
 	public SkillTagResponse(SkillTag skillTag) {
+		this.skillId = skillTag.getId();
 		this.skillName = skillTag.getSkillName();
 		this.color = skillTag.getColor();
 		this.textColor = skillTag.getTextColor();
