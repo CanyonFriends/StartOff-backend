@@ -16,7 +16,7 @@ class LoginResponseTest {
 			+ "\"access_token\":\"access token\","
 			+ "\"uuid\":\"uuid\",\"user_id\":1,"
 			+ "\"email\":\"proto_seo@naver.com\","
-			+ "\"nickname\":\"newNickname\","
+			+ "\"nickname\":\"Nickname\","
 			+ "\"token_type\":\"Bearer\"}";
 
 		assertEquals(expect,objectMapper.writeValueAsString(loginResponse()));

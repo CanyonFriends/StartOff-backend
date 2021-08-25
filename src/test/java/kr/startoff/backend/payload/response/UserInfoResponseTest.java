@@ -15,7 +15,7 @@ class UserInfoResponseTest {
 		final String expect = "{"
 			+ "\"user_id\":1,"
 			+ "\"email\":\"proto_seo@naver.com\","
-			+ "\"nickname\":\"newNickname\""
+			+ "\"nickname\":\"Nickname\""
 			+ "}";
 		assertEquals(expect, objectMapper.writeValueAsString(userInfoResponse()));
 	}

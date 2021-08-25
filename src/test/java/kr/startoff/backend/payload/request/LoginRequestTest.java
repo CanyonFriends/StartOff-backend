@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
-
 class LoginRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 

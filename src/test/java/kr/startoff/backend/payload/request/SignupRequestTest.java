@@ -16,7 +16,7 @@ class SignupRequestTest {
 		String requestBody = "{\n"
 			+ "\"email\":\"proto_seo@naver.com\",\n"
 			+ "\"password\":\"Password\",\n"
-			+ "\"nickname\":\"newNickname\"\n"
+			+ "\"nickname\":\"Nickname\"\n"
 			+ "}";
 		//when
 		SignupRequest signupRequest = objectMapper.readValue(requestBody,
