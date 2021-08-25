@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.entity.SkillTag;
 import kr.startoff.backend.entity.User;
+import kr.startoff.backend.exception.custom.SkillTagBadRequest;
 import kr.startoff.backend.exception.custom.SkillTagNotFoundException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 import kr.startoff.backend.payload.response.SkillTagResponse;
@@ -25,6 +26,10 @@ public class SkillTagService {
 	public SkillTagResponse addSkillTagToUser(Long userId, String skillName) {
 		User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 		SkillTag skillTag = skillTagRepository.findBySkillName(skillName).orElseThrow(SkillTagNotFoundException::new);
+		List<SkillTag> userSkills = user.getUserSkills();
+		if (userSkills.contains(skillTag)) {
+			throw new SkillTagBadRequest("이미 존재하는 기술태그입니다.");
+		}
 		user.getUserSkills().add(skillTag);
 		return new SkillTagResponse(skillTag);
 	}
