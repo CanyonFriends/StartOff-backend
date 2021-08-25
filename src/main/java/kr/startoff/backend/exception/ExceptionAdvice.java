@@ -14,6 +14,7 @@ import kr.startoff.backend.exception.custom.AccessTokenException;
 import kr.startoff.backend.exception.custom.ProjectBadRequest;
 import kr.startoff.backend.exception.custom.ProjectNotFoundException;
 import kr.startoff.backend.exception.custom.RefreshTokenException;
+import kr.startoff.backend.exception.custom.SkillTagBadRequest;
 import kr.startoff.backend.exception.custom.SkillTagNotFoundException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 
@@ -36,7 +37,7 @@ public class ExceptionAdvice {
 		return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler({InvalidPasswordException.class, ProjectBadRequest.class})
+	@ExceptionHandler({InvalidPasswordException.class, ProjectBadRequest.class, SkillTagBadRequest.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private ResponseEntity<ErrorInfo> badRequestErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
