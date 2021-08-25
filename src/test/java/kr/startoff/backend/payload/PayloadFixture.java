@@ -1,6 +1,9 @@
 package kr.startoff.backend.payload;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.Project;
@@ -28,20 +31,26 @@ public class PayloadFixture {
 	public static final String NEW_BLOG_URL = "https://newBlogUrl.blog.com";
 	public static final String BAEKJOON_ID = "proto_type";
 	public static final String NEW_GITHUB_URL = "https://github.com/protoseo";
-	public static final String NICKNAME = "newNickname";
+	public static final String NICKNAME = "Nickname";
+	public static final String NEW_NICKNAME = "newNickname";
 	public static final String INTRODUCE = "안녕하세요. 반갑습니다.";
 	public static final String SKILL_NAME = "Spring Boot";
 	public static final String EMAIL = "proto_seo@naver.com";
+	public static final String NEW_EMAIL = "nexon_dog@naver.com";
 	public static final String PASSWORD = "Password";
 	public static final String NEW_PASSWORD = "NEW_PASSWORD";
 	public static final String PROJECT_TITLE = "Project Title";
 	public static final String PROJECT_INTRODUCE = "Project Introduce";
 	public static final String PROJECT_CONTENT = "Project Content";
+	public static final String UPDATE_PROJECT_TITLE = "UPDATE Title";
+	public static final String UPDATE_PROJECT_INTRODUCE = "UPDATE Introduce";
+	public static final String UPDATE_PROJECT_CONTENT = "UPDATE Content";
 	public static final String PROJECT_GITHUB_URL = "https://github.com/Start-Off/StartOff-backend";
 	public static final String PROJECT_DEPLOY_URL = "https://startoff.kr";
 	public static final String PROJECT_START_DATE = "2021-07-26";
 	public static final String PROJECT_END_DATE = "2021-09-30";
 	public static final List<String> PROJECT_SKILLS = List.of("Spring Boot", "React", "Git", "AWS EC2");
+	public static final List<String> USER_SKILLS = List.of("Spring Boot", "React", "Git", "AWS EC2");
 	public static final String UUID = "uuid";
 	public static final String ACCESS_TOKEN = "access token";
 	public static final Long USER_ID = 1L;
@@ -61,6 +70,10 @@ public class PayloadFixture {
 	}
 
 	public static NicknameAndIntroduceRequest nicknameAndIntroduceRequest() {
+		return new NicknameAndIntroduceRequest(NEW_NICKNAME, INTRODUCE);
+	}
+
+	public static NicknameAndIntroduceRequest introduceRequest() {
 		return new NicknameAndIntroduceRequest(NICKNAME, INTRODUCE);
 	}
 
@@ -75,6 +88,11 @@ public class PayloadFixture {
 	public static ProjectRequest projectRequest() {
 		return new ProjectRequest(PROJECT_TITLE, PROJECT_INTRODUCE, PROJECT_CONTENT, PROJECT_GITHUB_URL,
 			PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, PROJECT_SKILLS);
+	}
+
+	public static ProjectRequest updateProjectRequest() {
+		return new ProjectRequest(UPDATE_PROJECT_TITLE, UPDATE_PROJECT_INTRODUCE, UPDATE_PROJECT_CONTENT,
+			PROJECT_GITHUB_URL, PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, PROJECT_SKILLS);
 	}
 
 	public static RefreshOrLogoutRequest refreshOrLogoutRequest() {
@@ -114,6 +132,76 @@ public class PayloadFixture {
 	}
 
 	public static UserProfileResponse userProfileResponse() {
+		return new UserProfileResponse(getUserForProfile());
+	}
+
+	public static SkillTag getSkillTag() {
+		SkillTag skillTag = new SkillTag();
+		skillTag.setId(SKILL_ID);
+		skillTag.setSkillName(SKILL_NAME);
+		skillTag.setTextColor("#FFFFFF");
+		skillTag.setColor("#000000");
+		return skillTag;
+	}
+
+	public static SkillTag getSkillTag(Long skillId, String skillName) {
+		SkillTag skillTag = new SkillTag();
+		skillTag.setId(skillId);
+		skillTag.setSkillName(skillName);
+		skillTag.setTextColor("#FFFFFF");
+		skillTag.setColor("#000000");
+		return skillTag;
+	}
+
+	public static List<SkillTag> getSkillTagList() {
+		List<SkillTag> skillTags = new ArrayList<>();
+		Long id = 1L;
+		for (String userSkill : USER_SKILLS) {
+			skillTags.add(getSkillTag(id++, userSkill));
+		}
+		return skillTags;
+	}
+
+	public static Project getProject() {
+		Project project = new Project();
+		project.setId(PROJECT_ID);
+		project.setIntroduce(PROJECT_INTRODUCE);
+		project.setTitle(PROJECT_TITLE);
+		project.setContent(PROJECT_CONTENT);
+		project.setStartDate(PROJECT_START_DATE);
+		project.setEndDate(PROJECT_END_DATE);
+		project.setGithubUrl(PROJECT_GITHUB_URL);
+		project.setDeployUrl(PROJECT_DEPLOY_URL);
+		project.setProjectSkills(getSkillTagList());
+		return project;
+	}
+
+	public static Project getProject(User user) {
+		Project project = Project.createProject(user, projectRequest());
+		return project;
+	}
+
+	public static User getUser(PasswordEncoder encoder) {
+		return User.builder()
+			.email(EMAIL)
+			.nickname(NICKNAME)
+			.password(encoder.encode(PASSWORD))
+			.provider(AuthProvider.local)
+			.build();
+	}
+
+	public static User getUser() {
+		User user = User.builder()
+			.email(EMAIL)
+			.nickname(NICKNAME)
+			.password(PASSWORD)
+			.provider(AuthProvider.local)
+			.build();
+		user.setId(USER_ID);
+		return user;
+	}
+
+	public static User getUserForProfile() {
 		User user = User.builder()
 			.email(EMAIL)
 			.nickname(NICKNAME)
@@ -126,27 +214,6 @@ public class PayloadFixture {
 		user.setGithubUrl(NEW_GITHUB_URL);
 		user.setBlogUrl(NEW_BLOG_URL);
 		user.setBaekjoonId(BAEKJOON_ID);
-		return new UserProfileResponse(user);
-	}
-	private static SkillTag getSkillTag(){
-		SkillTag skillTag = new SkillTag();
-		skillTag.setId(SKILL_ID);
-		skillTag.setSkillName(SKILL_NAME);
-		skillTag.setTextColor("#FFFFFF");
-		skillTag.setColor("#000000");
-		return skillTag;
-	}
-	private static Project getProject(){
-		Project project = new Project();
-		project.setId(PROJECT_ID);
-		project.setIntroduce(PROJECT_INTRODUCE);
-		project.setTitle(PROJECT_TITLE);
-		project.setContent(PROJECT_CONTENT);
-		project.setStartDate(PROJECT_START_DATE);
-		project.setEndDate(PROJECT_END_DATE);
-		project.setGithubUrl(PROJECT_GITHUB_URL);
-		project.setDeployUrl(PROJECT_DEPLOY_URL);
-		project.setProjectSkills(List.of(getSkillTag()));
-		return project;
+		return user;
 	}
 }
