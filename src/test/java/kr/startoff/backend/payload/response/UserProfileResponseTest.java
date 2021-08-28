@@ -14,7 +14,7 @@ class UserProfileResponseTest {
 	void userProfileResponseTest() throws Exception {
 		final String expect = "{"
 			+ "\"nickname\":\"Nickname\","
-			+ "\"introduce\":\"안녕하세요. 반갑습니다.\","
+			+ "\"introduce\":\"Hello I'm Introduce\","
 			+ "\"github_url\":\"https://github.com/protoseo\","
 			+ "\"blog_url\":\"https://newBlogUrl.blog.com\","
 			+ "\"baekjoon_id\":\"proto_type\","
