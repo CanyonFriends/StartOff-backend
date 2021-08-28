@@ -33,7 +33,7 @@ public class PayloadFixture {
 	public static final String NEW_GITHUB_URL = "https://github.com/protoseo";
 	public static final String NICKNAME = "Nickname";
 	public static final String NEW_NICKNAME = "newNickname";
-	public static final String INTRODUCE = "안녕하세요. 반갑습니다.";
+	public static final String INTRODUCE = "Hello I'm Introduce";
 	public static final String SKILL_NAME = "Spring Boot";
 	public static final String EMAIL = "proto_seo@naver.com";
 	public static final String NEW_EMAIL = "nexon_dog@naver.com";
@@ -53,6 +53,8 @@ public class PayloadFixture {
 	public static final List<String> USER_SKILLS = List.of("Spring Boot", "React", "Git", "AWS EC2");
 	public static final String UUID = "uuid";
 	public static final String ACCESS_TOKEN = "access token";
+	public static final String NEW_ACCESS_TOKEN = "new access token";
+	public static final String REFRESH_TOKEN = "refresh token";
 	public static final Long USER_ID = 1L;
 	public static final Long SKILL_ID = 1L;
 	public static final Long PROJECT_ID = 1L;
@@ -95,6 +97,10 @@ public class PayloadFixture {
 			PROJECT_GITHUB_URL, PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, PROJECT_SKILLS);
 	}
 
+	public static ProjectResponse updateProjectResponse() {
+		return new ProjectResponse(getUpdateProject());
+	}
+
 	public static RefreshOrLogoutRequest refreshOrLogoutRequest() {
 		return new RefreshOrLogoutRequest(UUID, EMAIL, ACCESS_TOKEN);
 	}
@@ -109,6 +115,10 @@ public class PayloadFixture {
 
 	public static AccessTokenResponse accessTokenResponse() {
 		return new AccessTokenResponse(USER_ID, ACCESS_TOKEN);
+	}
+
+	public static AccessTokenResponse newAccessTokenResponse() {
+		return new AccessTokenResponse(USER_ID, NEW_ACCESS_TOKEN);
 	}
 
 	public static CommonResponse commonResponse() {
@@ -168,6 +178,20 @@ public class PayloadFixture {
 		project.setIntroduce(PROJECT_INTRODUCE);
 		project.setTitle(PROJECT_TITLE);
 		project.setContent(PROJECT_CONTENT);
+		project.setStartDate(PROJECT_START_DATE);
+		project.setEndDate(PROJECT_END_DATE);
+		project.setGithubUrl(PROJECT_GITHUB_URL);
+		project.setDeployUrl(PROJECT_DEPLOY_URL);
+		project.setProjectSkills(getSkillTagList());
+		return project;
+	}
+
+	public static Project getUpdateProject() {
+		Project project = new Project();
+		project.setId(PROJECT_ID);
+		project.setIntroduce(UPDATE_PROJECT_INTRODUCE);
+		project.setTitle(UPDATE_PROJECT_TITLE);
+		project.setContent(UPDATE_PROJECT_CONTENT);
 		project.setStartDate(PROJECT_START_DATE);
 		project.setEndDate(PROJECT_END_DATE);
 		project.setGithubUrl(PROJECT_GITHUB_URL);
