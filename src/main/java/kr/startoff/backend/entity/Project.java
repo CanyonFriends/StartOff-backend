@@ -64,7 +64,7 @@ public class Project {
 		inverseJoinColumns = @JoinColumn(name = "skill_tag_id"))
 	private List<SkillTag> projectSkills = new ArrayList<>();
 
-	public static Project createProject(User user, ProjectRequest projectRequest) {
+	public static Project createProject(User user, ProjectRequest projectRequest,List<SkillTag> projectSkills) {
 		Project project = new Project();
 
 		project.setUser(user);
@@ -75,6 +75,7 @@ public class Project {
 		project.setDeployUrl(projectRequest.getDeployUrl());
 		project.setStartDate(projectRequest.getStartDate());
 		project.setEndDate(projectRequest.getEndDate());
+		project.setProjectSkills(projectSkills);
 		return project;
 	}
 

@@ -201,7 +201,7 @@ public class PayloadFixture {
 	}
 
 	public static Project getProject(User user) {
-		Project project = Project.createProject(user, projectRequest());
+		Project project = Project.createProject(user, projectRequest(),getSkillTagList());
 		return project;
 	}
 
