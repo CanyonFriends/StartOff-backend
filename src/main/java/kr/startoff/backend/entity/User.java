@@ -71,16 +71,18 @@ public class User {
 	@Column(name = "image_url")
 	String imageUrl;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	List<Project> projects = new ArrayList<>();
+
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	List<Post> userPosts = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(
-		name="user_skill_tag",
+		name = "user_skill_tag",
 		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name="skill_tag_id"))
-	private List<SkillTag> userSkills = new ArrayList<>();
+		inverseJoinColumns = @JoinColumn(name = "skill_tag_id"))
+	List<SkillTag> userSkills = new ArrayList<>();
 
 	@Builder
 	public User(String email, String nickname, String password, AuthProvider provider) {
