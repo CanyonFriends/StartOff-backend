@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.startoff.backend.exception.custom.CategoryNotFoundException;
+import kr.startoff.backend.exception.custom.CommentNotFoundException;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.AccessTokenException;
@@ -24,7 +25,7 @@ import kr.startoff.backend.exception.custom.UserNotFoundException;
 public class ExceptionAdvice {
 
 	@ExceptionHandler({UserNotFoundException.class, ProjectNotFoundException.class, SkillTagNotFoundException.class,
-		PostNotFoundException.class, CategoryNotFoundException.class})
+		PostNotFoundException.class, CategoryNotFoundException.class, CommentNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private ResponseEntity<ErrorInfo> notFoundErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
