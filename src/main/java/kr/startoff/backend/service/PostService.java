@@ -1,6 +1,9 @@
 package kr.startoff.backend.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -10,13 +13,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.entity.Category;
+import kr.startoff.backend.entity.Comment;
 import kr.startoff.backend.entity.Post;
 import kr.startoff.backend.entity.SkillTag;
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.custom.PostNotFoundException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 import kr.startoff.backend.payload.request.PostRequest;
+import kr.startoff.backend.payload.response.CommentResponse;
+import kr.startoff.backend.payload.response.PostListResponse;
 import kr.startoff.backend.payload.response.PostResponse;
+import kr.startoff.backend.repository.CommentQueryRepository;
 import kr.startoff.backend.repository.PostRepository;
 import kr.startoff.backend.repository.SkillTagRepository;
 import kr.startoff.backend.repository.UserRepository;
@@ -28,6 +35,7 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
 	private final SkillTagRepository skillTagRepository;
+	private final CommentQueryRepository commentQueryRepository;
 
 	@Transactional
 	public Post savePost(PostRequest postRequest) {
@@ -55,19 +63,21 @@ public class PostService {
 	@Transactional(readOnly = true)
 	public PostResponse readPost(Long postId) {
 		Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-		return new PostResponse(post);
+		PostResponse postResponse = new PostResponse(post);
+		postResponse.setComments(convertNestedStructure(commentQueryRepository.findAllByPostId(postId)));
+		return postResponse;
 	}
 
 	@Transactional(readOnly = true)
-	public Page<PostResponse> readPosts(Pageable pageable) {
+	public Page<PostListResponse> readPosts(Pageable pageable) {
 		Page<Post> posts = postRepository.findAll(pageable);
-		return posts.map(PostResponse::new);
+		return posts.map(PostListResponse::new);
 	}
 
 	@Transactional(readOnly = true)
-	public Page<PostResponse> readPostsByCategory(Category category,Pageable pageable) {
+	public Page<PostListResponse> readPostsByCategory(Category category, Pageable pageable) {
 		Page<Post> posts = postRepository.findAllByCategory(category, pageable);
-		return posts.map(PostResponse::new);
+		return posts.map(PostListResponse::new);
 	}
 
 	@Transactional(readOnly = true)
@@ -84,4 +94,20 @@ public class PostService {
 			.map(Optional::get)
 			.collect(Collectors.toList());
 	}
+
+	private List<CommentResponse> convertNestedStructure(List<Comment> comments) {
+		List<CommentResponse> result = new ArrayList<>();
+		Map<Long, CommentResponse> map = new HashMap<>();
+		comments.forEach(c -> {
+			CommentResponse dto = new CommentResponse(c);
+			map.put(dto.getCommentId(), dto);
+			if (c.getParent() != null) {
+				map.get(c.getParent().getId()).addChildComment(dto);
+			} else {
+				result.add(dto);
+			}
+		});
+		return result;
+	}
+
 }
