@@ -30,9 +30,8 @@ public class ProjectService {
 	@Transactional
 	public ProjectResponse saveProject(ProjectRequest projectRequest, Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-		Project project = Project.createProject(user, projectRequest);
 		List<SkillTag> projectSkills = extractProjectSkills(projectRequest);
-		project.setProjectSkills(projectSkills);
+		Project project = Project.createProject(user, projectRequest, projectSkills);
 		return new ProjectResponse(projectRepository.save(project));
 	}
 
