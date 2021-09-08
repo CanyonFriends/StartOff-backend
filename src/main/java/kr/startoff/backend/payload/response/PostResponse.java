@@ -1,5 +1,6 @@
 package kr.startoff.backend.payload.response;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class PostResponse {
 	Integer currentPeople;
 	List<SkillTagResponse> postSkills;
 	String createdAt;
-	String updatedAt;
+	List<CommentResponse> comments = new ArrayList<>();
 
 	public PostResponse(Post post) {
 		this.postId = post.getId();
@@ -34,6 +35,9 @@ public class PostResponse {
 		this.currentPeople = post.getCurrentPeople();
 		this.postSkills = post.getPostWantedSkills().stream().map(SkillTagResponse::new).collect(Collectors.toList());
 		this.createdAt = post.getCreatedAt().toString();
-		this.updatedAt = post.getUpdatedAt().toString();
+	}
+
+	public void setComments(List<CommentResponse> comments){
+		this.comments = comments;
 	}
 }
