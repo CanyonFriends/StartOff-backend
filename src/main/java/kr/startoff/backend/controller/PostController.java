@@ -26,8 +26,9 @@ import kr.startoff.backend.entity.Post;
 import kr.startoff.backend.exception.custom.CategoryNotFoundException;
 import kr.startoff.backend.payload.request.PostRequest;
 import kr.startoff.backend.payload.response.CommonResponse;
+import kr.startoff.backend.payload.response.PostListResponse;
 import kr.startoff.backend.payload.response.PostResponse;
-import kr.startoff.backend.repository.QueryRepository;
+import kr.startoff.backend.repository.PostQueryRepository;
 import kr.startoff.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +37,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 public class PostController {
 	private final PostService postService;
-	private final QueryRepository queryRepository;
 
 	@PostMapping("/posts")
 	public ResponseEntity<PostResponse> save(@RequestBody PostRequest postRequest) {
@@ -62,7 +62,7 @@ public class PostController {
 	}
 
 	@GetMapping("/posts")
-	public ResponseEntity<Page<PostResponse>> getPosts(
+	public ResponseEntity<Page<PostListResponse>> getPosts(
 		@RequestParam(value = "category") Optional<String> categoryCandidate, Pageable pageable) {
 		if (categoryCandidate.isPresent()) {
 			if (Category.isCategory(categoryCandidate.get())) {
@@ -96,14 +96,5 @@ public class PostController {
 			.map(String::toLowerCase)
 			.collect(Collectors.toList())
 		);
-	}
-
-	@GetMapping("/test/posts")
-	public ResponseEntity<List<PostResponse>> getPostsTest(@RequestParam String d) {
-		List<Post> posts = queryRepository.findAllByQuery(d);
-		if(posts.isEmpty()){
-			return ResponseEntity.ok(null);
-		}
-		return ResponseEntity.ok(posts.stream().map(PostResponse::new).collect(Collectors.toList()));
 	}
 }
