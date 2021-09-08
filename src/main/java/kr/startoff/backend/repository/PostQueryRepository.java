@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class QueryRepository {
+public class PostQueryRepository {
 	private final JPAQueryFactory jpaQueryFactory;
 
 }
