@@ -14,6 +14,7 @@ class PostResponseTest {
 	void postResponseTest() throws Exception {
 		final String expect = "{"
 			+ "\"post_id\":1,"
+			+ "\"user_id\":1,"
 			+ "\"nickname\":\"Nickname\","
 			+ "\"title\":\"Title\","
 			+ "\"content\":\"Content\","
@@ -34,6 +35,7 @@ class PostResponseTest {
 	void postResponseSetCommentResponseTest() throws Exception {
 		final String expect = "{"
 			+ "\"post_id\":1,"
+			+ "\"user_id\":1,"
 			+ "\"nickname\":\"Nickname\","
 			+ "\"title\":\"Title\","
 			+ "\"content\":\"Content\","
