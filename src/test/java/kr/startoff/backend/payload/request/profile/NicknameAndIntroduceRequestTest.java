@@ -15,7 +15,7 @@ class NicknameAndIntroduceRequestTest {
 		//given
 		String requestBody = "{\n"
 			+ "\"nickname\":\"newNickname\",\n"
-			+ "\"introduce\":\"Hello I'm Introduce\"\n"
+			+ "\"introduce\":\"Introduce\"\n"
 			+ "}";
 		//when
 		NicknameAndIntroduceRequest updateRequest = objectMapper.readValue(requestBody,

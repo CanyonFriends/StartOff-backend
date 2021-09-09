@@ -14,9 +14,9 @@ class ProjectRequestTest {
 	void projectAddRequestTest() throws Exception {
 		//given
 		String requestBody = "{\n"
-			+ "\"title\":\"Project Title\",\n"
-			+ "\"introduce\":\"Project Introduce\",\n"
-			+ "\"content\":\"Project Content\",\n"
+			+ "\"title\":\"Title\",\n"
+			+ "\"introduce\":\"Introduce\",\n"
+			+ "\"content\":\"Content\",\n"
 			+ "\"github_url\":\"https://github.com/Start-Off/StartOff-backend\",\n"
 			+ "\"deploy_url\":\"https://startoff.kr\",\n"
 			+ "\"start_date\":\"2021-07-26\",\n"

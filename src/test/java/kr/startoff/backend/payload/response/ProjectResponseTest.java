@@ -14,9 +14,9 @@ class ProjectResponseTest {
 	void projectResponseTest() throws Exception {
 		final String expect = "{"
 			+ "\"id\":1,"
-			+ "\"title\":\"Project Title\","
-			+ "\"introduce\":\"Project Introduce\","
-			+ "\"content\":\"Project Content\","
+			+ "\"title\":\"Title\","
+			+ "\"introduce\":\"Introduce\","
+			+ "\"content\":\"Content\","
 			+ "\"github_url\":\"https://github.com/Start-Off/StartOff-backend\","
 			+ "\"deploy_url\":\"https://startoff.kr\","
 			+ "\"start_date\":\"2021-07-26\","
