@@ -1,5 +1,6 @@
 package kr.startoff.backend.payload;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.Category;
+import kr.startoff.backend.entity.Comment;
+import kr.startoff.backend.entity.Post;
 import kr.startoff.backend.entity.Project;
 import kr.startoff.backend.entity.SkillTag;
 import kr.startoff.backend.entity.User;
@@ -23,8 +26,11 @@ import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
 import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
 import kr.startoff.backend.payload.request.profile.SkillTagRequest;
 import kr.startoff.backend.payload.response.AccessTokenResponse;
+import kr.startoff.backend.payload.response.CommentResponse;
 import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.LoginResponse;
+import kr.startoff.backend.payload.response.PostListResponse;
+import kr.startoff.backend.payload.response.PostResponse;
 import kr.startoff.backend.payload.response.ProjectResponse;
 import kr.startoff.backend.payload.response.SkillTagResponse;
 import kr.startoff.backend.payload.response.UserInfoResponse;
@@ -60,9 +66,12 @@ public class PayloadFixture {
 	public static final Long SKILL_ID = 1L;
 	public static final Long PROJECT_ID = 1L;
 	public static final Long PARENT_ID = 1L;
+	public static final Long CHILD_ID = 2L;
+	private static final Long POST_ID = 1L;
 	public static final Category CATEGORY = Category.PROJECT;
 	public static final Integer CURRENT_PEOPLE = 1;
 	public static final Integer MAX_PEOPLE = 4;
+	public static final LocalDateTime now = LocalDateTime.of(2021, 9, 12, 12, 32, 10);
 
 	public static BlogUrlRequest blogUrlRequest() {
 		return new BlogUrlRequest(NEW_BLOG_URL);
@@ -256,5 +265,49 @@ public class PayloadFixture {
 
 	public static PostRequest postRequest() {
 		return new PostRequest(USER_ID, TITLE, CONTENT, CATEGORY, SKILLS, CURRENT_PEOPLE, MAX_PEOPLE);
+	}
+
+	public static PostResponse postResponse() {
+		return new PostResponse(getPost());
+	}
+
+	public static PostResponse postResponseSetComment() {
+		PostResponse postResponse = new PostResponse(getPost());
+		postResponse.setComments(List.of(parentCommentResponse()));
+		return postResponse;
+	}
+
+	public static PostListResponse postListResponse() {
+		return new PostListResponse(getPost());
+	}
+
+	public static CommentResponse parentCommentResponse() {
+		return new CommentResponse(getParentComment());
+	}
+
+	public static CommentResponse childCommentResponse() {
+		return new CommentResponse(getChildComment());
+	}
+
+	public static Post getPost() {
+		Post post = Post.createPost(getUser(), postRequest(), getSkillTagList());
+		post.setId(POST_ID);
+		post.setCreatedAt(now);
+		return post;
+	}
+
+	public static Comment getParentComment() {
+		Comment comment = Comment.createComment(getUser(), getPost(), parentCommentRequest());
+		comment.setId(PARENT_ID);
+		comment.setCreatedAt(now);
+		return comment;
+	}
+
+	public static Comment getChildComment() {
+		Comment comment = Comment.createComment(getUser(), getPost(), getParentComment(), childCommentRequest());
+		comment.setId(CHILD_ID);
+		comment.setCreatedAt(now);
+		getParentComment().getChildComments().add(comment);
+		return comment;
 	}
 }
