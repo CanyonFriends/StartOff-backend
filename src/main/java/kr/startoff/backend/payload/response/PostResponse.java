@@ -15,6 +15,7 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostResponse {
 	Long postId;
+	Long userId;
 	String nickname;
 	String title;
 	String content;
@@ -27,6 +28,7 @@ public class PostResponse {
 
 	public PostResponse(Post post) {
 		this.postId = post.getId();
+		this.userId = post.getAuthor().getId();
 		this.nickname = post.getAuthor().getNickname();
 		this.title = post.getTitle();
 		this.content = post.getContent();
