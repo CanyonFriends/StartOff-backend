@@ -37,7 +37,7 @@ public class PostResponse {
 		this.createdAt = post.getCreatedAt().toString();
 	}
 
-	public void setComments(List<CommentResponse> comments){
+	public void setComments(List<CommentResponse> comments) {
 		this.comments = comments;
 	}
 }
