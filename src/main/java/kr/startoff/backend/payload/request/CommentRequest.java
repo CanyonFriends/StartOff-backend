@@ -14,12 +14,6 @@ public class CommentRequest {
 	Long parentId;
 	String content;
 
-	public CommentRequest(Long userId, String content) {
-		this.userId = userId;
-		this.parentId = -1L;
-		this.content = content;
-	}
-
 	public CommentRequest(Long userId, Long parentId, String content) {
 		this.userId = userId;
 		this.parentId = parentId;
