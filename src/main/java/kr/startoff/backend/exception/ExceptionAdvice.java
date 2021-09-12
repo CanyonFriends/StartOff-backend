@@ -17,6 +17,7 @@ import kr.startoff.backend.exception.custom.PostNotFoundException;
 import kr.startoff.backend.exception.custom.ProjectBadRequest;
 import kr.startoff.backend.exception.custom.ProjectNotFoundException;
 import kr.startoff.backend.exception.custom.RefreshTokenException;
+import kr.startoff.backend.exception.custom.SearchTypeNotFoundException;
 import kr.startoff.backend.exception.custom.SkillTagBadRequest;
 import kr.startoff.backend.exception.custom.SkillTagNotFoundException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
@@ -25,7 +26,8 @@ import kr.startoff.backend.exception.custom.UserNotFoundException;
 public class ExceptionAdvice {
 
 	@ExceptionHandler({UserNotFoundException.class, ProjectNotFoundException.class, SkillTagNotFoundException.class,
-		PostNotFoundException.class, CategoryNotFoundException.class, CommentNotFoundException.class})
+		PostNotFoundException.class, CategoryNotFoundException.class, CommentNotFoundException.class,
+		SearchTypeNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private ResponseEntity<ErrorInfo> notFoundErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {

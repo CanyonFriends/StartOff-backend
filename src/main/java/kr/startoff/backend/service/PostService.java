@@ -24,6 +24,7 @@ import kr.startoff.backend.payload.response.CommentResponse;
 import kr.startoff.backend.payload.response.PostListResponse;
 import kr.startoff.backend.payload.response.PostResponse;
 import kr.startoff.backend.repository.CommentQueryRepository;
+import kr.startoff.backend.repository.PostQueryRepository;
 import kr.startoff.backend.repository.PostRepository;
 import kr.startoff.backend.repository.SkillTagRepository;
 import kr.startoff.backend.repository.UserRepository;
@@ -36,6 +37,7 @@ public class PostService {
 	private final UserRepository userRepository;
 	private final SkillTagRepository skillTagRepository;
 	private final CommentQueryRepository commentQueryRepository;
+	private final PostQueryRepository postQueryRepository;
 
 	@Transactional
 	public Post savePost(PostRequest postRequest) {
@@ -81,8 +83,16 @@ public class PostService {
 	}
 
 	@Transactional(readOnly = true)
-	public void search(boolean author, boolean title, boolean content, boolean skill) {
+	public Page<PostListResponse> searchByCategory(String query, List<String> types, Category category,
+		Pageable pageable) {
+		List<Long> postIds = postQueryRepository.findAllByQueryWithCategory(query, category, types);
+		return postRepository.findAllByIdIn(postIds, pageable).map(PostListResponse::new);
+	}
 
+	@Transactional(readOnly = true)
+	public Page<PostListResponse> search(String query, List<String> types, Pageable pageable) {
+		List<Long> postIds = postQueryRepository.findAllByQuery(query, types);
+		return postRepository.findAllByIdIn(postIds, pageable).map(PostListResponse::new);
 	}
 
 	private List<SkillTag> extractPostSkills(PostRequest postRequest) {
