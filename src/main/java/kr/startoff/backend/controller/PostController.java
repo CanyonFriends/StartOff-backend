@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +23,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import kr.startoff.backend.entity.Category;
 import kr.startoff.backend.entity.Post;
 import kr.startoff.backend.exception.custom.CategoryNotFoundException;
+import kr.startoff.backend.exception.custom.SearchTypeNotFoundException;
 import kr.startoff.backend.payload.request.PostRequest;
 import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.PostListResponse;
 import kr.startoff.backend.payload.response.PostResponse;
-import kr.startoff.backend.repository.PostQueryRepository;
 import kr.startoff.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 
@@ -63,28 +62,49 @@ public class PostController {
 
 	@GetMapping("/posts")
 	public ResponseEntity<Page<PostListResponse>> getPosts(
-		@RequestParam(value = "category") Optional<String> categoryCandidate, Pageable pageable) {
-		if (categoryCandidate.isPresent()) {
-			if (Category.isCategory(categoryCandidate.get())) {
-				Category category = Category.valueOf(categoryCandidate.get().toUpperCase());
-				return ResponseEntity.ok(postService.readPostsByCategory(category, pageable));
+		@RequestParam Optional<String> query, @RequestParam(value = "type") Optional<String> searchType,
+		@RequestParam(value = "category") Optional<String> categoryCandidate,
+		Pageable pageable) {
+		if (query.isPresent() && searchType.isPresent()) {
+			List<String> types = getTypes(searchType.get());
+			if (categoryCandidate.isPresent()) {
+				if (Category.isCategory(categoryCandidate.get())) {
+					Category category = Category.valueOf(categoryCandidate.get().toUpperCase());
+					return ResponseEntity.ok(postService.searchByCategory(query.get(), types, category, pageable));
+				}
+				throw new CategoryNotFoundException();
+			} else {
+				return ResponseEntity.ok(postService.search(query.get(), types, pageable));
 			}
-			throw new CategoryNotFoundException();
+		} else {
+			if (categoryCandidate.isPresent()) {
+				if (Category.isCategory(categoryCandidate.get())) {
+					Category category = Category.valueOf(categoryCandidate.get().toUpperCase());
+					return ResponseEntity.ok(postService.readPostsByCategory(category, pageable));
+				}
+				throw new CategoryNotFoundException();
+			} else {
+				return ResponseEntity.ok(postService.readPosts(pageable));
+			}
 		}
-		return ResponseEntity.ok(postService.readPosts(pageable));
+	}
+
+	private List<String> getTypes(String searchType) {
+		List<String> result = Arrays.stream(searchType.split(","))
+			.map(String::toUpperCase)
+			.distinct()
+			.collect(Collectors.toList());
+		for (String s : result) {
+			if (!s.equals("TITLE") && !s.equals("CONTENT") && !s.equals("SKILL")) {
+				throw new SearchTypeNotFoundException();
+			}
+		}
+		return result;
 	}
 
 	@GetMapping("/posts/{post_id}")
 	public ResponseEntity<PostResponse> getPost(@PathVariable(value = "post_id") Long postId) {
 		return ResponseEntity.ok(postService.readPost(postId));
-	}
-
-	@GetMapping("/search")
-	public ResponseEntity<Void> search(@RequestParam Optional<String> author, @RequestParam Optional<String> title,
-		@RequestParam Optional<String> content, @RequestParam Optional<String> skill) {
-		postService.search(author.isPresent(),title.isPresent(),content.isPresent(),skill.isPresent());
-
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/categories")
