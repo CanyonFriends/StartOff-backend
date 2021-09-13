@@ -65,6 +65,6 @@ public class CommentService {
 	}
 
 	private boolean hasParentComment(Long parentId) {
-		return parentId != -1L;
+		return parentId != null;
 	}
 }
