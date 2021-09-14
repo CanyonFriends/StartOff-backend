@@ -14,6 +14,7 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentResponse {
 	Long commentId;
+	Long userId;
 	String nickname;
 	String content;
 	String createdAt;
@@ -22,6 +23,7 @@ public class CommentResponse {
 
 	public CommentResponse(Comment comment) {
 		this.commentId = comment.getId();
+		this.userId = comment.getWriter().getId();
 		this.nickname = comment.getWriter().getNickname();
 		this.content = comment.getContent();
 		this.isDeleted = comment.getIsDeleted();
