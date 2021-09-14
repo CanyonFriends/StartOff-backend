@@ -49,12 +49,12 @@ class PostResponseTest {
 			+ "{\"skill_id\":4,\"skill_name\":\"AWS EC2\",\"color\":\"#000000\",\"text_color\":\"#FFFFFF\"}],"
 			+ "\"created_at\":\"2021-09-12T12:32:10\","
 			+ "\"comments\":"
-			+ "[{\"comment_id\":1,"
+			+ "[{\"comment_id\":1,\"user_id\":1,"
 			+ "\"nickname\":\"Nickname\","
 			+ "\"content\":\"Content\","
 			+ "\"created_at\":\"2021-09-12T12:32:10\","
 			+ "\"is_deleted\":\"N\","
-			+ "\"child_comment\":[]}]}";
+			+ "\"child_comment\":[{\"comment_id\":2,\"user_id\":1,\"nickname\":\"Nickname\",\"content\":\"Content\",\"created_at\":\"2021-09-12T12:32:10\",\"is_deleted\":\"N\",\"child_comment\":[]}]}]}";
 		assertEquals(expect, objectMapper.writeValueAsString(postResponseSetComment()));
 	}
 }

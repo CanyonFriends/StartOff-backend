@@ -282,7 +282,9 @@ public class PayloadFixture {
 	}
 
 	public static CommentResponse parentCommentResponse() {
-		return new CommentResponse(getParentComment());
+		CommentResponse parentCommentResponse = new CommentResponse(getParentComment());
+		parentCommentResponse.addChildComment(childCommentResponse());
+		return parentCommentResponse;
 	}
 
 	public static CommentResponse childCommentResponse() {
@@ -307,7 +309,6 @@ public class PayloadFixture {
 		Comment comment = Comment.createComment(getUser(), getPost(), getParentComment(), childCommentRequest());
 		comment.setId(CHILD_ID);
 		comment.setCreatedAt(now);
-		getParentComment().getChildComments().add(comment);
 		return comment;
 	}
 }
