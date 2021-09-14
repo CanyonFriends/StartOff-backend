@@ -21,8 +21,8 @@ public class CommentQueryRepository {
 			.fetchJoin()
 			.where(QComment.comment.post.id.eq(postId))
 			.orderBy(
-				QComment.comment.parent.id.asc().nullsFirst(),
-				QComment.comment.createdAt.asc()
+				QComment.comment.parent.id.desc().nullsFirst(),
+				QComment.comment.createdAt.desc()
 			).fetch();
 	}
 }
