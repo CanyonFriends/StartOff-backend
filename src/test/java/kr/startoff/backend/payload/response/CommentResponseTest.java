@@ -17,7 +17,7 @@ class CommentResponseTest {
 			+ "\"child_comment\":"
 			+ "[{\"comment_id\":2,\"user_id\":1,\"nickname\":\"Nickname\",\"content\":\"Content\",\"created_at\":\"2021-09-12T12:32:10\",\"is_deleted\":\"N\",\"child_comment\":[]}"
 			+ "]}";
-		assertEquals(expect, objectMapper.writeValueAsString(parentCommentResponse()));
+		assertEquals(expect, objectMapper.writeValueAsString(parentCommentResponse(childCommentResponse())));
 	}
 
 	@Test
