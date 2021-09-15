@@ -67,7 +67,7 @@ public class PayloadFixture {
 	public static final Long PROJECT_ID = 1L;
 	public static final Long PARENT_ID = 1L;
 	public static final Long CHILD_ID = 2L;
-	private static final Long POST_ID = 1L;
+	public static final Long POST_ID = 1L;
 	public static final Category CATEGORY = Category.PROJECT;
 	public static final Integer CURRENT_PEOPLE = 1;
 	public static final Integer MAX_PEOPLE = 4;
@@ -259,6 +259,10 @@ public class PayloadFixture {
 		return new CommentRequest(USER_ID, null, CONTENT);
 	}
 
+	public static CommentRequest updateCommentRequest() {
+		return new CommentRequest(USER_ID, null, UPDATE_CONTENT);
+	}
+
 	public static CommentRequest childCommentRequest() {
 		return new CommentRequest(USER_ID, PARENT_ID, CONTENT);
 	}
@@ -267,46 +271,67 @@ public class PayloadFixture {
 		return new PostRequest(USER_ID, TITLE, CONTENT, CATEGORY, SKILLS, CURRENT_PEOPLE, MAX_PEOPLE);
 	}
 
+	public static PostRequest updatePostRequest() {
+		return new PostRequest(USER_ID, UPDATE_TITLE, UPDATE_CONTENT, CATEGORY, SKILLS, CURRENT_PEOPLE, MAX_PEOPLE);
+	}
+
 	public static PostResponse postResponse() {
-		return new PostResponse(getPost());
+		return new PostResponse(getPost(postRequest()));
+	}
+
+	public static PostResponse updatePostResponse() {
+		return new PostResponse(getPost(updatePostRequest()));
 	}
 
 	public static PostResponse postResponseSetComment() {
-		PostResponse postResponse = new PostResponse(getPost());
-		postResponse.setComments(List.of(parentCommentResponse()));
+		PostResponse postResponse = new PostResponse(getPost(postRequest()));
+		postResponse.setComments(List.of(parentCommentResponse(childCommentResponse())));
 		return postResponse;
 	}
 
 	public static PostListResponse postListResponse() {
-		return new PostListResponse(getPost());
+		return new PostListResponse(getPost(postRequest()));
+	}
+
+	public static CommentResponse parentCommentResponse(CommentResponse commentResponse) {
+		CommentResponse parentCommentResponse = new CommentResponse(getParentComment());
+		parentCommentResponse.addChildComment(commentResponse);
+		return parentCommentResponse;
 	}
 
 	public static CommentResponse parentCommentResponse() {
-		CommentResponse parentCommentResponse = new CommentResponse(getParentComment());
-		parentCommentResponse.addChildComment(childCommentResponse());
-		return parentCommentResponse;
+		return new CommentResponse(getParentComment());
 	}
 
 	public static CommentResponse childCommentResponse() {
 		return new CommentResponse(getChildComment());
 	}
 
-	public static Post getPost() {
-		Post post = Post.createPost(getUser(), postRequest(), getSkillTagList());
+	public static CommentResponse updateCommentResponse() {
+		Comment comment = Comment.createComment(getUser(), getPost(postRequest()), parentCommentRequest());
+		comment.setId(PARENT_ID);
+		comment.setCreatedAt(now);
+		comment.update(updateCommentRequest());
+		return new CommentResponse(comment);
+	}
+
+	public static Post getPost(PostRequest postRequest) {
+		Post post = Post.createPost(getUser(), postRequest, getSkillTagList());
 		post.setId(POST_ID);
 		post.setCreatedAt(now);
 		return post;
 	}
 
 	public static Comment getParentComment() {
-		Comment comment = Comment.createComment(getUser(), getPost(), parentCommentRequest());
+		Comment comment = Comment.createComment(getUser(), getPost(postRequest()), parentCommentRequest());
 		comment.setId(PARENT_ID);
 		comment.setCreatedAt(now);
 		return comment;
 	}
 
 	public static Comment getChildComment() {
-		Comment comment = Comment.createComment(getUser(), getPost(), getParentComment(), childCommentRequest());
+		Comment comment = Comment.createComment(getUser(), getPost(postRequest()), getParentComment(),
+			childCommentRequest());
 		comment.setId(CHILD_ID);
 		comment.setCreatedAt(now);
 		return comment;
