@@ -22,15 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class JwtUtil {
-	@Value("${jwt.secret-key}")
-	private String secretKey;
 	public final static long TOKEN_EXPIRATION_SECONDS = 1000L * 60 * 10;
 	public final static long REFRESH_EXPIRATION_SECONDS = 1000L * 60 * 120;
+	private final Key key;
 
-	private Key key;
-
-	@PostConstruct
-	public void createKey() {
+	public JwtUtil(@Value("${jwt.secret-key}") String secretKey) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
