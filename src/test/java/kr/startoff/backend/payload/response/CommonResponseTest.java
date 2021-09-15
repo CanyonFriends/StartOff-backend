@@ -15,6 +15,6 @@ class CommonResponseTest {
 		final String expect = "{"
 			+ "\"success\":true,"
 			+ "\"msg\":\"성공하였습니다.\"}";
-		assertEquals(expect,objectMapper.writeValueAsString(commonResponse()));
+		assertEquals(expect,objectMapper.writeValueAsString(commonResponse("성공하였습니다.")));
 	}
 }

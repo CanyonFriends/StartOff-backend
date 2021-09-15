@@ -135,8 +135,8 @@ public class PayloadFixture {
 		return new AccessTokenResponse(USER_ID, NEW_ACCESS_TOKEN);
 	}
 
-	public static CommonResponse commonResponse() {
-		return new CommonResponse(true, "성공하였습니다.");
+	public static CommonResponse commonResponse(String msg) {
+		return new CommonResponse(true, msg);
 	}
 
 	public static LoginResponse loginResponse() {
