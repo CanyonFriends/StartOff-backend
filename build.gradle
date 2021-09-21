@@ -42,6 +42,19 @@ jacocoTestReport {
         csv.required = true
         html.required = true
     }
+    def Qdomains = []
+    for(qPattern in "**/QA" .. "**/QZ"){
+        Qdomains.add(qPattern+"*")
+    }
+
+    afterEvaluate {
+
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [] + Qdomains)
+        }))
+    }
+
     finalizedBy 'jacocoTestCoverageVerification'
 }
 
@@ -117,14 +130,13 @@ sourceSets {
         }
     }
 }
+
 compileQuerydsl {
+    if (file(querydslDir).exists())
+        delete(file(querydslDir))
     options.annotationProcessorPath = configurations.querydsl
 }
 
 configurations {
     querydsl.extendsFrom compileClasspath
-}
-compileQuerydsl.doFirst {
-    if (file(querydslDir).exists())
-        delete(file(querydslDir))
 }

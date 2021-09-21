@@ -1,15 +1,21 @@
 package kr.startoff.backend.payload;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.startoff.backend.entity.AuthProvider;
+import kr.startoff.backend.entity.Category;
+import kr.startoff.backend.entity.Comment;
+import kr.startoff.backend.entity.Post;
 import kr.startoff.backend.entity.Project;
 import kr.startoff.backend.entity.SkillTag;
 import kr.startoff.backend.entity.User;
+import kr.startoff.backend.payload.request.CommentRequest;
 import kr.startoff.backend.payload.request.LoginRequest;
+import kr.startoff.backend.payload.request.PostRequest;
 import kr.startoff.backend.payload.request.ProjectRequest;
 import kr.startoff.backend.payload.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
@@ -20,8 +26,11 @@ import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
 import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
 import kr.startoff.backend.payload.request.profile.SkillTagRequest;
 import kr.startoff.backend.payload.response.AccessTokenResponse;
+import kr.startoff.backend.payload.response.CommentResponse;
 import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.LoginResponse;
+import kr.startoff.backend.payload.response.PostListResponse;
+import kr.startoff.backend.payload.response.PostResponse;
 import kr.startoff.backend.payload.response.ProjectResponse;
 import kr.startoff.backend.payload.response.SkillTagResponse;
 import kr.startoff.backend.payload.response.UserInfoResponse;
@@ -33,24 +42,22 @@ public class PayloadFixture {
 	public static final String NEW_GITHUB_URL = "https://github.com/protoseo";
 	public static final String NICKNAME = "Nickname";
 	public static final String NEW_NICKNAME = "newNickname";
-	public static final String INTRODUCE = "Hello I'm Introduce";
+	public static final String INTRODUCE = "Introduce";
 	public static final String SKILL_NAME = "Spring Boot";
 	public static final String EMAIL = "proto_seo@naver.com";
 	public static final String NEW_EMAIL = "nexon_dog@naver.com";
 	public static final String PASSWORD = "Password";
 	public static final String NEW_PASSWORD = "NEW_PASSWORD";
-	public static final String PROJECT_TITLE = "Project Title";
-	public static final String PROJECT_INTRODUCE = "Project Introduce";
-	public static final String PROJECT_CONTENT = "Project Content";
-	public static final String UPDATE_PROJECT_TITLE = "UPDATE Title";
-	public static final String UPDATE_PROJECT_INTRODUCE = "UPDATE Introduce";
-	public static final String UPDATE_PROJECT_CONTENT = "UPDATE Content";
+	public static final String TITLE = "Title";
+	public static final String CONTENT = "Content";
+	public static final String UPDATE_TITLE = "UPDATE Title";
+	public static final String UPDATE_INTRODUCE = "UPDATE Introduce";
+	public static final String UPDATE_CONTENT = "UPDATE Content";
 	public static final String PROJECT_GITHUB_URL = "https://github.com/Start-Off/StartOff-backend";
 	public static final String PROJECT_DEPLOY_URL = "https://startoff.kr";
 	public static final String PROJECT_START_DATE = "2021-07-26";
 	public static final String PROJECT_END_DATE = "2021-09-30";
-	public static final List<String> PROJECT_SKILLS = List.of("Spring Boot", "React", "Git", "AWS EC2");
-	public static final List<String> USER_SKILLS = List.of("Spring Boot", "React", "Git", "AWS EC2");
+	public static final List<String> SKILLS = List.of("Spring Boot", "React", "Git", "AWS EC2");
 	public static final String UUID = "uuid";
 	public static final String ACCESS_TOKEN = "access token";
 	public static final String NEW_ACCESS_TOKEN = "new access token";
@@ -58,6 +65,13 @@ public class PayloadFixture {
 	public static final Long USER_ID = 1L;
 	public static final Long SKILL_ID = 1L;
 	public static final Long PROJECT_ID = 1L;
+	public static final Long PARENT_ID = 1L;
+	public static final Long CHILD_ID = 2L;
+	public static final Long POST_ID = 1L;
+	public static final Category CATEGORY = Category.PROJECT;
+	public static final Integer CURRENT_PEOPLE = 1;
+	public static final Integer MAX_PEOPLE = 4;
+	public static final LocalDateTime now = LocalDateTime.of(2021, 9, 12, 12, 32, 10);
 
 	public static BlogUrlRequest blogUrlRequest() {
 		return new BlogUrlRequest(NEW_BLOG_URL);
@@ -88,13 +102,13 @@ public class PayloadFixture {
 	}
 
 	public static ProjectRequest projectRequest() {
-		return new ProjectRequest(PROJECT_TITLE, PROJECT_INTRODUCE, PROJECT_CONTENT, PROJECT_GITHUB_URL,
-			PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, PROJECT_SKILLS);
+		return new ProjectRequest(TITLE, INTRODUCE, CONTENT, PROJECT_GITHUB_URL,
+			PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, SKILLS);
 	}
 
 	public static ProjectRequest updateProjectRequest() {
-		return new ProjectRequest(UPDATE_PROJECT_TITLE, UPDATE_PROJECT_INTRODUCE, UPDATE_PROJECT_CONTENT,
-			PROJECT_GITHUB_URL, PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, PROJECT_SKILLS);
+		return new ProjectRequest(UPDATE_TITLE, UPDATE_INTRODUCE, UPDATE_CONTENT,
+			PROJECT_GITHUB_URL, PROJECT_DEPLOY_URL, PROJECT_START_DATE, PROJECT_END_DATE, SKILLS);
 	}
 
 	public static ProjectResponse updateProjectResponse() {
@@ -121,8 +135,8 @@ public class PayloadFixture {
 		return new AccessTokenResponse(USER_ID, NEW_ACCESS_TOKEN);
 	}
 
-	public static CommonResponse commonResponse() {
-		return new CommonResponse(true, "성공하였습니다.");
+	public static CommonResponse commonResponse(String msg) {
+		return new CommonResponse(true, msg);
 	}
 
 	public static LoginResponse loginResponse() {
@@ -166,7 +180,7 @@ public class PayloadFixture {
 	public static List<SkillTag> getSkillTagList() {
 		List<SkillTag> skillTags = new ArrayList<>();
 		Long id = 1L;
-		for (String userSkill : USER_SKILLS) {
+		for (String userSkill : SKILLS) {
 			skillTags.add(getSkillTag(id++, userSkill));
 		}
 		return skillTags;
@@ -175,9 +189,9 @@ public class PayloadFixture {
 	public static Project getProject() {
 		Project project = new Project();
 		project.setId(PROJECT_ID);
-		project.setIntroduce(PROJECT_INTRODUCE);
-		project.setTitle(PROJECT_TITLE);
-		project.setContent(PROJECT_CONTENT);
+		project.setIntroduce(INTRODUCE);
+		project.setTitle(TITLE);
+		project.setContent(CONTENT);
 		project.setStartDate(PROJECT_START_DATE);
 		project.setEndDate(PROJECT_END_DATE);
 		project.setGithubUrl(PROJECT_GITHUB_URL);
@@ -189,9 +203,9 @@ public class PayloadFixture {
 	public static Project getUpdateProject() {
 		Project project = new Project();
 		project.setId(PROJECT_ID);
-		project.setIntroduce(UPDATE_PROJECT_INTRODUCE);
-		project.setTitle(UPDATE_PROJECT_TITLE);
-		project.setContent(UPDATE_PROJECT_CONTENT);
+		project.setIntroduce(UPDATE_INTRODUCE);
+		project.setTitle(UPDATE_TITLE);
+		project.setContent(UPDATE_CONTENT);
 		project.setStartDate(PROJECT_START_DATE);
 		project.setEndDate(PROJECT_END_DATE);
 		project.setGithubUrl(PROJECT_GITHUB_URL);
@@ -201,7 +215,7 @@ public class PayloadFixture {
 	}
 
 	public static Project getProject(User user) {
-		Project project = Project.createProject(user, projectRequest(),getSkillTagList());
+		Project project = Project.createProject(user, projectRequest(), getSkillTagList());
 		return project;
 	}
 
@@ -239,5 +253,87 @@ public class PayloadFixture {
 		user.setBlogUrl(NEW_BLOG_URL);
 		user.setBaekjoonId(BAEKJOON_ID);
 		return user;
+	}
+
+	public static CommentRequest parentCommentRequest() {
+		return new CommentRequest(USER_ID, null, CONTENT);
+	}
+
+	public static CommentRequest updateCommentRequest() {
+		return new CommentRequest(USER_ID, null, UPDATE_CONTENT);
+	}
+
+	public static CommentRequest childCommentRequest() {
+		return new CommentRequest(USER_ID, PARENT_ID, CONTENT);
+	}
+
+	public static PostRequest postRequest() {
+		return new PostRequest(USER_ID, TITLE, CONTENT, CATEGORY, SKILLS, CURRENT_PEOPLE, MAX_PEOPLE);
+	}
+
+	public static PostRequest updatePostRequest() {
+		return new PostRequest(USER_ID, UPDATE_TITLE, UPDATE_CONTENT, CATEGORY, SKILLS, CURRENT_PEOPLE, MAX_PEOPLE);
+	}
+
+	public static PostResponse postResponse() {
+		return new PostResponse(getPost(postRequest()));
+	}
+
+	public static PostResponse updatePostResponse() {
+		return new PostResponse(getPost(updatePostRequest()));
+	}
+
+	public static PostResponse postResponseSetComment() {
+		PostResponse postResponse = new PostResponse(getPost(postRequest()));
+		postResponse.setComments(List.of(parentCommentResponse(childCommentResponse())));
+		return postResponse;
+	}
+
+	public static PostListResponse postListResponse() {
+		return new PostListResponse(getPost(postRequest()));
+	}
+
+	public static CommentResponse parentCommentResponse(CommentResponse commentResponse) {
+		CommentResponse parentCommentResponse = new CommentResponse(getParentComment());
+		parentCommentResponse.addChildComment(commentResponse);
+		return parentCommentResponse;
+	}
+
+	public static CommentResponse parentCommentResponse() {
+		return new CommentResponse(getParentComment());
+	}
+
+	public static CommentResponse childCommentResponse() {
+		return new CommentResponse(getChildComment());
+	}
+
+	public static CommentResponse updateCommentResponse() {
+		Comment comment = Comment.createComment(getUser(), getPost(postRequest()), parentCommentRequest());
+		comment.setId(PARENT_ID);
+		comment.setCreatedAt(now);
+		comment.update(updateCommentRequest());
+		return new CommentResponse(comment);
+	}
+
+	public static Post getPost(PostRequest postRequest) {
+		Post post = Post.createPost(getUser(), postRequest, getSkillTagList());
+		post.setId(POST_ID);
+		post.setCreatedAt(now);
+		return post;
+	}
+
+	public static Comment getParentComment() {
+		Comment comment = Comment.createComment(getUser(), getPost(postRequest()), parentCommentRequest());
+		comment.setId(PARENT_ID);
+		comment.setCreatedAt(now);
+		return comment;
+	}
+
+	public static Comment getChildComment() {
+		Comment comment = Comment.createComment(getUser(), getPost(postRequest()), getParentComment(),
+			childCommentRequest());
+		comment.setId(CHILD_ID);
+		comment.setCreatedAt(now);
+		return comment;
 	}
 }
