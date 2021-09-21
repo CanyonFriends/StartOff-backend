@@ -17,6 +17,7 @@ import kr.startoff.backend.entity.SkillTag;
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.custom.SkillTagBadRequest;
 import kr.startoff.backend.exception.custom.SkillTagNotFoundException;
+import kr.startoff.backend.payload.PayloadFixture;
 import kr.startoff.backend.payload.response.SkillTagResponse;
 import kr.startoff.backend.repository.SkillTagRepository;
 import kr.startoff.backend.repository.UserRepository;
@@ -87,7 +88,7 @@ class SkillTagServiceTest {
 		List<SkillTagResponse> result = skillTagService.getAllSkillTag();
 
 		for (int i = 0; i < result.size(); i++) {
-			assertEquals(result.get(i).getSkillName(), USER_SKILLS.get(i));
+			assertEquals(result.get(i).getSkillName(), PayloadFixture.SKILLS.get(i));
 		}
 	}
 
