@@ -65,11 +65,8 @@ public class User {
 	@Column(name = "provider_id")
 	String providerId;
 
-	@Column(name = "name")
-	String name;
-
 	@Column(name = "image_url")
-	String imageUrl;
+	String imageUrl = "";
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	List<Project> projects = new ArrayList<>();
