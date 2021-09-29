@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.startoff.backend.payload.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.payload.request.profile.BlogUrlRequest;
@@ -37,7 +40,8 @@ public class ProfileController {
 	}
 
 	@PutMapping("/users/{user_id}/introduce")
-	public ResponseEntity<Map<String, String>> updateUserNicknameAndIntroduce(@PathVariable(value = "user_id") Long userId,
+	public ResponseEntity<Map<String, String>> updateUserNicknameAndIntroduce(
+		@PathVariable(value = "user_id") Long userId,
 		@RequestBody NicknameAndIntroduceRequest nicknameAndIntroduceRequest) {
 		String value = userService.updateNicknameAndIntroduce(userId, nicknameAndIntroduceRequest);
 		Map<String, String> result = makeResponseBody("nickname", value);
@@ -74,6 +78,12 @@ public class ProfileController {
 		@RequestBody SkillTagRequest skillTagRequest) {
 		SkillTagResponse skillTagResponse = skillTagService.addSkillTagToUser(userId, skillTagRequest.getSkillName());
 		return ResponseEntity.ok(skillTagResponse);
+	}
+
+	@PostMapping("/users/{user_id}/image")
+	public ResponseEntity<String> updateUserProfileImage(@PathVariable(value = "user_id") Long userId,
+		@RequestPart("image") MultipartFile multipartFile) {
+		return ResponseEntity.ok(userService.updateUserProfileImage(userId, multipartFile));
 	}
 
 	@DeleteMapping("/users/{user_id}/skills/{skill_id}")
