@@ -3,6 +3,7 @@ package kr.startoff.backend.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.startoff.backend.entity.AuthProvider;
 import kr.startoff.backend.entity.User;
@@ -18,6 +19,7 @@ import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
 import kr.startoff.backend.payload.response.UserInfoResponse;
 import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.util.S3UploadUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder encoder;
+	private final S3UploadUtil s3UploadUtil;
 
 	@Transactional
 	public User signUp(SignupRequest request) {
@@ -115,6 +118,14 @@ public class UserService {
 		String updateBaekjoonId = baekjoonIdRequest.getBaekjoonId();
 		user.setBaekjoonId(updateBaekjoonId);
 		return user.getBaekjoonId();
+	}
+
+	@Transactional
+	public String updateUserProfileImage(Long id, MultipartFile file) {
+		User user = getUserOrThrowException(id);
+		String imageUrl = s3UploadUtil.uploadProfileImage(file, id);
+		user.setImageUrl(imageUrl);
+		return imageUrl;
 	}
 
 	private User getUserOrThrowException(Long id) {
