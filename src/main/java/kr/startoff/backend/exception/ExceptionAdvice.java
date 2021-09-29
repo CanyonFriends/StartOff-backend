@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.startoff.backend.exception.custom.CategoryNotFoundException;
 import kr.startoff.backend.exception.custom.CommentNotFoundException;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.exception.custom.ImageUploadFailureException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.AccessTokenException;
 import kr.startoff.backend.exception.custom.PostNotFoundException;
@@ -43,7 +44,8 @@ public class ExceptionAdvice {
 		return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler({InvalidPasswordException.class, ProjectBadRequest.class, SkillTagBadRequest.class})
+	@ExceptionHandler({InvalidPasswordException.class, ProjectBadRequest.class, SkillTagBadRequest.class,
+		ImageUploadFailureException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private ResponseEntity<ErrorInfo> badRequestErrorHandler(HttpServletRequest request,
 		final RuntimeException e) {
