@@ -20,6 +20,7 @@ public class UserProfileResponse {
 	@NotBlank
 	private String nickname;
 	private String introduce;
+	private String imageUrl;
 	private String githubUrl;
 	private String blogUrl;
 	private String baekjoonId;
@@ -29,6 +30,7 @@ public class UserProfileResponse {
 	public UserProfileResponse(User user) {
 		this.nickname = user.getNickname();
 		this.introduce = user.getIntroduce();
+		this.imageUrl = user.getImageUrl();
 		this.githubUrl = user.getGithubUrl();
 		this.blogUrl = user.getBlogUrl();
 		this.baekjoonId = user.getBaekjoonId();
