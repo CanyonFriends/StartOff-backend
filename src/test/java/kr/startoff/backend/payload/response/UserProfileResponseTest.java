@@ -15,6 +15,7 @@ class UserProfileResponseTest {
 		final String expect = "{"
 			+ "\"nickname\":\"Nickname\","
 			+ "\"introduce\":\"Introduce\","
+			+ "\"image_url\":\"https://bucket.s3.ap-northeast-2.amazonaws.com/1/profile.jpeg\","
 			+ "\"github_url\":\"https://github.com/protoseo\","
 			+ "\"blog_url\":\"https://newBlogUrl.blog.com\","
 			+ "\"baekjoon_id\":\"proto_type\","
