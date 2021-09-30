@@ -40,6 +40,7 @@ public class PayloadFixture {
 	public static final String NEW_BLOG_URL = "https://newBlogUrl.blog.com";
 	public static final String BAEKJOON_ID = "proto_type";
 	public static final String NEW_GITHUB_URL = "https://github.com/protoseo";
+	public static final String IMAGE_URL = "https://bucket.s3.ap-northeast-2.amazonaws.com/1/profile.jpeg";
 	public static final String NICKNAME = "Nickname";
 	public static final String NEW_NICKNAME = "newNickname";
 	public static final String INTRODUCE = "Introduce";
@@ -251,6 +252,7 @@ public class PayloadFixture {
 		user.setIntroduce(INTRODUCE);
 		user.setGithubUrl(NEW_GITHUB_URL);
 		user.setBlogUrl(NEW_BLOG_URL);
+		user.setImageUrl(IMAGE_URL);
 		user.setBaekjoonId(BAEKJOON_ID);
 		return user;
 	}
