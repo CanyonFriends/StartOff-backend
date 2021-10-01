@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,15 +19,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.startoff.backend.config.SecurityConfig;
+import kr.startoff.backend.exception.custom.ImageUploadFailureException;
 import kr.startoff.backend.payload.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.payload.request.profile.BlogUrlRequest;
 import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
@@ -167,4 +171,18 @@ class ProfileControllerTest {
 		assertEquals(content, result.getResponse().getContentAsString());
 	}
 
+	@Test
+	void updateUserProfileImageTest() throws Exception {
+		MockMultipartFile multipartFile = new MockMultipartFile("image", "test.jpeg",
+			MediaType.IMAGE_JPEG_VALUE, Base64.getEncoder().encode("image".getBytes()));
+		given(userService.updateUserProfileImage(eq(USER_ID), any()))
+			.willReturn(IMAGE_URL);
+
+		MvcResult result = mockMvc.perform(multipart("/api/v1/users/{user_id}/image", USER_ID)
+			.file(multipartFile)
+			.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+			.accept(MediaType.MULTIPART_FORM_DATA_VALUE)).andReturn();
+
+		assertEquals(IMAGE_URL, result.getResponse().getContentAsString());
+	}
 }
