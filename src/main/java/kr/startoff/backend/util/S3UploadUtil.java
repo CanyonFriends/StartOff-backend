@@ -1,6 +1,7 @@
 package kr.startoff.backend.util;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -64,7 +65,9 @@ public class S3UploadUtil {
 
 	public String uploadPostImage(MultipartFile file, Long userId) {
 		String fileExtension = getExtension(file.getOriginalFilename()).orElseThrow(ImageUploadFailureException::new);
-		String fileName = String.format("%s/%s.%s", userId, UUID.fromString(file.getName()), fileExtension);
+		String fileName = String.format("%s/%s.%s", userId,
+			UUID.nameUUIDFromBytes((LocalDateTime.now() + file.getOriginalFilename()).getBytes()),
+			fileExtension);
 		try {
 			requestToUpload(file, fileName);
 		} catch (IOException e) {
