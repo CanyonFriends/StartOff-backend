@@ -5,12 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Base64;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,24 +21,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.startoff.backend.entity.User;
 import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.exception.custom.ImageUploadFailureException;
 import kr.startoff.backend.exception.custom.InvalidPasswordException;
 import kr.startoff.backend.exception.custom.UserNotFoundException;
 import kr.startoff.backend.payload.response.UserInfoResponse;
 import kr.startoff.backend.payload.response.UserProfileResponse;
 import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.util.S3UploadUtil;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 	private UserRepository userRepository;
 	private PasswordEncoder encoder;
 	private UserService userService;
+	private S3UploadUtil s3UploadUtil;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@BeforeEach
 	private void setUp() {
 		userRepository = mock(UserRepository.class);
+		s3UploadUtil = mock(S3UploadUtil.class);
 		encoder = new BCryptPasswordEncoder(4);
-		userService = new UserService(userRepository, encoder);
+		userService = new UserService(userRepository, encoder, s3UploadUtil);
 	}
 
 	@Test
@@ -207,5 +214,29 @@ class UserServiceTest {
 
 		assertEquals(objectMapper.writeValueAsString(result), objectMapper.writeValueAsString(userProfileResponse()));
 
+	}
+
+	@Test
+	void updateUserProfileImageTest() throws Exception {
+		MockMultipartFile multipartFile = new MockMultipartFile("image", "test.png",
+			MediaType.IMAGE_PNG_VALUE, Base64.getEncoder().encode("image".getBytes()));
+		String newImageUrl = "https://bucket.s3.ap-northeast-2.amazonaws.com/1/profile.png";
+		User user = getUserForProfile();
+		given(userRepository.findById(USER_ID)).willReturn(Optional.of(user));
+		given(s3UploadUtil.uploadProfileImage(any(), eq(USER_ID))).willReturn(newImageUrl);
+
+		String result = userService.updateUserProfileImage(USER_ID, multipartFile);
+
+		assertEquals(user.getImageUrl(), newImageUrl);
+		assertEquals(result, newImageUrl);
+	}
+
+	@Test
+	void updateUserProfileImageThrowExceptionTest() {
+		given(userRepository.findById(USER_ID)).willReturn(Optional.of(getUserForProfile()));
+		given(s3UploadUtil.uploadProfileImage(any(), eq(USER_ID))).willThrow(ImageUploadFailureException.class);
+
+		assertThrows(ImageUploadFailureException.class,
+			() -> userService.updateUserProfileImage(USER_ID, null), "업로드를 실패 하였습니다.");
 	}
 }
