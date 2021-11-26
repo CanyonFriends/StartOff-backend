@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -37,9 +38,14 @@ public class SignalHandler extends TextWebSocketHandler {
 	private static final String MSG_TYPE_DISCONNECT = "disconnect";
 	private static final String MSG_TYPE_USERS = "users";
 
+	Map<String, SessionInfoToUserInfo> sessionInfoToUserInfoMap = new ConcurrentHashMap<>();
+
 	@Override
 	public void afterConnectionClosed(final WebSocketSession session, final CloseStatus status) {
-		log.info("SignalHandler.afterConnectionClosed\n" + session.getId() + "\n" + status);
+		SessionInfoToUserInfo info = sessionInfoToUserInfoMap.get(session.getId());
+		meetingRoomService.exitRoom(info.getRoomId(), info.getUserId());
+		log.info("afterConnectionClosed, ROOM ID : {} USER COUNT : {}", info.getRoomId(),
+			meetingRoomService.getClients(info.getRoomId()).size());
 	}
 
 	@Override
@@ -58,6 +64,7 @@ public class SignalHandler extends TextWebSocketHandler {
 			switch (message.getType()) {
 				case MSG_TYPE_JOIN:
 					meetingRoomService.joinRoom(roomId, userId, session);
+					sessionInfoToUserInfoMap.put(session.getId(),new SessionInfoToUserInfo(userId, roomId));
 					String socketId = clients.get(userId).getId();
 					List<WebSocketUserMessage> users = clients.entrySet().stream()
 						.filter(m -> !Objects.equals(m.getKey(), userId))
@@ -140,6 +147,24 @@ public class SignalHandler extends TextWebSocketHandler {
 			}
 		} catch (IOException e) {
 			log.debug("An error occured: {}", e.getMessage());
+		}
+	}
+
+	private static class SessionInfoToUserInfo {
+		private Long userId;
+		private Long roomId;
+
+		public SessionInfoToUserInfo(Long userId, Long roomId) {
+			this.userId = userId;
+			this.roomId = roomId;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public Long getRoomId() {
+			return roomId;
 		}
 	}
 }
