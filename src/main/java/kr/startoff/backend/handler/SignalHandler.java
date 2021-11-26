@@ -1,6 +1,7 @@
 package kr.startoff.backend.handler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,11 +54,10 @@ public class SignalHandler extends TextWebSocketHandler {
 			WebRtcMessage message = objectMapper.readValue(textMessage.getPayload(), WebRtcMessage.class);
 			Long roomId = message.getRoomId();
 			Long userId = message.getUserId();
-
+			Map<Long, WebSocketSession> clients = meetingRoomService.getClients(roomId);
 			switch (message.getType()) {
 				case MSG_TYPE_JOIN:
 					meetingRoomService.joinRoom(roomId, userId, session);
-					Map<Long, WebSocketSession> clients = meetingRoomService.getClients(roomId);
 					String socketId = clients.get(userId).getId();
 					List<WebSocketUserMessage> users = clients.entrySet().stream()
 						.filter(m -> !Objects.equals(m.getKey(), userId))
@@ -74,21 +74,38 @@ public class SignalHandler extends TextWebSocketHandler {
 							data,
 							message.getCandidate(),
 							message.getSdp()));
+					log.info("MSG_TYPE_JOIN, ROOM ID : {} USER COUNT : {}", roomId,
+						meetingRoomService.getClients(roomId).size());
 					break;
 				case MSG_TYPE_OFFER:
 					log.info("MSG_TYPE_OFFER FROM " + message.getUserId() + " TO " + message.getReceiverId());
-					sendToClients(message, "getOffer");
+					sendToClient(message, "getOffer");
 					break;
 				case MSG_TYPE_ANSWER:
 					log.info("MSG_TYPE_ANSWER FROM " + message.getUserId() + " TO " + message.getReceiverId());
-					sendToClients(message, "getAnswer");
+					sendToClient(message, "getAnswer");
 					break;
 				case MSG_TYPE_CANDIDATE:
 					log.info("MSG_TYPE_CANDIDATE FROM " + message.getUserId() + " TO " + message.getReceiverId());
-					sendToClients(message, "getCandidate");
+					sendToClient(message, "getCandidate");
 					break;
 				case MSG_TYPE_DISCONNECT:
+					String leaveUserSocketId = clients.get(userId).getId();
 					meetingRoomService.exitRoom(roomId, userId);
+					List<WebSocketSession> clientsSocketSession = new ArrayList<>(clients.values());
+					for (WebSocketSession webSocketSession : clientsSocketSession) {
+						sendWebRtcMessage(webSocketSession, new WebRtcMessage(
+							roomId,
+							userId,
+							message.getReceiverId(),
+							"userExit",
+							leaveUserSocketId,
+							message.getData(),
+							message.getCandidate(),
+							message.getSdp()));
+					}
+					log.info("MSG_TYPE_DISCONNECT, ROOM ID : {} USER COUNT : {}", roomId,
+						meetingRoomService.getClients(roomId).size());
 					break;
 				default:
 					break;
@@ -98,12 +115,12 @@ public class SignalHandler extends TextWebSocketHandler {
 		}
 	}
 
-	private void sendToClients(WebRtcMessage message, final String setType) {
+	private void sendToClient(WebRtcMessage message, final String setType) {
 		Long userId = message.getUserId();
 		Long roomId = message.getRoomId();
 		Map<Long, WebSocketSession> clients = meetingRoomService.getClients(roomId);
-		WebSocketSession receive = clients.get(message.getReceiverId());
-		sendWebRtcMessage(receive,
+		WebSocketSession receiver = clients.get(message.getReceiverId());
+		sendWebRtcMessage(receiver,
 			new WebRtcMessage(
 				roomId,
 				userId,
@@ -115,10 +132,12 @@ public class SignalHandler extends TextWebSocketHandler {
 				message.getSdp()));
 	}
 
-	private void sendWebRtcMessage(WebSocketSession session, WebRtcMessage message) {
+	private void sendWebRtcMessage(final WebSocketSession session, final WebRtcMessage message) {
 		try {
 			String json = objectMapper.writeValueAsString(message);
-			session.sendMessage(new TextMessage(json));
+			synchronized (session) {
+				session.sendMessage(new TextMessage(json));
+			}
 		} catch (IOException e) {
 			log.debug("An error occured: {}", e.getMessage());
 		}
