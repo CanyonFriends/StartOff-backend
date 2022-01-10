@@ -1,6 +1,7 @@
 package kr.startoff.backend.security.oauth2;
 
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -9,6 +10,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import kr.startoff.backend.entity.AuthProvider;
@@ -67,12 +69,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
 		User user = User.builder()
 			.email(oAuth2UserInfo.getEmail())
-			.nickname(oAuth2UserInfo.getName())
 			.password("")
 			.provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
 			.build();
 
+		StringBuilder nickname = new StringBuilder(oAuth2UserInfo.getName());
+		while (userRepository.existsUserByNickname(nickname.toString())) {
+			nickname.append(ThreadLocalRandom.current().nextInt(0, 9));
+		}
 		user.setImageUrl(oAuth2UserInfo.getImageUrl());
+		user.setNickname(nickname.toString());
 		return userRepository.save(user);
 	}
 
