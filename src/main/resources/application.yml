@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: oauth, local
+    include: local
   cache:
     type: redis
   redis:
