@@ -36,8 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-application-oauth.yml
-application-db.yml
-application-local.yml
-application-test.yml
 .DS_Store
+.env
+application-*.yml
