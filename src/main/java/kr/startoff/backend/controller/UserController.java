@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
 import kr.startoff.backend.payload.response.CommonResponse;
 import kr.startoff.backend.payload.response.UserInfoResponse;
@@ -33,16 +32,9 @@ public class UserController {
 
 	@GetMapping("/users/validation")
 	public ResponseEntity<Void> validateDuplicationEmailOrNickname(
-		@RequestParam Optional<String> email, @RequestParam Optional<String> nickname) {
-		if (email.isPresent() && nickname.isEmpty()) {
-			if (userService.isDuplicateEmail(email.get())) {
-				throw new EmailOrNicknameDuplicateException("Email이 중복되었습니다.");
-			}
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else if (email.isEmpty() && nickname.isPresent()) {
-			if (userService.isDuplicateNickname(nickname.get())) {
-				throw new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다.");
-			}
+		@RequestParam(defaultValue = "", required = false) String email,
+		@RequestParam(defaultValue = "", required = false) String nickname) {
+		if (userService.validateEmailOrNickname(email, nickname)) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
