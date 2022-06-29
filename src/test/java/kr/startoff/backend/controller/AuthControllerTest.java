@@ -30,10 +30,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.startoff.backend.config.SecurityConfig;
 import kr.startoff.backend.entity.User;
+import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.payload.request.LoginRequest;
 import kr.startoff.backend.payload.request.SignupRequest;
 import kr.startoff.backend.security.UserPrincipal;
 import kr.startoff.backend.security.jwt.JwtUtil;
+import kr.startoff.backend.service.AuthService;
 import kr.startoff.backend.service.UserDetailsServiceImpl;
 import kr.startoff.backend.service.UserService;
 import kr.startoff.backend.util.RedisUtil;
@@ -49,6 +51,8 @@ class AuthControllerTest {
 	private AuthenticationManager authenticationManager;
 	@MockBean
 	private UserService userService;
+	@MockBean
+	private AuthService authService;
 	@MockBean
 	private UserDetailsServiceImpl userDetailsService;
 	@MockBean
@@ -68,9 +72,8 @@ class AuthControllerTest {
 	void signUpSuccessTest() throws Exception {
 		SignupRequest request = signupRequest();
 		User user = getUser();
-		given(userService.isDuplicateEmail(request.getEmail())).willReturn(false);
-		given(userService.isDuplicateNickname(request.getNickname())).willReturn(false);
-		given(userService.signUp(any())).willReturn(user);
+		given(userService.validateEmailOrNickname(request.getEmail(), request.getNickname())).willReturn(true);
+		given(authService.signup(any())).willReturn(USER_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -86,8 +89,8 @@ class AuthControllerTest {
 	@Test
 	void signUpThrowConflictEmailExceptionTest() throws Exception {
 		SignupRequest request = signupRequest();
-		given(userService.isDuplicateEmail(request.getEmail())).willReturn(true);
-		given(userService.isDuplicateNickname(request.getNickname())).willReturn(false);
+		given(authService.signup(any())).willThrow(
+			new EmailOrNicknameDuplicateException("Email이 중복되었습니다."));
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -103,8 +106,8 @@ class AuthControllerTest {
 	@Test
 	void signUpThrowConflictNicknameExceptionTest() throws Exception {
 		SignupRequest signupRequest = signupRequest();
-		given(userService.isDuplicateEmail(signupRequest.getEmail())).willReturn(false);
-		given(userService.isDuplicateNickname(signupRequest.getNickname())).willReturn(true);
+		given(authService.signup(any())).willThrow(
+			new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다."));
 
 		String content = objectMapper.writeValueAsString(signupRequest);
 
