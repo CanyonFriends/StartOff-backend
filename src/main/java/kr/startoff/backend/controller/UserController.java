@@ -1,7 +1,5 @@
 package kr.startoff.backend.controller;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -40,16 +38,16 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping("/users/{user_id}/password")
-	public ResponseEntity<CommonResponse> changeUserPassword(@PathVariable(value = "user_id") Long userId,
+	@PutMapping("/users/{userId}/password")
+	public ResponseEntity<CommonResponse> changeUserPassword(@PathVariable Long userId,
 		@Valid @RequestBody UserPasswordChangeRequest updateRequest) {
 		CommonResponse result = new CommonResponse(userService.changeUserPassword(updateRequest, userId),
 			"비밀번호가 변경되었습니다.");
 		return ResponseEntity.ok(result);
 	}
 
-	@DeleteMapping("/users/{user_id}")
-	public ResponseEntity<Long> leaveMembership(@PathVariable(value = "user_id") Long userId) {
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<Long> leaveMembership(@PathVariable Long userId) {
 		return ResponseEntity.ok(userService.deleteUser(userId));
 	}
 
