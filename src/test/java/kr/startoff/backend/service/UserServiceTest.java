@@ -41,22 +41,8 @@ class UserServiceTest {
 	private void setUp() {
 		userRepository = mock(UserRepository.class);
 		s3UploadUtil = mock(S3UploadUtil.class);
-		encoder = new BCryptPasswordEncoder(4);
-		userService = new UserService(userRepository, encoder, s3UploadUtil);
-	}
-
-	@Test
-	void signUpTest() throws Exception {
-		//given
-		User user = getUser(encoder);
-		given(userRepository.save(any())).willReturn(user);
-		//when
-		User createdUser = userService.signUp(signupRequest());
-		//then
-		assertNotNull(createdUser);
-		assertEquals(createdUser.getEmail(), signupRequest().getEmail());
-		assertEquals(createdUser.getNickname(), signupRequest().getNickname());
-		assertTrue(encoder.matches(signupRequest().getPassword(), createdUser.getPassword()));
+		encoder = new BCryptPasswordEncoder();
+		userService = new UserService(userRepository, s3UploadUtil);
 	}
 
 	@Test
@@ -123,24 +109,6 @@ class UserServiceTest {
 		//then
 		verify(userRepository, times(1)).delete(user);
 		assertEquals(USER_ID, result);
-	}
-
-	@Test
-	void isDuplicateEmailTest() throws Exception {
-		when(userRepository.existsUserByEmail(EMAIL)).thenReturn(true);
-		when(userRepository.existsUserByEmail(NEW_EMAIL)).thenReturn(false);
-
-		assertTrue(userService.isDuplicateEmail(EMAIL));
-		assertFalse(userService.isDuplicateEmail(NEW_EMAIL));
-	}
-
-	@Test
-	void isDuplicateNicknameTest() throws Exception {
-		when(userRepository.existsUserByNickname(NICKNAME)).thenReturn(true);
-		when(userRepository.existsUserByNickname(NEW_NICKNAME)).thenReturn(false);
-
-		assertTrue(userService.isDuplicateNickname(NICKNAME));
-		assertFalse(userService.isDuplicateNickname(NEW_NICKNAME));
 	}
 
 	@Test

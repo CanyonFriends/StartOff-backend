@@ -53,43 +53,6 @@ class UserControllerTest {
 	}
 
 	@Test
-	void validateDuplicationEmailTest() throws Exception {
-		given(userService.isDuplicateEmail(EMAIL)).willReturn(false);
-
-		mockMvc.perform(get("/api/v1/users/validation")
-				.queryParam("email", EMAIL))
-			.andExpect(status().isNoContent());
-	}
-
-	@Test
-	void validateDuplicationEmailWithThrowExceptionTest() throws Exception {
-		given(userService.isDuplicateEmail(EMAIL)).willReturn(true);
-
-		mockMvc.perform(get("/api/v1/users/validation")
-				.queryParam("email", EMAIL))
-			.andExpect(status().isConflict());
-	}
-
-	@Test
-	void validateDuplicationNicknameTest() throws Exception {
-		given(userService.isDuplicateNickname(NICKNAME)).willReturn(false);
-
-		mockMvc.perform(get("/api/v1/users/validation")
-				.queryParam("nickname", NICKNAME))
-			.andExpect(status().isNoContent());
-	}
-
-	@WithMockUser
-	@Test
-	void validateDuplicationNicknameWithThrowExceptionTest() throws Exception {
-		given(userService.isDuplicateNickname(NICKNAME)).willReturn(true);
-
-		mockMvc.perform(get("/api/v1/users/validation")
-				.queryParam("nickname", NICKNAME))
-			.andExpect(status().isConflict());
-	}
-
-	@Test
 	void validateDuplicateEmailAndNicknameThrowBadRequestExceptionTest1() throws Exception {
 		mockMvc.perform(get("/api/v1/users/validation"))
 			.andExpect(status().isBadRequest());
