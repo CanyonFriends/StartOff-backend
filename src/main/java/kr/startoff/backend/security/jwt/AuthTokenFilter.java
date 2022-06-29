@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -39,12 +40,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 					if (isLockedAccessToken.isEmpty()) {
 						String username = jwtUtil.getUserNameFromJwtToken(jwt.get());
 
+						SecurityContext context = SecurityContextHolder.createEmptyContext();
+
 						UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 							userDetails, null, userDetails.getAuthorities());
 						authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-						SecurityContextHolder.getContext().setAuthentication(authentication);
+						context.setAuthentication(authentication);
+						SecurityContextHolder.setContext(context);
 					} else {
 						response.setStatus(CustomStatus.IS_LOCKED_TOKEN.getCode());
 					}
