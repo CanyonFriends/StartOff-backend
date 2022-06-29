@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -17,6 +18,7 @@ public class LoginResponse {
 	private String email;
 	private String nickname;
 
+	@Builder
 	public LoginResponse(String accessToken, String uuid, Long userId, String email, String nickname) {
 		this.accessToken = accessToken;
 		this.uuid = uuid;
