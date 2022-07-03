@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
+
 class RefreshOrLogoutRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 

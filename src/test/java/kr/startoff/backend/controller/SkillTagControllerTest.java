@@ -22,9 +22,10 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.payload.response.SkillTagResponse;
-import kr.startoff.backend.service.SkillTagService;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.tag.controller.SkillTagController;
+import kr.startoff.backend.domain.tag.dto.SkillTagResponse;
+import kr.startoff.backend.domain.tag.service.SkillTagService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = SkillTagController.class,

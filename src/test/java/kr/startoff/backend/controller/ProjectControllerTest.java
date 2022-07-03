@@ -23,9 +23,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.payload.request.ProjectRequest;
-import kr.startoff.backend.service.ProjectService;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.project.controller.ProjectController;
+import kr.startoff.backend.domain.project.dto.ProjectRequest;
+import kr.startoff.backend.domain.project.service.ProjectService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ProjectController.class,

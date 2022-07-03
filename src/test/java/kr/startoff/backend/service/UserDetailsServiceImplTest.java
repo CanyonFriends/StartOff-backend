@@ -5,17 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import kr.startoff.backend.entity.User;
-import kr.startoff.backend.repository.UserRepository;
-import kr.startoff.backend.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.User;
+import kr.startoff.backend.domain.user.repository.UserRepository;
+import kr.startoff.backend.domain.user.service.UserDetailsServiceImpl;
+import kr.startoff.backend.common.security.UserPrincipal;
 
 class UserDetailsServiceImplTest {
 	private UserRepository userRepository;

@@ -22,8 +22,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.service.CommentService;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.comment.controller.CommentController;
+import kr.startoff.backend.domain.comment.service.CommentService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CommentController.class,

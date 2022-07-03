@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import kr.startoff.backend.entity.AuthProvider;
-import kr.startoff.backend.entity.User;
+import kr.startoff.backend.domain.user.repository.UserRepository;
+import kr.startoff.backend.domain.user.domain.AuthProvider;
+import kr.startoff.backend.domain.user.domain.User;
 
 @DataJpaTest
 class UserRepositoryTest {

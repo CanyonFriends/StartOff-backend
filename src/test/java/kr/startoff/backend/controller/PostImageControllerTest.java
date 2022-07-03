@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import static org.mockito.BDDMockito.*;
 import static kr.startoff.backend.payload.PayloadFixture.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
@@ -26,13 +25,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.UUID;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.service.UserService;
-import kr.startoff.backend.util.S3UploadUtil;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.common.util.S3UploadUtil;
+import kr.startoff.backend.domain.post.controller.PostImageController;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PostImageController.class,

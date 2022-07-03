@@ -14,15 +14,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.entity.Project;
-import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.custom.ProjectBadRequest;
-import kr.startoff.backend.exception.custom.ProjectNotFoundException;
-import kr.startoff.backend.payload.request.ProjectRequest;
-import kr.startoff.backend.payload.response.ProjectResponse;
-import kr.startoff.backend.repository.ProjectRepository;
-import kr.startoff.backend.repository.SkillTagRepository;
-import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.domain.project.domain.Project;
+import kr.startoff.backend.domain.project.service.ProjectService;
+import kr.startoff.backend.domain.user.domain.User;
+import kr.startoff.backend.common.exception.custom.ProjectBadRequest;
+import kr.startoff.backend.common.exception.custom.ProjectNotFoundException;
+import kr.startoff.backend.domain.project.dto.ProjectRequest;
+import kr.startoff.backend.domain.project.dto.ProjectResponse;
+import kr.startoff.backend.domain.project.repository.ProjectRepository;
+import kr.startoff.backend.domain.tag.repository.SkillTagRepository;
+import kr.startoff.backend.domain.user.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {

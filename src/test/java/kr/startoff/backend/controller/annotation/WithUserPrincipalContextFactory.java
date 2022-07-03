@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-import kr.startoff.backend.security.UserPrincipal;
+import kr.startoff.backend.common.security.UserPrincipal;
 
 public class WithUserPrincipalContextFactory implements WithSecurityContextFactory<WithUserPrincipal> {
 
