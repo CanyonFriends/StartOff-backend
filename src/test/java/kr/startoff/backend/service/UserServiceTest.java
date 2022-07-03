@@ -19,15 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.exception.custom.ImageUploadFailureException;
-import kr.startoff.backend.exception.custom.InvalidPasswordException;
-import kr.startoff.backend.exception.custom.UserNotFoundException;
-import kr.startoff.backend.payload.response.UserInfoResponse;
-import kr.startoff.backend.payload.response.UserProfileResponse;
-import kr.startoff.backend.repository.UserRepository;
-import kr.startoff.backend.util.S3UploadUtil;
+import kr.startoff.backend.domain.user.domain.User;
+import kr.startoff.backend.common.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.common.exception.custom.ImageUploadFailureException;
+import kr.startoff.backend.common.exception.custom.InvalidPasswordException;
+import kr.startoff.backend.common.exception.custom.UserNotFoundException;
+import kr.startoff.backend.domain.user.service.UserService;
+import kr.startoff.backend.domain.user.dto.response.UserInfoResponse;
+import kr.startoff.backend.domain.user.dto.response.UserProfileResponse;
+import kr.startoff.backend.domain.user.repository.UserRepository;
+import kr.startoff.backend.common.util.S3UploadUtil;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {

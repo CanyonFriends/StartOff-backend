@@ -13,14 +13,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.startoff.backend.entity.SkillTag;
-import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.custom.SkillTagBadRequest;
-import kr.startoff.backend.exception.custom.SkillTagNotFoundException;
+import kr.startoff.backend.domain.tag.domain.SkillTag;
+import kr.startoff.backend.domain.tag.service.SkillTagService;
+import kr.startoff.backend.domain.user.domain.User;
+import kr.startoff.backend.common.exception.custom.SkillTagBadRequest;
+import kr.startoff.backend.common.exception.custom.SkillTagNotFoundException;
 import kr.startoff.backend.payload.PayloadFixture;
-import kr.startoff.backend.payload.response.SkillTagResponse;
-import kr.startoff.backend.repository.SkillTagRepository;
-import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.domain.tag.dto.SkillTagResponse;
+import kr.startoff.backend.domain.tag.repository.SkillTagRepository;
+import kr.startoff.backend.domain.user.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 class SkillTagServiceTest {

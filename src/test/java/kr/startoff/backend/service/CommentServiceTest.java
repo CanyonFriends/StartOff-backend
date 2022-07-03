@@ -16,14 +16,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.entity.Comment;
-import kr.startoff.backend.entity.DeleteStatus;
-import kr.startoff.backend.exception.custom.CommentNotFoundException;
-import kr.startoff.backend.payload.request.CommentRequest;
-import kr.startoff.backend.payload.response.CommentResponse;
-import kr.startoff.backend.repository.CommentRepository;
-import kr.startoff.backend.repository.PostRepository;
-import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.domain.comment.domain.Comment;
+import kr.startoff.backend.domain.comment.domain.DeleteStatus;
+import kr.startoff.backend.common.exception.custom.CommentNotFoundException;
+import kr.startoff.backend.domain.comment.service.CommentService;
+import kr.startoff.backend.domain.comment.dto.CommentRequest;
+import kr.startoff.backend.domain.comment.dto.CommentResponse;
+import kr.startoff.backend.domain.comment.repository.CommentRepository;
+import kr.startoff.backend.domain.post.repository.PostRepository;
+import kr.startoff.backend.domain.user.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {

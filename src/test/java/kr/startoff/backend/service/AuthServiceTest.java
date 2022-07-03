@@ -13,8 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-import kr.startoff.backend.entity.User;
-import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.domain.user.domain.User;
+import kr.startoff.backend.domain.user.repository.UserRepository;
+import kr.startoff.backend.domain.user.service.AuthService;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {

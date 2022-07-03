@@ -9,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -17,10 +16,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import kr.startoff.backend.controller.annotation.WithUserPrincipal;
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.payload.request.UserPasswordChangeRequest;
-import kr.startoff.backend.payload.response.CommonResponse;
-import kr.startoff.backend.service.UserService;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.user.controller.UserController;
+import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
+import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.domain.user.service.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

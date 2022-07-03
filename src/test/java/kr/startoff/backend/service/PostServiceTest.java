@@ -15,21 +15,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.entity.Category;
-import kr.startoff.backend.entity.Post;
-import kr.startoff.backend.exception.custom.PostNotFoundException;
-import kr.startoff.backend.payload.request.PostRequest;
-import kr.startoff.backend.payload.response.PostListResponse;
-import kr.startoff.backend.payload.response.PostResponse;
-import kr.startoff.backend.repository.CommentQueryRepository;
-import kr.startoff.backend.repository.PostQueryRepository;
-import kr.startoff.backend.repository.PostRepository;
-import kr.startoff.backend.repository.SkillTagRepository;
-import kr.startoff.backend.repository.UserRepository;
+import kr.startoff.backend.domain.post.service.PostService;
+import kr.startoff.backend.domain.post.domain.Category;
+import kr.startoff.backend.domain.post.domain.Post;
+import kr.startoff.backend.common.exception.custom.PostNotFoundException;
+import kr.startoff.backend.domain.post.dto.PostRequest;
+import kr.startoff.backend.domain.post.dto.PostListResponse;
+import kr.startoff.backend.domain.post.dto.PostResponse;
+import kr.startoff.backend.domain.comment.repository.CommentQueryRepository;
+import kr.startoff.backend.domain.post.repository.PostQueryRepository;
+import kr.startoff.backend.domain.post.repository.PostRepository;
+import kr.startoff.backend.domain.tag.repository.SkillTagRepository;
+import kr.startoff.backend.domain.user.repository.UserRepository;
 
 class PostServiceTest {
 	private PostRepository postRepository;

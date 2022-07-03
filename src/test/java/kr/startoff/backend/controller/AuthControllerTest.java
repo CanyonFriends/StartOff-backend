@@ -28,17 +28,18 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.entity.User;
-import kr.startoff.backend.exception.custom.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.payload.request.LoginRequest;
-import kr.startoff.backend.payload.request.SignupRequest;
-import kr.startoff.backend.security.UserPrincipal;
-import kr.startoff.backend.security.jwt.JwtUtil;
-import kr.startoff.backend.service.AuthService;
-import kr.startoff.backend.service.UserDetailsServiceImpl;
-import kr.startoff.backend.service.UserService;
-import kr.startoff.backend.util.RedisUtil;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.user.controller.AuthController;
+import kr.startoff.backend.domain.user.domain.User;
+import kr.startoff.backend.common.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.domain.user.dto.request.LoginRequest;
+import kr.startoff.backend.domain.user.dto.request.SignupRequest;
+import kr.startoff.backend.common.security.UserPrincipal;
+import kr.startoff.backend.common.security.jwt.JwtUtil;
+import kr.startoff.backend.domain.user.service.AuthService;
+import kr.startoff.backend.domain.user.service.UserDetailsServiceImpl;
+import kr.startoff.backend.domain.user.service.UserService;
+import kr.startoff.backend.common.util.RedisUtil;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = AuthController.class,

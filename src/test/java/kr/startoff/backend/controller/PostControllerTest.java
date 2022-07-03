@@ -27,10 +27,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.entity.Category;
-import kr.startoff.backend.payload.response.PostListResponse;
-import kr.startoff.backend.service.PostService;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.post.controller.PostController;
+import kr.startoff.backend.domain.post.domain.Category;
+import kr.startoff.backend.domain.post.dto.PostListResponse;
+import kr.startoff.backend.domain.post.service.PostService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PostController.class,

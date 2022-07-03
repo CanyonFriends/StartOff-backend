@@ -25,19 +25,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.config.SecurityConfig;
-import kr.startoff.backend.exception.custom.ImageUploadFailureException;
-import kr.startoff.backend.payload.request.profile.BaekjoonIdRequest;
-import kr.startoff.backend.payload.request.profile.BlogUrlRequest;
-import kr.startoff.backend.payload.request.profile.GithubUrlRequest;
-import kr.startoff.backend.payload.request.profile.NicknameAndIntroduceRequest;
-import kr.startoff.backend.payload.response.CommonResponse;
-import kr.startoff.backend.service.SkillTagService;
-import kr.startoff.backend.service.UserService;
+import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.domain.user.controller.ProfileController;
+import kr.startoff.backend.domain.user.dto.request.profile.BaekjoonIdRequest;
+import kr.startoff.backend.domain.user.dto.request.profile.BlogUrlRequest;
+import kr.startoff.backend.domain.user.dto.request.profile.GithubUrlRequest;
+import kr.startoff.backend.domain.user.dto.request.profile.NicknameAndIntroduceRequest;
+import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.domain.tag.service.SkillTagService;
+import kr.startoff.backend.domain.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ProfileController.class,
