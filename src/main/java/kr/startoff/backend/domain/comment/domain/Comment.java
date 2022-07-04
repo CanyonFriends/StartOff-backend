@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import kr.startoff.backend.common.domain.Auditor;
+import kr.startoff.backend.global.common.Auditor;
 import kr.startoff.backend.domain.post.domain.Post;
 import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.comment.dto.CommentRequest;

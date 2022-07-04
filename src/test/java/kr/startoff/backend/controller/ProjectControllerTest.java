@@ -23,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.global.config.SecurityConfig;
 import kr.startoff.backend.domain.project.controller.ProjectController;
 import kr.startoff.backend.domain.project.dto.ProjectRequest;
 import kr.startoff.backend.domain.project.service.ProjectService;

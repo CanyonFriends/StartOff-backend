@@ -27,7 +27,7 @@ import kr.startoff.backend.domain.user.dto.request.profile.NicknameAndIntroduceR
 import kr.startoff.backend.domain.user.dto.request.profile.SkillTagRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
 import kr.startoff.backend.domain.comment.dto.CommentResponse;
-import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.LoginResponse;
 import kr.startoff.backend.domain.post.dto.PostListResponse;
 import kr.startoff.backend.domain.post.dto.PostResponse;

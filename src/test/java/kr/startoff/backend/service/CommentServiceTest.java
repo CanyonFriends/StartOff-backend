@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.startoff.backend.domain.comment.domain.Comment;
 import kr.startoff.backend.domain.comment.domain.DeleteStatus;
-import kr.startoff.backend.common.exception.custom.CommentNotFoundException;
+import kr.startoff.backend.global.exception.custom.CommentNotFoundException;
 import kr.startoff.backend.domain.comment.service.CommentService;
 import kr.startoff.backend.domain.comment.dto.CommentRequest;
 import kr.startoff.backend.domain.comment.dto.CommentResponse;

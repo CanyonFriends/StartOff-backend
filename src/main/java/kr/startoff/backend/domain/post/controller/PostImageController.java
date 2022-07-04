@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.startoff.backend.common.util.S3UploadUtil;
+import kr.startoff.backend.global.util.S3UploadUtil;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

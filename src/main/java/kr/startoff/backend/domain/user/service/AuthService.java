@@ -13,18 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.domain.user.domain.AuthProvider;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.common.exception.custom.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.common.exception.custom.RefreshTokenException;
+import kr.startoff.backend.global.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.global.exception.custom.RefreshTokenException;
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
-import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.LoginResponse;
 import kr.startoff.backend.domain.user.repository.UserRepository;
-import kr.startoff.backend.common.security.UserPrincipal;
-import kr.startoff.backend.common.security.jwt.JwtUtil;
-import kr.startoff.backend.common.util.RedisUtil;
+import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.global.security.jwt.JwtUtil;
+import kr.startoff.backend.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service

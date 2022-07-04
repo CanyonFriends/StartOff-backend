@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.common.exception.custom.UserNotFoundException;
+import kr.startoff.backend.global.exception.custom.UserNotFoundException;
 import kr.startoff.backend.domain.user.repository.UserRepository;
-import kr.startoff.backend.common.security.UserPrincipal;
+import kr.startoff.backend.global.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 
 @Service

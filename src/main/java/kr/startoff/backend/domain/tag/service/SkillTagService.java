@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.domain.tag.domain.SkillTag;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.common.exception.custom.SkillTagBadRequest;
-import kr.startoff.backend.common.exception.custom.SkillTagNotFoundException;
-import kr.startoff.backend.common.exception.custom.UserNotFoundException;
+import kr.startoff.backend.global.exception.custom.SkillTagBadRequest;
+import kr.startoff.backend.global.exception.custom.SkillTagNotFoundException;
+import kr.startoff.backend.global.exception.custom.UserNotFoundException;
 import kr.startoff.backend.domain.tag.dto.SkillTagResponse;
 import kr.startoff.backend.domain.tag.repository.SkillTagRepository;
 import kr.startoff.backend.domain.user.repository.UserRepository;

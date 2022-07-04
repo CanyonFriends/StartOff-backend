@@ -22,10 +22,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import kr.startoff.backend.domain.post.domain.Category;
 import kr.startoff.backend.domain.post.domain.Post;
-import kr.startoff.backend.common.exception.custom.CategoryNotFoundException;
-import kr.startoff.backend.common.exception.custom.SearchTypeNotFoundException;
+import kr.startoff.backend.global.exception.custom.CategoryNotFoundException;
+import kr.startoff.backend.global.exception.custom.SearchTypeNotFoundException;
 import kr.startoff.backend.domain.post.dto.PostRequest;
-import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.post.dto.PostListResponse;
 import kr.startoff.backend.domain.post.dto.PostResponse;
 import kr.startoff.backend.domain.post.service.PostService;
