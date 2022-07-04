@@ -9,8 +9,8 @@ import java.util.Base64;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import kr.startoff.backend.common.security.UserPrincipal;
-import kr.startoff.backend.common.security.jwt.JwtUtil;
+import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.global.security.jwt.JwtUtil;
 
 class JwtUtilTest {
 	private JwtUtil jwtUtil;

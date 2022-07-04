@@ -20,7 +20,7 @@ import kr.startoff.backend.domain.user.dto.request.profile.BlogUrlRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.GithubUrlRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.NicknameAndIntroduceRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.SkillTagRequest;
-import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.tag.dto.SkillTagResponse;
 import kr.startoff.backend.domain.user.dto.response.UserProfileResponse;
 import kr.startoff.backend.domain.tag.service.SkillTagService;

@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.startoff.backend.domain.post.service.PostService;
 import kr.startoff.backend.domain.post.domain.Category;
 import kr.startoff.backend.domain.post.domain.Post;
-import kr.startoff.backend.common.exception.custom.PostNotFoundException;
+import kr.startoff.backend.global.exception.custom.PostNotFoundException;
 import kr.startoff.backend.domain.post.dto.PostRequest;
 import kr.startoff.backend.domain.post.dto.PostListResponse;
 import kr.startoff.backend.domain.post.dto.PostResponse;

@@ -9,9 +9,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import kr.startoff.backend.common.exception.custom.AccessTokenException;
-import kr.startoff.backend.common.interceptor.JwtInterceptor;
-import kr.startoff.backend.common.security.jwt.CustomStatus;
+import kr.startoff.backend.global.exception.custom.AccessTokenException;
+import kr.startoff.backend.global.interceptor.JwtInterceptor;
+import kr.startoff.backend.global.security.jwt.CustomStatus;
 
 @ExtendWith(MockitoExtension.class)
 class JwtInterceptorTest {

@@ -27,7 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.global.config.SecurityConfig;
 import kr.startoff.backend.domain.post.controller.PostController;
 import kr.startoff.backend.domain.post.domain.Category;
 import kr.startoff.backend.domain.post.dto.PostListResponse;

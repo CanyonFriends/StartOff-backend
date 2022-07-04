@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.global.config.SecurityConfig;
 import kr.startoff.backend.domain.tag.controller.SkillTagController;
 import kr.startoff.backend.domain.tag.dto.SkillTagResponse;
 import kr.startoff.backend.domain.tag.service.SkillTagService;

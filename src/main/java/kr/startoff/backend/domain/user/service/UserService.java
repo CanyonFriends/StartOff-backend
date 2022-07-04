@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.common.exception.custom.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.common.exception.custom.InvalidPasswordException;
-import kr.startoff.backend.common.exception.custom.UserNotFoundException;
+import kr.startoff.backend.global.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.global.exception.custom.InvalidPasswordException;
+import kr.startoff.backend.global.exception.custom.UserNotFoundException;
 import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.BlogUrlRequest;
@@ -18,7 +18,7 @@ import kr.startoff.backend.domain.user.dto.request.profile.NicknameAndIntroduceR
 import kr.startoff.backend.domain.user.dto.response.UserInfoResponse;
 import kr.startoff.backend.domain.user.dto.response.UserProfileResponse;
 import kr.startoff.backend.domain.user.repository.UserRepository;
-import kr.startoff.backend.common.util.S3UploadUtil;
+import kr.startoff.backend.global.util.S3UploadUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service

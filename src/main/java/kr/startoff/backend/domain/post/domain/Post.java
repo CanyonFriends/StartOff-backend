@@ -18,7 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import kr.startoff.backend.common.domain.Auditor;
+import kr.startoff.backend.global.common.Auditor;
 import kr.startoff.backend.domain.tag.domain.SkillTag;
 import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.post.dto.PostRequest;

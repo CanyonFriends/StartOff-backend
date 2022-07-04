@@ -15,7 +15,7 @@ import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
-import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.LoginResponse;
 import kr.startoff.backend.domain.user.service.AuthService;
 import lombok.RequiredArgsConstructor;

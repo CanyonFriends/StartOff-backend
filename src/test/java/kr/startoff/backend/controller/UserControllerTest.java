@@ -16,10 +16,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import kr.startoff.backend.controller.annotation.WithUserPrincipal;
-import kr.startoff.backend.common.config.SecurityConfig;
+import kr.startoff.backend.global.config.SecurityConfig;
 import kr.startoff.backend.domain.user.controller.UserController;
 import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
-import kr.startoff.backend.common.dto.CommonResponse;
+import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.service.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
