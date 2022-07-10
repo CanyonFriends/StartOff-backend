@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.global.exception.ErrorInfo;
+import kr.startoff.backend.global.exception.ErrorResponse;
 
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
@@ -29,7 +29,7 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
 		try (OutputStream os = response.getOutputStream()) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			ErrorInfo errorInfo = new ErrorInfo("AccessToken 을 확인해주세요",
+			ErrorResponse errorInfo = new ErrorResponse("AccessToken 을 확인해주세요",
 				HttpStatus.UNAUTHORIZED.toString(), request.getRequestURI());
 			objectMapper.writeValue(os, errorInfo);
 			os.flush();
