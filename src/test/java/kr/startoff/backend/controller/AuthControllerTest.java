@@ -28,12 +28,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.global.config.SecurityConfig;
 import kr.startoff.backend.domain.user.controller.AuthController;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.EmailOrNicknameDuplicateException;
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
+import kr.startoff.backend.global.exception.ExceptionType;
 import kr.startoff.backend.global.security.UserPrincipal;
 import kr.startoff.backend.global.security.jwt.JwtUtil;
 import kr.startoff.backend.domain.user.service.AuthService;
@@ -91,7 +92,7 @@ class AuthControllerTest {
 	void signUpThrowConflictEmailExceptionTest() throws Exception {
 		SignupRequest request = signupRequest();
 		given(authService.signup(any())).willThrow(
-			new EmailOrNicknameDuplicateException("Email이 중복되었습니다."));
+			new UserException(ExceptionType.DUPLICATE_EMAIL));
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -108,7 +109,7 @@ class AuthControllerTest {
 	void signUpThrowConflictNicknameExceptionTest() throws Exception {
 		SignupRequest signupRequest = signupRequest();
 		given(authService.signup(any())).willThrow(
-			new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다."));
+			new UserException(ExceptionType.DUPLICATE_NICKNAME));
 
 		String content = objectMapper.writeValueAsString(signupRequest);
 
