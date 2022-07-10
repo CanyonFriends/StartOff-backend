@@ -1,5 +1,7 @@
 package kr.startoff.backend.domain.post.service;
 
+import static kr.startoff.backend.global.exception.ExceptionType.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.startoff.backend.domain.post.domain.Category;
 import kr.startoff.backend.domain.comment.domain.Comment;
 import kr.startoff.backend.domain.post.domain.Post;
+import kr.startoff.backend.domain.post.exception.PostException;
 import kr.startoff.backend.domain.tag.domain.SkillTag;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.PostNotFoundException;
-import kr.startoff.backend.global.exception.custom.UserNotFoundException;
+import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.domain.post.dto.PostRequest;
 import kr.startoff.backend.domain.comment.dto.CommentResponse;
 import kr.startoff.backend.domain.post.dto.PostListResponse;
@@ -41,7 +43,7 @@ public class PostService {
 
 	@Transactional
 	public Post savePost(PostRequest postRequest) {
-		User author = userRepository.findById(postRequest.getUserId()).orElseThrow(UserNotFoundException::new);
+		User author = userRepository.findById(postRequest.getUserId()).orElseThrow(() -> new UserException(USER_NOT_FOUND));
 		List<SkillTag> postWantedSkills = extractPostSkills(postRequest);
 		Post post = Post.createPost(author, postRequest, postWantedSkills);
 		return postRepository.save(post);
@@ -49,7 +51,7 @@ public class PostService {
 
 	@Transactional
 	public PostResponse updatePost(Long postId, PostRequest postRequest) {
-		Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+		Post post = postRepository.findById(postId).orElseThrow(() -> new PostException(POST_NOT_FOUND));
 		List<SkillTag> postWantedSkills = extractPostSkills(postRequest);
 		post.updatePost(postRequest, postWantedSkills);
 		return new PostResponse(post);
@@ -57,14 +59,14 @@ public class PostService {
 
 	@Transactional
 	public Long deletePost(Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+		Post post = postRepository.findById(postId).orElseThrow(() -> new PostException(POST_NOT_FOUND));
 		postRepository.delete(post);
 		return postId;
 	}
 
 	@Transactional(readOnly = true)
 	public PostResponse readPost(Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+		Post post = postRepository.findById(postId).orElseThrow(() -> new PostException(POST_NOT_FOUND));
 		PostResponse postResponse = new PostResponse(post);
 		postResponse.setComments(convertNestedStructure(commentQueryRepository.findAllByPostId(postId)));
 		return postResponse;

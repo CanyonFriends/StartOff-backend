@@ -1,5 +1,7 @@
 package kr.startoff.backend.domain.post.controller;
 
+import static kr.startoff.backend.global.exception.ExceptionType.*;
+
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -22,13 +24,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import kr.startoff.backend.domain.post.domain.Category;
 import kr.startoff.backend.domain.post.domain.Post;
-import kr.startoff.backend.global.exception.custom.CategoryNotFoundException;
-import kr.startoff.backend.global.exception.custom.SearchTypeNotFoundException;
 import kr.startoff.backend.domain.post.dto.PostRequest;
+import kr.startoff.backend.domain.post.exception.CategoryException;
+import kr.startoff.backend.domain.post.exception.PostException;
 import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.post.dto.PostListResponse;
 import kr.startoff.backend.domain.post.dto.PostResponse;
 import kr.startoff.backend.domain.post.service.PostService;
+import kr.startoff.backend.global.exception.ExceptionType;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -72,7 +75,7 @@ public class PostController {
 					Category category = Category.valueOf(categoryCandidate.get().toUpperCase());
 					return ResponseEntity.ok(postService.searchByCategory(query.get(), types, category, pageable));
 				}
-				throw new CategoryNotFoundException();
+				throw new CategoryException(CATEGORY_NOT_FOUND);
 			} else {
 				return ResponseEntity.ok(postService.search(query.get(), types, pageable));
 			}
@@ -82,7 +85,7 @@ public class PostController {
 					Category category = Category.valueOf(categoryCandidate.get().toUpperCase());
 					return ResponseEntity.ok(postService.readPostsByCategory(category, pageable));
 				}
-				throw new CategoryNotFoundException();
+				throw new CategoryException(CATEGORY_NOT_FOUND);
 			} else {
 				return ResponseEntity.ok(postService.readPosts(pageable));
 			}
@@ -96,7 +99,7 @@ public class PostController {
 			.collect(Collectors.toList());
 		for (String s : result) {
 			if (!s.equals("TITLE") && !s.equals("CONTENT") && !s.equals("SKILL")) {
-				throw new SearchTypeNotFoundException();
+				throw new PostException(SEARCH_TYPE_NOT_FOUND);
 			}
 		}
 		return result;
