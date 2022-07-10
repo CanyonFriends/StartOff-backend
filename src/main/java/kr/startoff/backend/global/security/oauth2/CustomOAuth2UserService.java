@@ -1,5 +1,7 @@
 package kr.startoff.backend.global.security.oauth2;
 
+import static kr.startoff.backend.global.exception.ExceptionType.*;
+
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,10 +14,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import kr.startoff.backend.domain.user.exception.UserException;
+import kr.startoff.backend.global.exception.ExceptionType;
 import kr.startoff.backend.global.security.oauth2.user.OAuth2UserInfoFactory;
 import kr.startoff.backend.domain.user.domain.AuthProvider;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.OAuth2AuthenticationProcessingException;
 import kr.startoff.backend.domain.user.repository.UserRepository;
 import kr.startoff.backend.global.security.UserPrincipal;
 import kr.startoff.backend.global.security.oauth2.user.OAuth2UserInfo;
@@ -44,7 +47,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(
 			oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
 		if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
-			throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+			throw new UserException(OAUTH2_LOGIN_UNAUTHORIZED);
+			// throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
 		}
 
 		Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
@@ -53,9 +57,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			user = userOptional.get();
 			if (!user.getProvider()
 				.equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-				throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
-					user.getProvider() + " account. Please use your " + user.getProvider() +
-					" account to login.");
+				throw new UserException(OAUTH2_LOGIN_UNAUTHORIZED);
+				// throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " + user.getProvider() + " account. Please use your " + user.getProvider() + " account to login.");
 			}
 			user = updateExistingUser(user, oAuth2UserInfo);
 		} else {

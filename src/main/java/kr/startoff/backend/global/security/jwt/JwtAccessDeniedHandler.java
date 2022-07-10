@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.global.exception.ErrorInfo;
+import kr.startoff.backend.global.exception.ErrorResponse;
 
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
@@ -29,7 +29,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
 		try (OutputStream os = response.getOutputStream()) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			ErrorInfo errorInfo = new ErrorInfo("접근할 권한이 부족합니다.",
+			ErrorResponse errorInfo = new ErrorResponse("접근할 권한이 부족합니다.",
 				HttpStatus.FORBIDDEN.toString(), request.getRequestURI());
 			objectMapper.writeValue(os, errorInfo);
 			os.flush();
