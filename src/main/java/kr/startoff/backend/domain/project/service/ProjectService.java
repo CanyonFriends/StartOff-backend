@@ -1,5 +1,7 @@
 package kr.startoff.backend.domain.project.service;
 
+import static kr.startoff.backend.global.exception.ExceptionType.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,11 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.domain.project.domain.Project;
+import kr.startoff.backend.domain.project.exception.ProjectException;
 import kr.startoff.backend.domain.tag.domain.SkillTag;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.ProjectBadRequest;
-import kr.startoff.backend.global.exception.custom.ProjectNotFoundException;
-import kr.startoff.backend.global.exception.custom.UserNotFoundException;
+import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.domain.project.dto.ProjectRequest;
 import kr.startoff.backend.domain.project.dto.ProjectResponse;
 import kr.startoff.backend.domain.project.repository.ProjectRepository;
@@ -29,7 +30,7 @@ public class ProjectService {
 
 	@Transactional
 	public ProjectResponse saveProject(ProjectRequest projectRequest, Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+		User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
 		List<SkillTag> projectSkills = extractProjectSkills(projectRequest);
 		Project project = Project.createProject(user, projectRequest, projectSkills);
 		return new ProjectResponse(projectRepository.save(project));
@@ -37,9 +38,9 @@ public class ProjectService {
 
 	@Transactional
 	public ProjectResponse updateProject(ProjectRequest projectRequest, Long userId, Long projectId) {
-		Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+		Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
 		if (!project.getUser().getId().equals(userId)) {
-			throw new ProjectBadRequest();
+			throw new ProjectException(PROJECT_FORBIDDEN);
 		}
 		List<SkillTag> projectSkills = extractProjectSkills(projectRequest);
 		project.updateProject(projectRequest, projectSkills);
@@ -48,10 +49,10 @@ public class ProjectService {
 
 	@Transactional
 	public Long deleteProject(Long userId, Long projectId) {
-		Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
-		User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+		Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+		User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
 		if (!project.getUser().getId().equals(userId)) {
-			throw new ProjectBadRequest();
+			throw new ProjectException(PROJECT_FORBIDDEN);
 		}
 		user.getProjects().remove(project);
 		projectRepository.delete(project);
