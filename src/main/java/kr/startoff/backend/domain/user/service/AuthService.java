@@ -1,5 +1,7 @@
 package kr.startoff.backend.domain.user.service;
 
+import static kr.startoff.backend.global.exception.ExceptionType.*;
+
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,12 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.startoff.backend.domain.user.domain.AuthProvider;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.EmailOrNicknameDuplicateException;
-import kr.startoff.backend.global.exception.custom.RefreshTokenException;
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
+import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.LoginResponse;
 import kr.startoff.backend.domain.user.repository.UserRepository;
@@ -39,10 +40,10 @@ public class AuthService {
 	@Transactional
 	public Long signup(SignupRequest request) {
 		if (isDuplicateEmail(request.getEmail())) {
-			throw new EmailOrNicknameDuplicateException("Email이 중복되었습니다.");
+			throw new UserException(DUPLICATE_EMAIL);
 		}
 		if (isDuplicateNickname(request.getNickname())) {
-			throw new EmailOrNicknameDuplicateException("Nickname이 중복되었습니다.");
+			throw new UserException(DUPLICATE_NICKNAME);
 		}
 
 		User user = userRepository.save(User.builder()
@@ -88,7 +89,7 @@ public class AuthService {
 		String oldAccessToken = request.getAccessToken();
 
 		if (redisUtil.getData(uuid).isEmpty()) {
-			throw new RefreshTokenException();
+			throw new UserException(REFRESH_TOKEN_EXPIRED);
 		}
 
 		UserPrincipal userPrincipal = (UserPrincipal)userDetailsService.loadUserByUsername(email);
