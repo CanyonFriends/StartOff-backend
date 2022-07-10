@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import kr.startoff.backend.global.exception.custom.AccessTokenException;
+import kr.startoff.backend.domain.user.exception.UserException;
+import kr.startoff.backend.global.exception.ExceptionType;
 import kr.startoff.backend.global.security.jwt.CustomStatus;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,9 +19,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 		throws RuntimeException {
 		log.debug("JwtInterceptor.preHandle");
 		if (response.getStatus() == CustomStatus.IS_LOCKED_TOKEN.getCode()) {
-			throw new AccessTokenException(CustomStatus.IS_LOCKED_TOKEN.toString());
+			throw new UserException(ExceptionType.ACCESS_TOKEN_EXPIRED);
 		} else if (response.getStatus() == CustomStatus.INVALID_TOKEN.getCode()) {
-			throw new AccessTokenException(CustomStatus.INVALID_TOKEN.toString());
+			throw new UserException(ExceptionType.ACCESS_TOKEN_EXPIRED);
 		}
 		return true;
 	}
