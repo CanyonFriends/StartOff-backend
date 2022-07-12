@@ -1,9 +1,7 @@
 version: "3.8"
 services:
   web:
-    build:
-      context: ../
-      dockerfile: Dockerfile
+    image: protoseo/startoff:latest
     container_name: startoff-api
     restart: always
     ports:
