@@ -50,6 +50,11 @@ jobs:
           echo ${{ secrets.TEST }}
           touch docker/test
           echo ${{ secrets.TEST }} > docker/test
+      - name: test
+        run: |
+          echo ${{ secrets.TEST }}
+          touch docker/test
+          echo ${{ secrets.TEST }} > docker/test
       - name: copy file via ssh password
         uses: appleboy/scp-action@master
         with:
