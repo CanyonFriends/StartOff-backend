@@ -44,14 +44,9 @@ jobs:
 #          tags: protoseo/startoff:latest
       - name: make env file
         run: |
-          echo ${{ secrets.ENV }}
-          touch docker/.env
-          echo ${{ secrets.ENV }} > docker/.env
-      - name: test
-        run: |
-          echo ${{ secrets.TEST }}
-          touch docker/test
-          echo ${{ secrets.TEST }} > docker/test
+          mkdir docker
+          echo > docker/.env
+          ${{ secrets.ENV }}
       - name: copy file via ssh password
         uses: appleboy/scp-action@master
         with:
