@@ -44,7 +44,7 @@ jobs:
 #          tags: protoseo/startoff:latest
       - name: make env file
         run: |
-          mkdir docker
+          mkdir -p docker
           echo > docker/.env
           ${{ secrets.ENV }}
       - name: copy file via ssh password
