@@ -56,7 +56,6 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "docker/docker-compose.yml,docker/.env"
           target: ${{ secrets.TARGET }}
-          strip_components: 2
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
@@ -64,4 +63,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: ${{ secrets.SCRIPT }}
+          script: | 
+            echo $(pwd)
+            ${{ secrets.SCRIPT }}
