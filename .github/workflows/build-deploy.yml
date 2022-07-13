@@ -41,7 +41,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: protoseo/startoff:latest
+          tags: protoseo/startoff:v0.0.1
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: make env file
         run: |
           mkdir -p docker
@@ -64,5 +68,4 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: | 
-            echo $(pwd)
             ${{ secrets.SCRIPT }}
