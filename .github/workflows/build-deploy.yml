@@ -43,6 +43,7 @@ jobs:
           push: true
           tags: protoseo/startoff:v0.0.1
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
