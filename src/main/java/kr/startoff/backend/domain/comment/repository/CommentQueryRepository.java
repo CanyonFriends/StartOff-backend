@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kr.startoff.backend.domain.comment.domain.Comment;
-import kr.startoff.backend.entity.QComment;
+import kr.startoff.backend.domain.comment.domain.QComment;
 import lombok.RequiredArgsConstructor;
 
 @Repository

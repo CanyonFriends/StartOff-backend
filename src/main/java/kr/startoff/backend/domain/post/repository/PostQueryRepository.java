@@ -8,8 +8,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kr.startoff.backend.domain.post.domain.Category;
-import kr.startoff.backend.entity.QPost;
-import kr.startoff.backend.entity.QSkillTag;
+import kr.startoff.backend.domain.post.domain.QPost;
+import kr.startoff.backend.domain.tag.domain.QSkillTag;
 import lombok.RequiredArgsConstructor;
 
 @Repository
