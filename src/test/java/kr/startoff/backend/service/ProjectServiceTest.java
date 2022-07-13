@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.startoff.backend.domain.project.domain.Project;
 import kr.startoff.backend.domain.project.service.ProjectService;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.ProjectBadRequest;
-import kr.startoff.backend.global.exception.custom.ProjectNotFoundException;
+import kr.startoff.backend.domain.project.exception.ProjectForbiddenException;
+import kr.startoff.backend.domain.project.exception.ProjectNotFoundException;
 import kr.startoff.backend.domain.project.dto.ProjectRequest;
 import kr.startoff.backend.domain.project.dto.ProjectResponse;
 import kr.startoff.backend.domain.project.repository.ProjectRepository;
@@ -81,7 +81,7 @@ class ProjectServiceTest {
 		Long wrongUserId = 123L;
 		final ProjectRequest request = updateProjectRequest();
 
-		assertThrows(ProjectBadRequest.class,
+		assertThrows(ProjectForbiddenException.class,
 			() -> projectService.updateProject(request, wrongUserId, PROJECT_ID), "잘못된 요청입니다.");
 	}
 
@@ -105,7 +105,7 @@ class ProjectServiceTest {
 		given(userRepository.findById(any())).willReturn(Optional.of(new User()));
 		Long wrongUserId = 123L;
 
-		assertThrows(ProjectBadRequest.class,
+		assertThrows(ProjectForbiddenException.class,
 			() -> projectService.deleteProject(wrongUserId, PROJECT_ID), "잘못된 요청입니다.");
 	}
 }

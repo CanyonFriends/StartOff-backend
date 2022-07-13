@@ -20,10 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.EmailOrNicknameDuplicateException;
+import kr.startoff.backend.domain.user.exception.EmailDuplicateException;
 import kr.startoff.backend.global.exception.custom.ImageUploadFailureException;
-import kr.startoff.backend.global.exception.custom.InvalidPasswordException;
-import kr.startoff.backend.global.exception.custom.UserNotFoundException;
+import kr.startoff.backend.domain.user.exception.InvalidPasswordException;
+import kr.startoff.backend.domain.user.exception.UserNotFoundException;
 import kr.startoff.backend.domain.user.service.UserService;
 import kr.startoff.backend.domain.user.dto.response.UserInfoResponse;
 import kr.startoff.backend.domain.user.dto.response.UserProfileResponse;
@@ -170,7 +170,7 @@ class UserServiceTest {
 		given(userRepository.findById(USER_ID)).willReturn(Optional.of(getUser()));
 		given(userRepository.existsUserByNickname(NEW_NICKNAME)).willReturn(true);
 
-		assertThrows(EmailOrNicknameDuplicateException.class,
+		assertThrows(EmailDuplicateException.class,
 			() -> userService.updateNicknameAndIntroduce(USER_ID, nicknameAndIntroduceRequest()));
 	}
 

@@ -16,8 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kr.startoff.backend.domain.tag.domain.SkillTag;
 import kr.startoff.backend.domain.tag.service.SkillTagService;
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.global.exception.custom.SkillTagBadRequest;
-import kr.startoff.backend.global.exception.custom.SkillTagNotFoundException;
+import kr.startoff.backend.domain.tag.exception.SkillTagConflictException;
+import kr.startoff.backend.domain.tag.exception.SkillTagNotFoundException;
 import kr.startoff.backend.payload.PayloadFixture;
 import kr.startoff.backend.domain.tag.dto.SkillTagResponse;
 import kr.startoff.backend.domain.tag.repository.SkillTagRepository;
@@ -64,7 +64,7 @@ class SkillTagServiceTest {
 		given(userRepository.findById(USER_ID)).willReturn(Optional.of(user));
 		given(skillTagRepository.findBySkillName(SKILL_NAME)).willReturn(Optional.of(skillTag));
 
-		assertThrows(SkillTagBadRequest.class,
+		assertThrows(SkillTagConflictException.class,
 			() -> skillTagService.addSkillTagToUser(USER_ID, SKILL_NAME), "이미 존재하는 기술태그입니다.");
 	}
 
