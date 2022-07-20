@@ -67,7 +67,6 @@ public class Post extends Auditor {
 
 	private void setAuthor(User author) {
 		this.author = author;
-		author.getUserPosts().add(this);
 	}
 
 	public static Post createPost(User author, PostRequest postRequest,List<SkillTag> postWantedSkills) {
