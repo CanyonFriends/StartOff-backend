@@ -86,9 +86,8 @@ public class ProfileController {
 		return ResponseEntity.ok(userService.updateUserProfileImage(userId, multipartFile));
 	}
 
-	@DeleteMapping("/users/{user_id}/skills/{skill_id}")
-	public ResponseEntity<CommonResponse> deleteUserSkill(@PathVariable(value = "user_id") Long userId,
-		@PathVariable(value = "skill_id") Long skillId) {
+	@DeleteMapping("/users/{userId}/skills/{skillId}")
+	public ResponseEntity<CommonResponse> deleteUserSkill(@PathVariable Long userId, @PathVariable Long skillId) {
 		skillTagService.deleteSkillTagToUser(userId, skillId);
 		return ResponseEntity.ok(new CommonResponse(true, "해당 기술태그가 삭제되었습니다."));
 	}
