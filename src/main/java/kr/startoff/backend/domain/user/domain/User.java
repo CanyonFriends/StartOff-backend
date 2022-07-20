@@ -1,9 +1,5 @@
 package kr.startoff.backend.domain.user.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,26 +7,17 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import kr.startoff.backend.domain.post.domain.Post;
-import kr.startoff.backend.domain.project.domain.Project;
-import kr.startoff.backend.domain.tag.domain.SkillTag;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
 @Getter
-@Setter
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,19 +56,6 @@ public class User {
 	@Column(name = "image_url")
 	String imageUrl = "";
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	List<Project> projects = new ArrayList<>();
-
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-	List<Post> userPosts = new ArrayList<>();
-
-	@ManyToMany
-	@JoinTable(
-		name = "user_skill_tag",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "skill_tag_id"))
-	List<SkillTag> userSkills = new ArrayList<>();
-
 	@Builder
 	public User(String email, String nickname, String password, AuthProvider provider) {
 		this.email = email;
@@ -90,4 +64,31 @@ public class User {
 		this.provider = provider;
 	}
 
+	public void updatePassword(String password) {
+		this.password = password;
+	}
+
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void updateGithubUrl(String githubUrl) {
+		this.githubUrl = githubUrl;
+	}
+
+	public void updateBlogUrl(String blogUrl) {
+		this.blogUrl = blogUrl;
+	}
+
+	public void updateBaekjoonId(String baekjoonId) {
+		this.baekjoonId = baekjoonId;
+	}
+
+	public void updateIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
+
+	public void updateImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 }
