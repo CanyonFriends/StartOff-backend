@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import kr.startoff.backend.domain.user.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import kr.startoff.backend.global.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
 

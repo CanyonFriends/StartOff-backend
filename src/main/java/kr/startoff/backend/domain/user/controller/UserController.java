@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
 import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.UserInfoResponse;
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import kr.startoff.backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 

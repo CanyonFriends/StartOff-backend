@@ -14,7 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.user.repository.UserRepository;
 import kr.startoff.backend.domain.user.service.UserDetailsServiceImpl;
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 
 class UserDetailsServiceImplTest {
 	private UserRepository userRepository;

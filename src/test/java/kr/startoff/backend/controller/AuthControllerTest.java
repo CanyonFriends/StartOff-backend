@@ -35,7 +35,7 @@ import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.global.exception.ExceptionType;
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import kr.startoff.backend.global.security.jwt.JwtUtil;
 import kr.startoff.backend.domain.user.service.AuthService;
 import kr.startoff.backend.domain.user.service.UserDetailsServiceImpl;

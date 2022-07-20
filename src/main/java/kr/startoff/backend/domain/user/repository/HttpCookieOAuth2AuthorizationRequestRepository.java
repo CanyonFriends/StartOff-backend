@@ -1,4 +1,4 @@
-package kr.startoff.backend.global.security.oauth2;
+package kr.startoff.backend.domain.user.repository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package kr.startoff.backend.global.security.oauth2.user;
+package kr.startoff.backend.domain.user.domain.oauth2;
 
 import java.util.Map;
 
