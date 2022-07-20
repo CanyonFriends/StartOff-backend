@@ -28,19 +28,20 @@ public class SkillTagService {
 		User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
 		SkillTag skillTag = skillTagRepository.findBySkillName(skillName)
 			.orElseThrow(() -> new TagException(TAG_NOT_FOUND));
-		List<SkillTag> userSkills = user.getUserSkills();
-		if (userSkills.contains(skillTag)) {
-			throw new TagException(TAG_CONFLICT);
-		}
-		user.getUserSkills().add(skillTag);
+		// TODO: userskills 관련 추가 수정 필요
+		// List<SkillTag> userSkills = user.getUserSkills();
+		// if (userSkills.contains(skillTag)) {
+		// 	throw new TagException(TAG_CONFLICT);
+		// }
+		// user.getUserSkills().add(skillTag);
 		return new SkillTagResponse(skillTag);
 	}
 
 	@Transactional
 	public void deleteSkillTagToUser(Long userId, Long skillTagId) {
+		// TODO skill tag 삭제 관련 구현
 		User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
 		SkillTag skillTag = skillTagRepository.findById(skillTagId).orElseThrow(() -> new TagException(TAG_NOT_FOUND));
-		user.getUserSkills().remove(skillTag);
 	}
 
 	@Transactional(readOnly = true)
