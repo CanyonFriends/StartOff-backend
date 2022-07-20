@@ -34,14 +34,14 @@ public class ProfileController {
 	private final UserService userService;
 	private final SkillTagService skillTagService;
 
-	@GetMapping("/users/{user_id}/profile")
-	public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable(value = "user_id") Long userId) {
+	@GetMapping("/users/{userId}/profile")
+	public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long userId) {
 		return ResponseEntity.ok(userService.getUserProfile(userId));
 	}
 
-	@PutMapping("/users/{user_id}/introduce")
+	@PutMapping("/users/{userId}/introduce")
 	public ResponseEntity<Map<String, String>> updateUserNicknameAndIntroduce(
-		@PathVariable(value = "user_id") Long userId,
+		@PathVariable Long userId,
 		@RequestBody NicknameAndIntroduceRequest nicknameAndIntroduceRequest) {
 		String value = userService.updateNicknameAndIntroduce(userId, nicknameAndIntroduceRequest);
 		Map<String, String> result = makeResponseBody("nickname", value);
@@ -49,39 +49,39 @@ public class ProfileController {
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/users/{user_id}/github-url")
-	public ResponseEntity<Map<String, String>> updateUserGithubUrl(@PathVariable(value = "user_id") Long userId,
+	@PutMapping("/users/{userId}/github-url")
+	public ResponseEntity<Map<String, String>> updateUserGithubUrl(@PathVariable Long userId,
 		@RequestBody GithubUrlRequest githubUrlRequest) {
 		String value = userService.updateGithubUrl(userId, githubUrlRequest);
 		Map<String, String> result = makeResponseBody("github_url", value);
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/users/{user_id}/blog-url")
-	public ResponseEntity<Map<String, String>> updateUserBlogUrl(@PathVariable(value = "user_id") Long userId,
+	@PutMapping("/users/{userId}/blog-url")
+	public ResponseEntity<Map<String, String>> updateUserBlogUrl(@PathVariable Long userId,
 		@RequestBody BlogUrlRequest blogUrlRequest) {
 		String value = userService.updateBlogUrl(userId, blogUrlRequest);
 		Map<String, String> result = makeResponseBody("blog_url", value);
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/users/{user_id}/baekjoon-id")
-	public ResponseEntity<Map<String, String>> updateUserBaekjoonId(@PathVariable(value = "user_id") Long userId,
+	@PutMapping("/users/{userId}/baekjoon-id")
+	public ResponseEntity<Map<String, String>> updateUserBaekjoonId(@PathVariable Long userId,
 		@RequestBody BaekjoonIdRequest baekjoonIdRequest) {
 		String value = userService.updateBaekjoonId(userId, baekjoonIdRequest);
 		Map<String, String> result = makeResponseBody("baekjoon_id", value);
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/users/{user_id}/skills")
-	public ResponseEntity<SkillTagResponse> updateUserSkills(@PathVariable(value = "user_id") Long userId,
+	@PutMapping("/users/{userId}/skills")
+	public ResponseEntity<SkillTagResponse> updateUserSkills(@PathVariable Long userId,
 		@RequestBody SkillTagRequest skillTagRequest) {
 		SkillTagResponse skillTagResponse = skillTagService.addSkillTagToUser(userId, skillTagRequest.getSkillName());
 		return ResponseEntity.ok(skillTagResponse);
 	}
 
-	@PostMapping("/users/{user_id}/image")
-	public ResponseEntity<String> updateUserProfileImage(@PathVariable(value = "user_id") Long userId,
+	@PostMapping("/users/{userId}/image")
+	public ResponseEntity<String> updateUserProfileImage(@PathVariable Long userId,
 		@RequestPart("image") MultipartFile multipartFile) {
 		return ResponseEntity.ok(userService.updateUserProfileImage(userId, multipartFile));
 	}
