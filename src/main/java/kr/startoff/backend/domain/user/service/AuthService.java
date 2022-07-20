@@ -50,7 +50,7 @@ public class AuthService {
 			.email(request.getEmail())
 			.nickname(request.getNickname())
 			.password(new BCryptPasswordEncoder().encode(request.getPassword()))
-			.provider(AuthProvider.local)
+			.provider(AuthProvider.LOCAL)
 			.build());
 
 		return user.getId();

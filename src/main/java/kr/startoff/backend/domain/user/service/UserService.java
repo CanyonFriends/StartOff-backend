@@ -45,7 +45,7 @@ public class UserService {
 		if (!encoder.matches(updateRequest.getBeforePassword(), user.getPassword())) {
 			throw new UserException(ExceptionType.INVALID_PASSWORD);
 		}
-		user.setPassword(encoder.encode(updateRequest.getAfterPassword()));
+		user.updatePassword(encoder.encode(updateRequest.getAfterPassword()));
 		return true;
 	}
 
@@ -64,8 +64,8 @@ public class UserService {
 		if (!user.getNickname().equals(updateNickname) && isDuplicateNickname(updateNickname)) {
 			throw new UserException(ExceptionType.DUPLICATE_NICKNAME);
 		}
-		user.setNickname(updateNickname);
-		user.setIntroduce(updateIntroduce);
+		user.updateNickname(updateNickname);
+		user.updateIntroduce(updateIntroduce);
 		return user.getNickname();
 	}
 
@@ -73,7 +73,7 @@ public class UserService {
 	public String updateGithubUrl(Long id, GithubUrlRequest githubUrlRequest) {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException(ExceptionType.USER_NOT_FOUND));
 		String updateGithubUrl = githubUrlRequest.getGithubUrl();
-		user.setGithubUrl(updateGithubUrl);
+		user.updateGithubUrl(updateGithubUrl);
 		return user.getGithubUrl();
 	}
 
@@ -81,7 +81,7 @@ public class UserService {
 	public String updateBlogUrl(Long id, BlogUrlRequest blogUrlRequest) {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException(ExceptionType.USER_NOT_FOUND));
 		String updateBlogUrl = blogUrlRequest.getBlogUrl();
-		user.setBlogUrl(updateBlogUrl);
+		user.updateBlogUrl(updateBlogUrl);
 		return user.getBlogUrl();
 	}
 
@@ -89,7 +89,7 @@ public class UserService {
 	public String updateBaekjoonId(Long id, BaekjoonIdRequest baekjoonIdRequest) {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException(ExceptionType.USER_NOT_FOUND));
 		String updateBaekjoonId = baekjoonIdRequest.getBaekjoonId();
-		user.setBaekjoonId(updateBaekjoonId);
+		user.updateBaekjoonId(updateBaekjoonId);
 		return user.getBaekjoonId();
 	}
 
@@ -97,7 +97,7 @@ public class UserService {
 	public String updateUserProfileImage(Long id, MultipartFile file) {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException(ExceptionType.USER_NOT_FOUND));
 		String imageUrl = s3UploadUtil.uploadProfileImage(file, id);
-		user.setImageUrl(imageUrl);
+		user.updateImageUrl(imageUrl);
 		return imageUrl;
 	}
 
