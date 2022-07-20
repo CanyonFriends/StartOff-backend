@@ -9,7 +9,7 @@ import kr.startoff.backend.domain.user.exception.UserException;
 
 public class OAuth2UserInfoFactory {
 	public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
-		if (registrationId.equalsIgnoreCase(AuthProvider.github.toString())) {
+		if (registrationId.equalsIgnoreCase(AuthProvider.GITHUB.toString())) {
 			return new GithubOAuth2UserInfo(attributes);
 		} else {
 			throw new UserException(OAUTH2_LOGIN_UNAUTHORIZED);
