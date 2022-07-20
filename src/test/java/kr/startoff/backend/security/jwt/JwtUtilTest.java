@@ -9,7 +9,7 @@ import java.util.Base64;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import kr.startoff.backend.global.security.jwt.JwtUtil;
 
 class JwtUtilTest {

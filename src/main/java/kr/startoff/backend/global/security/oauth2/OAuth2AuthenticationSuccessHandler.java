@@ -15,7 +15,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
+import kr.startoff.backend.domain.user.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import kr.startoff.backend.global.security.jwt.JwtUtil;
 import kr.startoff.backend.global.util.RedisUtil;
 import kr.startoff.backend.global.util.CookieUtil;

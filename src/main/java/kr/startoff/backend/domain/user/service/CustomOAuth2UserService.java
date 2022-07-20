@@ -1,4 +1,4 @@
-package kr.startoff.backend.global.security.oauth2;
+package kr.startoff.backend.domain.user.service;
 
 import static kr.startoff.backend.global.exception.ExceptionType.*;
 
@@ -15,13 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import kr.startoff.backend.domain.user.exception.UserException;
-import kr.startoff.backend.global.exception.ExceptionType;
-import kr.startoff.backend.global.security.oauth2.user.OAuth2UserInfoFactory;
+import kr.startoff.backend.domain.user.domain.oauth2.OAuth2UserInfoFactory;
 import kr.startoff.backend.domain.user.domain.AuthProvider;
 import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.user.repository.UserRepository;
-import kr.startoff.backend.global.security.UserPrincipal;
-import kr.startoff.backend.global.security.oauth2.user.OAuth2UserInfo;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.oauth2.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
 
 @Service

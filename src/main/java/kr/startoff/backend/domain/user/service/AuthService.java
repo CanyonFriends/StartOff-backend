@@ -23,7 +23,7 @@ import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.LoginResponse;
 import kr.startoff.backend.domain.user.repository.UserRepository;
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import kr.startoff.backend.global.security.jwt.JwtUtil;
 import kr.startoff.backend.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;

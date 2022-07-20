@@ -1,4 +1,4 @@
-package kr.startoff.backend.global.security;
+package kr.startoff.backend.domain.user.domain.security;
 
 import java.util.Collection;
 import java.util.Collections;

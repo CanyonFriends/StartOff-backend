@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.domain.user.repository.UserRepository;
-import kr.startoff.backend.global.security.UserPrincipal;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 
 @Service
