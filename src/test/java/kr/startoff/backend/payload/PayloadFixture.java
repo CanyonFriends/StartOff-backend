@@ -225,7 +225,7 @@ public class PayloadFixture {
 			.email(EMAIL)
 			.nickname(NICKNAME)
 			.password(encoder.encode(PASSWORD))
-			.provider(AuthProvider.local)
+			.provider(AuthProvider.LOCAL)
 			.build();
 	}
 
@@ -234,7 +234,7 @@ public class PayloadFixture {
 			.email(EMAIL)
 			.nickname(NICKNAME)
 			.password(PASSWORD)
-			.provider(AuthProvider.local)
+			.provider(AuthProvider.LOCAL)
 			.build();
 		user.setId(USER_ID);
 		return user;
@@ -244,16 +244,16 @@ public class PayloadFixture {
 		User user = User.builder()
 			.email(EMAIL)
 			.nickname(NICKNAME)
-			.password(PASSWORD).provider(AuthProvider.local)
+			.password(PASSWORD).provider(AuthProvider.LOCAL)
 			.build();
 		user.setUserSkills(List.of(getSkillTag()));
 		user.setProjects(List.of(getProject()));
 		user.setNickname(NICKNAME);
-		user.setIntroduce(INTRODUCE);
-		user.setGithubUrl(NEW_GITHUB_URL);
-		user.setBlogUrl(NEW_BLOG_URL);
-		user.setImageUrl(IMAGE_URL);
-		user.setBaekjoonId(BAEKJOON_ID);
+		user.updateIntroduce(INTRODUCE);
+		user.updateGithubUrl(NEW_GITHUB_URL);
+		user.updateBlogUrl(NEW_BLOG_URL);
+		user.updateImageUrl(IMAGE_URL);
+		user.updateBaekjoonId(BAEKJOON_ID);
 		return user;
 	}
 

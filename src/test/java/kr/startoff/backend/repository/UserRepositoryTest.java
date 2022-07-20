@@ -23,7 +23,7 @@ class UserRepositoryTest {
 		.email(EMAIL)
 		.nickname(NICKNAME)
 		.password(PASSWORD)
-		.provider(AuthProvider.local)
+		.provider(AuthProvider.LOCAL)
 		.build();
 
 	@Autowired
@@ -50,7 +50,7 @@ class UserRepositoryTest {
 		assertEquals(EMAIL, foundUser.get().getEmail());
 		assertEquals(PASSWORD, foundUser.get().getPassword());
 		assertEquals(NICKNAME, foundUser.get().getNickname());
-		assertEquals(AuthProvider.local, foundUser.get().getProvider());
+		assertEquals(AuthProvider.LOCAL, foundUser.get().getProvider());
 	}
 
 	@Test
