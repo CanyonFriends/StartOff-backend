@@ -80,11 +80,6 @@ public class Project {
 		return project;
 	}
 
-	private void setUser(User user) {
-		this.user = user;
-		user.getProjects().add(this);
-	}
-
 	public void updateProject(ProjectRequest projectRequest, List<SkillTag> projectSkills) {
 		this.setTitle(projectRequest.getTitle());
 		this.setIntroduce(projectRequest.getIntroduce());
