@@ -33,8 +33,9 @@ public class UserProfileResponse {
 		this.githubUrl = user.getGithubUrl();
 		this.blogUrl = user.getBlogUrl();
 		this.baekjoonId = user.getBaekjoonId();
-		this.projects = user.getProjects().stream().map(ProjectResponse::new).collect(Collectors.toList());
-		this.userSkills = user.getUserSkills().stream().map(SkillTagResponse::new).collect(Collectors.toList());
+		// TODO 수정 필요
+		// this.projects = user.getProjects().stream().map(ProjectResponse::new).collect(Collectors.toList());
+		// this.userSkills = user.getUserSkills().stream().map(SkillTagResponse::new).collect(Collectors.toList());
 	}
 
 }
