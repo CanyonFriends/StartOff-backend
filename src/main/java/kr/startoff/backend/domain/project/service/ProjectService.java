@@ -54,7 +54,6 @@ public class ProjectService {
 		if (!project.getUser().getId().equals(userId)) {
 			throw new ProjectException(PROJECT_FORBIDDEN);
 		}
-		user.getProjects().remove(project);
 		projectRepository.delete(project);
 		return projectId;
 	}
