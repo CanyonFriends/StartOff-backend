@@ -78,13 +78,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		while (userRepository.existsUserByNickname(nickname.toString())) {
 			nickname.append(ThreadLocalRandom.current().nextInt(0, 9));
 		}
-		user.setImageUrl(oAuth2UserInfo.getImageUrl());
-		user.setNickname(nickname.toString());
+		user.updateImageUrl(oAuth2UserInfo.getImageUrl());
+		user.updateNickname(nickname.toString());
 		return userRepository.save(user);
 	}
 
 	private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-		existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
+		existingUser.updateImageUrl(oAuth2UserInfo.getImageUrl());
 		return userRepository.save(existingUser);
 	}
 
