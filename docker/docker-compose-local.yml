@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  db:
+    image: mariadb:10.5
+    container_name: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file: .env
+    environment:
+      TZ: Asia/Seoul
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/config:/etc/mysql/conf.d
+      - ./db/init:/docker-entrypoint-initdb.d
+    command: ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_general_ci"]
+  redis:
+    image: redis:6.2
+    command: redis-server --port 6379
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    labels:
+      - name=redis
+      - mode=standalone
