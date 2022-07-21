@@ -1,4 +1,4 @@
-package kr.startoff.backend.repository;
+package kr.startoff.backend.domain.user.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 

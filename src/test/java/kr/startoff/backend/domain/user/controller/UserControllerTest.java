@@ -1,4 +1,4 @@
-package kr.startoff.backend.controller;
+package kr.startoff.backend.domain.user.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +15,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import kr.startoff.backend.controller.annotation.WithUserPrincipal;
+import kr.startoff.backend.common.annotation.WithUserPrincipal;
 import kr.startoff.backend.global.config.SecurityConfig;
-import kr.startoff.backend.domain.user.controller.UserController;
 import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
 import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.service.UserService;

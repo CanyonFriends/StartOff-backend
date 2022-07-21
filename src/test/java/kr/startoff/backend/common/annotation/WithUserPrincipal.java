@@ -1,4 +1,4 @@
-package kr.startoff.backend.controller.annotation;
+package kr.startoff.backend.common.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

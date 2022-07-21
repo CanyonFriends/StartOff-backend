@@ -1,4 +1,4 @@
-package kr.startoff.backend.controller.annotation;
+package kr.startoff.backend.common.annotation;
 
 import static kr.startoff.backend.payload.PayloadFixture.*;
 
