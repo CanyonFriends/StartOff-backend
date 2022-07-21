@@ -1,4 +1,4 @@
-package kr.startoff.backend.payload.request;
+package kr.startoff.backend.domain.user.dto.request;
 
 import static kr.startoff.backend.payload.PayloadFixture.*;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,4 @@
-package kr.startoff.backend.service;
+package kr.startoff.backend.domain.user.service;
 
 import static kr.startoff.backend.payload.PayloadFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,11 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.startoff.backend.domain.user.domain.User;
-import kr.startoff.backend.domain.user.exception.EmailDuplicateException;
 import kr.startoff.backend.global.exception.custom.ImageUploadFailureException;
-import kr.startoff.backend.domain.user.exception.InvalidPasswordException;
-import kr.startoff.backend.domain.user.exception.UserNotFoundException;
-import kr.startoff.backend.domain.user.service.UserService;
 import kr.startoff.backend.domain.user.dto.response.UserInfoResponse;
 import kr.startoff.backend.domain.user.dto.response.UserProfileResponse;
 import kr.startoff.backend.domain.user.repository.UserRepository;

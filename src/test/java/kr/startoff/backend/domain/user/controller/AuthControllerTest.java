@@ -1,4 +1,4 @@
-package kr.startoff.backend.controller;
+package kr.startoff.backend.domain.user.controller;
 
 import static kr.startoff.backend.payload.PayloadFixture.*;
 import static org.mockito.BDDMockito.*;
