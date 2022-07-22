@@ -1,6 +1,7 @@
 package kr.startoff.backend.domain.user.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -22,39 +22,26 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
-	Long id;
+	private Long id;
 
 	@Column(name = "password", nullable = false)
-	String password;
+	private String password;
 
 	@Column(name = "email", nullable = false, unique = true)
-	String email;
+	private String email;
 
 	@Column(name = "nickname", nullable = false, unique = true)
-	String nickname;
-
-	@Column(name = "github_url")
-	String githubUrl = "";
-
-	@Column(name = "blog_url")
-	String blogUrl = "";
-
-	@Column(name = "baekjoon_id")
-	String baekjoonId = "";
-
-	@Column(name = "introduce")
-	String introduce = "";
-
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	@Column(name = "provider")
-	AuthProvider provider;
-
-	@Column(name = "provider_id")
-	String providerId;
+	private String nickname;
 
 	@Column(name = "image_url")
-	String imageUrl = "";
+	private String imageUrl;
+
+	@Embedded
+	private Profile profile = new Profile();
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "provider", nullable = false)
+	private AuthProvider provider;
 
 	@Builder
 	public User(String email, String nickname, String password, AuthProvider provider) {
@@ -72,23 +59,11 @@ public class User {
 		this.nickname = nickname;
 	}
 
-	public void updateGithubUrl(String githubUrl) {
-		this.githubUrl = githubUrl;
-	}
-
-	public void updateBlogUrl(String blogUrl) {
-		this.blogUrl = blogUrl;
-	}
-
-	public void updateBaekjoonId(String baekjoonId) {
-		this.baekjoonId = baekjoonId;
-	}
-
-	public void updateIntroduce(String introduce) {
-		this.introduce = introduce;
-	}
-
 	public void updateImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public void updateProfile(Profile profile) {
+		this.profile = profile;
 	}
 }
