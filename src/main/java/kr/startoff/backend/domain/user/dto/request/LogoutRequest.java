@@ -12,20 +12,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RefreshRequest {
+public class LogoutRequest {
 	@NotBlank
 	private String uuid;
 
 	@NotBlank
-	@Email
-	private String email;
-
-	@NotBlank
 	private String accessToken;
 
-	public RefreshRequest(String uuid, String email, String accessToken) {
+	public LogoutRequest(String uuid, String accessToken) {
 		this.uuid = uuid;
-		this.email = email;
 		this.accessToken = accessToken;
 	}
 }

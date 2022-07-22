@@ -1,4 +1,4 @@
-package kr.startoff.backend.domain.user.dto.request.profile;
+package kr.startoff.backend.domain.user.dto.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class BlogUrlRequest {
-	private String blogUrl;
+public class SkillTagRequest {
+	private String skillName;
 
-	public BlogUrlRequest(String blogUrl) {
-		this.blogUrl = blogUrl;
+	public SkillTagRequest(String skillName) {
+		this.skillName = skillName;
 	}
 }
