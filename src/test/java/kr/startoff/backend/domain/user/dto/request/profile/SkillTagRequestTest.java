@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.startoff.backend.domain.user.dto.request.SkillTagRequest;
+
 class SkillTagRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
