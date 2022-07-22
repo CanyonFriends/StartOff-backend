@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.startoff.backend.domain.user.domain.AuthProvider;
 import kr.startoff.backend.domain.user.domain.User;
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
-import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
+import kr.startoff.backend.domain.user.dto.request.LogoutRequest;
+import kr.startoff.backend.domain.user.dto.request.RefreshRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
 import kr.startoff.backend.domain.user.exception.UserException;
@@ -35,7 +37,7 @@ public class AuthService {
 	private final JwtUtil jwtUtil;
 	private final RedisUtil redisUtil;
 	private final AuthenticationManager authenticationManager;
-	private final UserDetailsServiceImpl userDetailsService;
+	private final UserDetailsService userDetailsService;
 
 	@Transactional
 	public Long signup(SignupRequest request) {
@@ -83,7 +85,7 @@ public class AuthService {
 	}
 
 	@Transactional
-	public AccessTokenResponse refreshToken(RefreshOrLogoutRequest request) {
+	public AccessTokenResponse refreshToken(RefreshRequest request) {
 		String email = request.getEmail();
 		String uuid = request.getUuid();
 		String oldAccessToken = request.getAccessToken();
@@ -100,7 +102,7 @@ public class AuthService {
 	}
 
 	@Transactional
-	public CommonResponse logout(RefreshOrLogoutRequest request) {
+	public CommonResponse logout(LogoutRequest request) {
 		String uuid = request.getUuid();
 		String accessToken = request.getAccessToken();
 		if (redisUtil.getData(uuid).isPresent()) {
