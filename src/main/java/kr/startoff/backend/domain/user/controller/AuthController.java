@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
-import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
+import kr.startoff.backend.domain.user.dto.request.LogoutRequest;
+import kr.startoff.backend.domain.user.dto.request.RefreshRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
 import kr.startoff.backend.global.common.dto.CommonResponse;
@@ -46,13 +47,13 @@ public class AuthController {
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<AccessTokenResponse> getAccessToken(@RequestBody RefreshOrLogoutRequest request) {
+	public ResponseEntity<AccessTokenResponse> getAccessToken(@RequestBody RefreshRequest request) {
 		AccessTokenResponse accessTokenResponse = authService.refreshToken(request);
 		return ResponseEntity.ok(accessTokenResponse);
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<CommonResponse> logout(@RequestBody RefreshOrLogoutRequest request) {
+	public ResponseEntity<CommonResponse> logout(@RequestBody LogoutRequest request) {
 		CommonResponse commonResponse = authService.logout(request);
 		return ResponseEntity.ok(commonResponse);
 	}

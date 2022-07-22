@@ -9,12 +9,16 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.startoff.backend.domain.user.dto.request.NicknameRequest;
 import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
 import kr.startoff.backend.global.common.dto.CommonResponse;
 import kr.startoff.backend.domain.user.dto.response.UserInfoResponse;
@@ -44,6 +48,18 @@ public class UserController {
 		CommonResponse result = new CommonResponse(userService.changeUserPassword(updateRequest, userId),
 			"비밀번호가 변경되었습니다.");
 		return ResponseEntity.ok(result);
+	}
+
+	@PostMapping("/users/{userId}/image")
+	public ResponseEntity<String> updateUserNickname(@PathVariable Long userId,
+		@RequestPart("image") MultipartFile multipartFile) {
+		return ResponseEntity.ok(userService.updateUserProfileImage(userId, multipartFile));
+	}
+
+	@PutMapping("/users/{userId}/nickname")
+	public ResponseEntity<String> updateUserNickname(@PathVariable Long userId,
+		@RequestBody NicknameRequest nicknameRequest) {
+		return ResponseEntity.ok(userService.updateNickname(userId, nicknameRequest));
 	}
 
 	@DeleteMapping("/users/{userId}")
