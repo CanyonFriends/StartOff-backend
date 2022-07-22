@@ -144,7 +144,7 @@ class UserServiceTest {
 		given(userRepository.findById(USER_ID)).willReturn(Optional.of(user));
 		given(userRepository.existsUserByNickname(NEW_NICKNAME)).willReturn(false);
 
-		userService.updateNicknameAndIntroduce(USER_ID, nicknameAndIntroduceRequest());
+		userService.updateNickname(USER_ID, nicknameAndIntroduceRequest());
 
 		assertEquals(nicknameAndIntroduceRequest().getNickname(), user.getNickname());
 		assertEquals(nicknameAndIntroduceRequest().getIntroduce(), user.getIntroduce());
@@ -155,7 +155,7 @@ class UserServiceTest {
 		User user = getUser();
 		given(userRepository.findById(USER_ID)).willReturn(Optional.of(user));
 
-		userService.updateNicknameAndIntroduce(USER_ID, introduceRequest());
+		userService.updateNickname(USER_ID, introduceRequest());
 
 		assertEquals(introduceRequest().getNickname(), user.getNickname());
 		assertEquals(introduceRequest().getIntroduce(), user.getIntroduce());
@@ -167,7 +167,7 @@ class UserServiceTest {
 		given(userRepository.existsUserByNickname(NEW_NICKNAME)).willReturn(true);
 
 		assertThrows(EmailDuplicateException.class,
-			() -> userService.updateNicknameAndIntroduce(USER_ID, nicknameAndIntroduceRequest()));
+			() -> userService.updateNickname(USER_ID, nicknameAndIntroduceRequest()));
 	}
 
 	@Test

@@ -17,13 +17,13 @@ import kr.startoff.backend.domain.comment.dto.CommentRequest;
 import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 import kr.startoff.backend.domain.post.dto.PostRequest;
 import kr.startoff.backend.domain.project.dto.ProjectRequest;
-import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
+import kr.startoff.backend.domain.user.dto.request.RefreshRequest;
 import kr.startoff.backend.domain.user.dto.request.SignupRequest;
 import kr.startoff.backend.domain.user.dto.request.UserPasswordChangeRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.BlogUrlRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.GithubUrlRequest;
-import kr.startoff.backend.domain.user.dto.request.profile.NicknameAndIntroduceRequest;
+import kr.startoff.backend.domain.user.dto.request.profile.IntroduceRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.SkillTagRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
 import kr.startoff.backend.domain.comment.dto.CommentResponse;
@@ -86,12 +86,12 @@ public class PayloadFixture {
 		return new GithubUrlRequest(NEW_GITHUB_URL);
 	}
 
-	public static NicknameAndIntroduceRequest nicknameAndIntroduceRequest() {
-		return new NicknameAndIntroduceRequest(NEW_NICKNAME, INTRODUCE);
+	public static IntroduceRequest nicknameAndIntroduceRequest() {
+		return new IntroduceRequest(NEW_NICKNAME, INTRODUCE);
 	}
 
-	public static NicknameAndIntroduceRequest introduceRequest() {
-		return new NicknameAndIntroduceRequest(NICKNAME, INTRODUCE);
+	public static IntroduceRequest introduceRequest() {
+		return new IntroduceRequest(NICKNAME, INTRODUCE);
 	}
 
 	public static SkillTagRequest skillTagRequest() {
@@ -116,8 +116,8 @@ public class PayloadFixture {
 		return new ProjectResponse(getUpdateProject());
 	}
 
-	public static RefreshOrLogoutRequest refreshOrLogoutRequest() {
-		return new RefreshOrLogoutRequest(UUID, EMAIL, ACCESS_TOKEN);
+	public static RefreshRequest refreshOrLogoutRequest() {
+		return new RefreshRequest(UUID, EMAIL, ACCESS_TOKEN);
 	}
 
 	public static SignupRequest signupRequest() {
