@@ -24,7 +24,7 @@ import kr.startoff.backend.domain.user.dto.request.profile.BaekjoonIdRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.BlogUrlRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.GithubUrlRequest;
 import kr.startoff.backend.domain.user.dto.request.profile.IntroduceRequest;
-import kr.startoff.backend.domain.user.dto.request.profile.SkillTagRequest;
+import kr.startoff.backend.domain.user.dto.request.SkillTagRequest;
 import kr.startoff.backend.domain.user.dto.response.AccessTokenResponse;
 import kr.startoff.backend.domain.comment.dto.CommentResponse;
 import kr.startoff.backend.global.common.dto.CommonResponse;
