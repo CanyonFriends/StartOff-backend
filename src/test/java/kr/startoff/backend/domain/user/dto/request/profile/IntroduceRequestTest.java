@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-class NicknameAndIntroduceRequestTest {
+class IntroduceRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
@@ -18,8 +18,8 @@ class NicknameAndIntroduceRequestTest {
 			+ "\"introduce\":\"Introduce\"\n"
 			+ "}";
 		//when
-		NicknameAndIntroduceRequest updateRequest = objectMapper.readValue(requestBody,
-			NicknameAndIntroduceRequest.class);
+		IntroduceRequest updateRequest = objectMapper.readValue(requestBody,
+			IntroduceRequest.class);
 		//then
 		assertEquals(updateRequest.getNickname(), nicknameAndIntroduceRequest().getNickname());
 		assertEquals(updateRequest.getIntroduce(), nicknameAndIntroduceRequest().getIntroduce());

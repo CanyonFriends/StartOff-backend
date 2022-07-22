@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.startoff.backend.domain.user.dto.request.RefreshOrLogoutRequest;
+import kr.startoff.backend.domain.user.dto.request.RefreshRequest;
 
-class RefreshOrLogoutRequestTest {
+class RefreshRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
@@ -21,11 +21,11 @@ class RefreshOrLogoutRequestTest {
 			+ "\"access_token\":\"access token\"\n"
 			+ "}";
 		//when
-		RefreshOrLogoutRequest refreshOrLogoutRequest = objectMapper.readValue(requestBody,
-			RefreshOrLogoutRequest.class);
+		RefreshRequest refreshRequest = objectMapper.readValue(requestBody,
+			RefreshRequest.class);
 		//then
-		assertEquals(refreshOrLogoutRequest.getUuid(), refreshOrLogoutRequest().getUuid());
-		assertEquals(refreshOrLogoutRequest.getEmail(), refreshOrLogoutRequest().getEmail());
-		assertEquals(refreshOrLogoutRequest.getAccessToken(), refreshOrLogoutRequest().getAccessToken());
+		assertEquals(refreshRequest.getUuid(), refreshOrLogoutRequest().getUuid());
+		assertEquals(refreshRequest.getEmail(), refreshOrLogoutRequest().getEmail());
+		assertEquals(refreshRequest.getAccessToken(), refreshOrLogoutRequest().getAccessToken());
 	}
 }
