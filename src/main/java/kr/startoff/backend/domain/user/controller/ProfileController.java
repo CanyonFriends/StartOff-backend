@@ -40,6 +40,7 @@ public class ProfileController {
 		return ResponseEntity.ok(response);
 	}
 
+	// TODO: SkillTag 관련 리팩토링 시 수정
 	@PutMapping("/users/{userId}/skills")
 	public ResponseEntity<SkillTagResponse> updateUserSkills(@PathVariable Long userId,
 		@RequestBody SkillTagRequest skillTagRequest) {

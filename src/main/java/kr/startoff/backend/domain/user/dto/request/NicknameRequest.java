@@ -7,4 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NicknameRequest {
 	String nickname;
+
+	public NicknameRequest(String nickname) {
+		this.nickname = nickname;
+	}
 }
