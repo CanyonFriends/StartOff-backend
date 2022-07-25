@@ -70,8 +70,7 @@ public class UserController {
 	@GetMapping("/users/self")
 	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<UserInfoResponse> getSelfInformation(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-		UserInfoResponse response = new UserInfoResponse(userPrincipal.getId(), userPrincipal.getEmail(),
-			userPrincipal.getNickname());
+		UserInfoResponse response = UserInfoResponse.from(userPrincipal);
 		return ResponseEntity.ok(response);
 	}
 }
