@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,41 +48,38 @@ public class AuthService {
 		if (isDuplicateNickname(request.getNickname())) {
 			throw new UserException(DUPLICATE_NICKNAME);
 		}
-
-		User user = userRepository.save(User.builder()
-			.email(request.getEmail())
-			.nickname(request.getNickname())
-			.password(new BCryptPasswordEncoder().encode(request.getPassword()))
-			.provider(AuthProvider.LOCAL)
-			.build());
-
+		User user = userRepository.save(request.toEntity());
 		return user.getId();
 	}
 
 	@Transactional
 	public LoginResponse login(LoginRequest loginRequest) {
-		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		Authentication authentication = authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-		context.setAuthentication(authentication);
-		SecurityContextHolder.setContext(context);
+		Authentication authentication = getAuthentication(loginRequest);
 
 		UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
-		Long userId = userPrincipal.getId();
-		String email = userPrincipal.getEmail();
-		String nickname = userPrincipal.getNickname();
 		String accessToken = jwtUtil.generateJwtToken(userPrincipal);
 		String uuid = UUID.randomUUID().toString();
 
-		redisUtil.setDataExpire(uuid, String.valueOf(userId), (int)JwtUtil.REFRESH_EXPIRATION_SECONDS);
+		redisUtil.setDataExpire(uuid, "true", (int)JwtUtil.REFRESH_EXPIRATION_SECONDS);
 
-		return LoginResponse.builder()
-			.userId(userId)
-			.email(email)
-			.accessToken(accessToken)
-			.nickname(nickname)
-			.uuid(uuid)
-			.build();
+		return LoginResponse.of(userPrincipal, accessToken, uuid);
+	}
+
+	private Authentication getAuthentication(LoginRequest loginRequest) {
+		SecurityContext context = SecurityContextHolder.createEmptyContext();
+		Authentication authentication = authenticate(loginRequest);
+		context.setAuthentication(authentication);
+		SecurityContextHolder.setContext(context);
+		return authentication;
+	}
+
+	private Authentication authenticate(LoginRequest loginRequest) {
+		try {
+			return authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+		} catch (AuthenticationException e) {
+			throw new UserException(INVALID_PASSWORD);
+		}
 	}
 
 	@Transactional
@@ -98,7 +96,7 @@ public class AuthService {
 		String newAccessToken = jwtUtil.generateJwtToken(userPrincipal);
 
 		redisUtil.setDataExpire(oldAccessToken, "true", (int)JwtUtil.TOKEN_EXPIRATION_SECONDS);
-		return new AccessTokenResponse(userPrincipal.getId(), newAccessToken);
+		return AccessTokenResponse.of(userPrincipal.getId(), newAccessToken);
 	}
 
 	@Transactional

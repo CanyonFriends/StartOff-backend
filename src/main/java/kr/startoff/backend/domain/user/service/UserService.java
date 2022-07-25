@@ -25,7 +25,7 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public UserInfoResponse getUserInformation(Long id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException(ExceptionType.USER_NOT_FOUND));
-		return new UserInfoResponse(user.getId(), user.getEmail(), user.getNickname());
+		return UserInfoResponse.from(user);
 	}
 
 	@Transactional
