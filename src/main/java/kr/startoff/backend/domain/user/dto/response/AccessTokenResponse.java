@@ -11,8 +11,12 @@ public class AccessTokenResponse {
 	private Long userId;
 	private String accessToken;
 
-	public AccessTokenResponse(Long userId, String accessToken) {
+	private AccessTokenResponse(Long userId, String accessToken) {
 		this.userId = userId;
 		this.accessToken = accessToken;
+	}
+
+	public static AccessTokenResponse of(Long userId, String accessToken) {
+		return new AccessTokenResponse(userId, accessToken);
 	}
 }
