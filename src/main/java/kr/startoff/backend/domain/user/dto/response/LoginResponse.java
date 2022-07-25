@@ -1,29 +1,30 @@
 package kr.startoff.backend.domain.user.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-import lombok.Builder;
+import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import lombok.Getter;
 
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class LoginResponse {
-	@JsonProperty("token_type")
-	private final String TOKEN_TYPE = "Bearer";
-	private String accessToken;
-	private String uuid;
-	private Long userId;
-	private String email;
-	private String nickname;
+	private final Long userId;
+	private final String email;
+	private final String nickname;
+	private final String accessToken;
+	private final String uuid;
 
-	@Builder
-	public LoginResponse(String accessToken, String uuid, Long userId, String email, String nickname) {
-		this.accessToken = accessToken;
-		this.uuid = uuid;
+	private LoginResponse(Long userId, String email, String nickname, String accessToken, String uuid) {
 		this.userId = userId;
 		this.email = email;
 		this.nickname = nickname;
+		this.accessToken = accessToken;
+		this.uuid = uuid;
+	}
+
+	public static LoginResponse of(UserPrincipal userPrincipal, String accessToken, String uuid) {
+		return new LoginResponse(
+			userPrincipal.getId(),
+			userPrincipal.getEmail(),
+			userPrincipal.getNickname(),
+			accessToken,
+			uuid);
 	}
 }
