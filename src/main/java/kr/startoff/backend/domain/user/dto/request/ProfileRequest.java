@@ -12,6 +12,13 @@ public class ProfileRequest {
 	private String baekjoonId;
 	private String introduce;
 
+	public ProfileRequest(String githubUrl, String blogUrl, String baekjoonId, String introduce) {
+		this.githubUrl = githubUrl;
+		this.blogUrl = blogUrl;
+		this.baekjoonId = baekjoonId;
+		this.introduce = introduce;
+	}
+
 	public Profile toEntity() {
 		return Profile.builder()
 			.githubUrl(githubUrl)
