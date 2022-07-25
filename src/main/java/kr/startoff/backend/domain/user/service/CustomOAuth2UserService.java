@@ -2,6 +2,7 @@ package kr.startoff.backend.domain.user.service;
 
 import static kr.startoff.backend.global.exception.ExceptionType.*;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -55,8 +56,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		if (userOptional.isPresent()) {
 			user = userOptional.get();
 			if (!user.getProvider()
-				.equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-				throw new UserException(OAUTH2_LOGIN_UNAUTHORIZED);
+				.equals(AuthProvider.valueOf(getAuthProvider(oAuth2UserRequest)))) {
+				throw new UserException(OAUTH2_DUPLICATE_EMAIL);
 				// throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " + user.getProvider() + " account. Please use your " + user.getProvider() + " account to login.");
 			}
 			user = updateExistingUser(user, oAuth2UserInfo);
@@ -67,11 +68,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		return UserPrincipal.create(user, oAuth2User.getAttributes());
 	}
 
+	private String getAuthProvider(OAuth2UserRequest oAuth2UserRequest) {
+		return oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase();
+	}
+
 	private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
 		User user = User.builder()
 			.email(oAuth2UserInfo.getEmail())
 			.password("")
-			.provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
+			.provider(AuthProvider.valueOf(getAuthProvider(oAuth2UserRequest)))
 			.build();
 
 		StringBuilder nickname = new StringBuilder(oAuth2UserInfo.getName());
