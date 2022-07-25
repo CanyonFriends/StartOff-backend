@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import kr.startoff.backend.domain.user.exception.AccessTokenException;
+import kr.startoff.backend.domain.user.exception.UserException;
 import kr.startoff.backend.global.interceptor.JwtInterceptor;
 import kr.startoff.backend.global.security.jwt.CustomStatus;
 
@@ -31,7 +31,7 @@ class JwtInterceptorTest {
 	void preHandleTestWithInvalidToken() throws Exception {
 		mockHttpServletResponse.setStatus(CustomStatus.INVALID_TOKEN.getCode());
 
-		assertThrows(AccessTokenException.class,
+		assertThrows(UserException.class,
 			() -> jwtInterceptor.preHandle(mockHttpServletRequest, mockHttpServletResponse, null));
 	}
 
@@ -39,7 +39,7 @@ class JwtInterceptorTest {
 	void preHandleTestWithLockedToken() throws Exception {
 		mockHttpServletResponse.setStatus(CustomStatus.IS_LOCKED_TOKEN.getCode());
 
-		assertThrows(AccessTokenException.class,
+		assertThrows(UserException.class,
 			() -> jwtInterceptor.preHandle(mockHttpServletRequest, mockHttpServletResponse, null));
 	}
 

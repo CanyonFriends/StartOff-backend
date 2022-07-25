@@ -1,6 +1,6 @@
 package kr.startoff.backend.security.jwt;
 
-import static kr.startoff.backend.payload.PayloadFixture.*;
+import static kr.startoff.backend.domain.user.fixture.UserFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.SecureRandom;
@@ -30,7 +30,7 @@ class JwtUtilTest {
 	@Test
 	void generateJwtTokenTest() throws Exception {
 		//given
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
+		UserPrincipal userPrincipal = UserPrincipal.create(user());
 		final String token = jwtUtil.generateJwtToken(userPrincipal);
 
 		assertNotNull(token);
@@ -40,7 +40,7 @@ class JwtUtilTest {
 	@Test
 	void generateRefreshTokenTest() throws Exception {
 		//given
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
+		UserPrincipal userPrincipal = UserPrincipal.create(user());
 		final String token = jwtUtil.generateRefreshToken(userPrincipal);
 
 		assertNotNull(token);
@@ -49,7 +49,7 @@ class JwtUtilTest {
 
 	@Test
 	void getUserNameFromJwtTokenTest() {
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
+		UserPrincipal userPrincipal = UserPrincipal.create(user());
 		final String token = jwtUtil.generateJwtToken(userPrincipal);
 		String username = jwtUtil.getUserNameFromJwtToken(token);
 
@@ -58,7 +58,7 @@ class JwtUtilTest {
 	
 	@Test
 	void validateJwtTokenTest() throws Exception{
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
+		UserPrincipal userPrincipal = UserPrincipal.create(user());
 		final String token = jwtUtil.generateJwtToken(userPrincipal);
 
 		assertTrue(jwtUtil.validateJwtToken(token));
