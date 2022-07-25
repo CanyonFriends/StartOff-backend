@@ -1,6 +1,6 @@
 package kr.startoff.backend.domain.user.dto.response;
 
-import static kr.startoff.backend.payload.PayloadFixture.*;
+import static kr.startoff.backend.domain.user.fixture.UserFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;

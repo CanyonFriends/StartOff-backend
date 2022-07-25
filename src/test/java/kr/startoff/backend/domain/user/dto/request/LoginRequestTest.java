@@ -1,13 +1,11 @@
-package kr.startoff.backend.payload.request;
+package kr.startoff.backend.domain.user.dto.request;
 
-import static kr.startoff.backend.payload.PayloadFixture.*;
+import static kr.startoff.backend.domain.user.fixture.UserFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import kr.startoff.backend.domain.user.dto.request.LoginRequest;
 
 class LoginRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();

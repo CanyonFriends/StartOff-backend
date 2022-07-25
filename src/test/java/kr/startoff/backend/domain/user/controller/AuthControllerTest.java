@@ -1,6 +1,6 @@
 package kr.startoff.backend.domain.user.controller;
 
-import static kr.startoff.backend.payload.PayloadFixture.*;
+import static kr.startoff.backend.domain.user.fixture.UserFixture.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,7 +73,7 @@ class AuthControllerTest {
 	@Test
 	void signUpSuccessTest() throws Exception {
 		SignupRequest request = signupRequest();
-		User user = getUser();
+		User user = user();
 		given(userService.validateEmailOrNickname(request.getEmail(), request.getNickname())).willReturn(true);
 		given(authService.signup(any())).willReturn(USER_ID);
 
@@ -125,7 +125,7 @@ class AuthControllerTest {
 	@Test
 	void loginSuccessTest() throws Exception {
 		LoginRequest loginRequest = loginRequest();
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
+		UserPrincipal userPrincipal = UserPrincipal.create(user());
 		UsernamePasswordAuthenticationToken token =
 			new UsernamePasswordAuthenticationToken(userPrincipal, "password",
 				List.of(new SimpleGrantedAuthority("ROLE_USER")));
@@ -133,7 +133,6 @@ class AuthControllerTest {
 			new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())))
 			.willReturn(token);
 		given(jwtUtil.generateJwtToken(any(UserPrincipal.class))).willReturn(ACCESS_TOKEN);
-		given(jwtUtil.generateRefreshToken(any(UserPrincipal.class))).willReturn(REFRESH_TOKEN);
 
 		mockMvc.perform(post("/api/v1/login")
 				.content(objectMapper.writeValueAsString(loginRequest))
@@ -165,29 +164,26 @@ class AuthControllerTest {
 
 	@Test
 	void refreshSuccessTest() throws Exception {
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
-		given(redisUtil.getData(UUID)).willReturn(Optional.of(REFRESH_TOKEN));
-		given(jwtUtil.validateJwtToken(REFRESH_TOKEN)).willReturn(true);
-		given(jwtUtil.getUserNameFromJwtToken(REFRESH_TOKEN)).willReturn(EMAIL);
+		UserPrincipal userPrincipal = userPrincipal();
 		given(userDetailsService.loadUserByUsername(EMAIL)).willReturn(userPrincipal);
-		given(jwtUtil.generateJwtToken(userPrincipal)).willReturn(NEW_ACCESS_TOKEN);
+		given(jwtUtil.generateJwtToken(userPrincipal)).willReturn(ACCESS_TOKEN);
 
 		mockMvc.perform(post("/api/v1/refresh")
-				.content(objectMapper.writeValueAsString(refreshOrLogoutRequest()))
+				.content(objectMapper.writeValueAsString(refreshRequest()))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("user_id").value(USER_ID))
-			.andExpect(jsonPath("access_token").value(NEW_ACCESS_TOKEN))
+			.andExpect(jsonPath("access_token").value(ACCESS_TOKEN))
 			.andReturn();
 	}
 
 	@Test
 	void refreshThrowExceptionTest1() throws Exception {
-		given(redisUtil.getData(UUID)).willReturn(Optional.empty());
+		given(redisUtil.getData(USER_UUID)).willReturn(Optional.empty());
 
 		mockMvc.perform(post("/api/v1/refresh")
-				.content(objectMapper.writeValueAsString(refreshOrLogoutRequest()))
+				.content(objectMapper.writeValueAsString(refreshRequest()))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isUnauthorized())
@@ -196,11 +192,9 @@ class AuthControllerTest {
 
 	@Test
 	void refreshThrowExceptionTest2() throws Exception {
-		given(redisUtil.getData(UUID)).willReturn(Optional.of(REFRESH_TOKEN));
-		given(jwtUtil.validateJwtToken(REFRESH_TOKEN)).willReturn(false);
 
 		mockMvc.perform(post("/api/v1/refresh")
-				.content(objectMapper.writeValueAsString(refreshOrLogoutRequest()))
+				.content(objectMapper.writeValueAsString(refreshRequest()))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isUnauthorized())
@@ -209,12 +203,8 @@ class AuthControllerTest {
 
 	@Test
 	void refreshThrowExceptionTest3() throws Exception {
-		given(redisUtil.getData(UUID)).willReturn(Optional.of(REFRESH_TOKEN));
-		given(jwtUtil.validateJwtToken(REFRESH_TOKEN)).willReturn(true);
-		given(jwtUtil.getUserNameFromJwtToken(REFRESH_TOKEN)).willReturn("NotInvalidEmail");
-
 		mockMvc.perform(post("/api/v1/refresh")
-				.content(objectMapper.writeValueAsString(refreshOrLogoutRequest()))
+				.content(objectMapper.writeValueAsString(refreshRequest()))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isUnauthorized())
@@ -223,10 +213,9 @@ class AuthControllerTest {
 
 	@Test
 	void logoutWithRedisHaveDataTest() throws Exception {
-		given(redisUtil.getData(UUID)).willReturn(Optional.of(REFRESH_TOKEN));
 
 		mockMvc.perform(post("/api/v1/logout")
-				.content(objectMapper.writeValueAsString(refreshOrLogoutRequest()))
+				.content(objectMapper.writeValueAsString(logoutRequest()))
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.accept(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk())
@@ -237,10 +226,10 @@ class AuthControllerTest {
 
 	@Test
 	void logoutWithRedisHaveNotDataTest() throws Exception {
-		given(redisUtil.getData(UUID)).willReturn(Optional.empty());
+		given(redisUtil.getData(USER_UUID)).willReturn(Optional.empty());
 
 		mockMvc.perform(post("/api/v1/logout")
-				.content(objectMapper.writeValueAsString(refreshOrLogoutRequest()))
+				.content(objectMapper.writeValueAsString(logoutRequest()))
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.accept(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk())

@@ -1,6 +1,6 @@
 package kr.startoff.backend.common.annotation;
 
-import static kr.startoff.backend.payload.PayloadFixture.*;
+import static kr.startoff.backend.domain.user.fixture.UserFixture.*;
 
 import java.util.List;
 
@@ -16,9 +16,10 @@ public class WithUserPrincipalContextFactory implements WithSecurityContextFacto
 
 	@Override
 	public SecurityContext createSecurityContext(WithUserPrincipal annotation) {
-		UserPrincipal userPrincipal = UserPrincipal.create(getUser());
+		UserPrincipal userPrincipal = userPrincipal();
 		UsernamePasswordAuthenticationToken token =
-			new UsernamePasswordAuthenticationToken(userPrincipal, "password", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+			new UsernamePasswordAuthenticationToken(userPrincipal, "password",
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(token);
 		return context;
