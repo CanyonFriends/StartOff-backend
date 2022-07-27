@@ -11,6 +11,7 @@ public enum ExceptionType {
 	ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "U-006", "Access Token 이 유효하지 않습니다."),
 	REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "U-007", "Refresh Token 이 유효하지 않습니다."),
 	OAUTH2_DUPLICATE_EMAIL(HttpStatus.CONFLICT, "U-008", "이미 존재하는 이메일로 OAuth2 로그인을 시도하고 있습니다."),
+	OAUTH2_NOT_SUPPORTED(HttpStatus.NOT_FOUND, "U-009", "해당 OAuth2 로그인을 지원하지 않습니다."),
 	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "CO-001", "해당 댓글이 존재하지 않습니다."),
 	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "PO-001", "해당 게시글이 존재하지 않습니다."),
 	SEARCH_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "PO-002", "해당 유형으로 검색할 수 없습니다."),
