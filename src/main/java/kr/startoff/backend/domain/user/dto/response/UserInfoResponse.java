@@ -10,7 +10,6 @@ import kr.startoff.backend.domain.user.domain.security.UserPrincipal;
 import lombok.Getter;
 
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserInfoResponse {
 	@NotBlank
 	private Long userId;
