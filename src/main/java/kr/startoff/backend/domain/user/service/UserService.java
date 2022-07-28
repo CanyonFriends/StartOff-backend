@@ -1,6 +1,5 @@
 package kr.startoff.backend.domain.user.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final S3UploadUtil s3UploadUtil;
+	private final PasswordEncoder encoder;
 
 	@Transactional(readOnly = true)
 	public UserInfoResponse getUserInformation(Long id) {
@@ -31,7 +31,6 @@ public class UserService {
 	@Transactional
 	public boolean changeUserPassword(UserPasswordChangeRequest updateRequest, Long id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException(ExceptionType.USER_NOT_FOUND));
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		if (!encoder.matches(updateRequest.getBeforePassword(), user.getPassword())) {
 			throw new UserException(ExceptionType.INVALID_PASSWORD);
 		}
