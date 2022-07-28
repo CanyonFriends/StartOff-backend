@@ -11,17 +11,16 @@ class UserPasswordChangeRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	void userPasswordChangeRequestTest() throws Exception {
-		//given
+	void 비밀번호_변경요청_Dto_변환() throws Exception {
+		UserPasswordChangeRequest userPasswordChangeRequest = userPasswordChangeRequest();
 		String requestBody = "{\n"
-			+ "\"before_password\":\"Password\",\n"
-			+ "\"after_password\":\"NEW_PASSWORD\"\n"
+			+ "\"beforePassword\":\"password\",\n"
+			+ "\"afterPassword\":\"newPassword\"\n"
 			+ "}";
-		//when
-		UserPasswordChangeRequest userPasswordChangeRequest = objectMapper.readValue(requestBody,
-			UserPasswordChangeRequest.class);
-		//then
-		assertEquals(userPasswordChangeRequest.getBeforePassword(), userPasswordChangeRequest().getBeforePassword());
-		assertEquals(userPasswordChangeRequest.getAfterPassword(), userPasswordChangeRequest().getAfterPassword());
+
+		UserPasswordChangeRequest result = objectMapper.readValue(requestBody, UserPasswordChangeRequest.class);
+
+		assertEquals(result.getBeforePassword(), userPasswordChangeRequest.getBeforePassword());
+		assertEquals(result.getAfterPassword(), userPasswordChangeRequest.getAfterPassword());
 	}
 }
