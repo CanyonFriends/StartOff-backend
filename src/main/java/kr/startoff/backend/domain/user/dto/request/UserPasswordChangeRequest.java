@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserPasswordChangeRequest {
 	@NotBlank
 	private String beforePassword;
