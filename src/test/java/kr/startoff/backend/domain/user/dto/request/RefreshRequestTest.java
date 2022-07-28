@@ -11,19 +11,18 @@ class RefreshRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	void refreshOrLogoutRequestTest() throws Exception {
-		//given
+	void 토큰요청_Dto_변환() throws Exception {
+		RefreshRequest refreshRequest = refreshRequest();
 		String requestBody = "{\n"
-			+ "\"uuid\":\"uuid\",\n"
+			+ "\"uuid\":\"" + USER_UUID + "\",\n"
 			+ "\"email\":\"proto_seo@naver.com\",\n"
-			+ "\"access_token\":\"access token\"\n"
+			+ "\"accessToken\":\"accessToken\"\n"
 			+ "}";
-		//when
-		RefreshRequest refreshRequest = objectMapper.readValue(requestBody,
-			RefreshRequest.class);
-		//then
-		assertEquals(refreshRequest.getUuid(), refreshRequest().getUuid());
-		assertEquals(refreshRequest.getEmail(), refreshRequest().getEmail());
-		assertEquals(refreshRequest.getAccessToken(), refreshRequest().getAccessToken());
+
+		RefreshRequest result = objectMapper.readValue(requestBody, RefreshRequest.class);
+
+		assertEquals(refreshRequest.getUuid(), result.getUuid());
+		assertEquals(refreshRequest.getEmail(), result.getEmail());
+		assertEquals(refreshRequest.getAccessToken(), result.getAccessToken());
 	}
 }

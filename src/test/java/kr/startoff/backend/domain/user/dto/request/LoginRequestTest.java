@@ -11,17 +11,16 @@ class LoginRequestTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	void loginRequestTest() throws Exception {
-		//given
+	void 로그인요청_Dto_변환() throws Exception {
+		LoginRequest loginRequest = loginRequest();
 		String requestBody = "{\n"
 			+ "\"email\":\"proto_seo@naver.com\",\n"
-			+ "\"password\":\"Password\"\n"
+			+ "\"password\":\"password\"\n"
 			+ "}";
-		//when
-		LoginRequest loginRequest = objectMapper.readValue(requestBody,
-			LoginRequest.class);
-		//then
-		assertEquals(loginRequest.getEmail(), loginRequest().getEmail());
-		assertEquals(loginRequest.getPassword(), loginRequest().getPassword());
+
+		LoginRequest result = objectMapper.readValue(requestBody, LoginRequest.class);
+
+		assertEquals(loginRequest.getEmail(), result.getEmail());
+		assertEquals(loginRequest.getPassword(), result.getPassword());
 	}
 }

@@ -7,15 +7,23 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 class AccessTokenResponseTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final AccessTokenResponse accessTokenResponse = accessTokenResponse();
 
 	@Test
-	void accessTokenResponseTest() throws Exception{
-	    final String expect = "{"
-			+ "\"user_id\":1,"
-			+ "\"access_token\":\"access token\"}";
-	    assertEquals(expect,objectMapper.writeValueAsString(accessTokenResponse()));
+	void 직렬화_테스트() throws Exception {
+		final String expect = "{"
+			+ "\"userId\":1,"
+			+ "\"accessToken\":\"accessToken\"}";
+		assertEquals(expect, objectMapper.writeValueAsString(accessTokenResponse));
+	}
+
+	@Test
+	void 변환_테스트() {
+		AccessTokenResponse result = AccessTokenResponse.of(USER_ID, ACCESS_TOKEN);
+
+		assertEquals(accessTokenResponse.getUserId(), result.getUserId());
+		assertEquals(accessTokenResponse.getAccessToken(), result.getAccessToken());
 	}
 }
