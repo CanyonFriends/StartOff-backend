@@ -51,7 +51,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users/{userId}/image")
-	public ResponseEntity<String> updateUserNickname(@PathVariable Long userId,
+	public ResponseEntity<String> updateProfileImage(@PathVariable Long userId,
 		@RequestPart("image") MultipartFile multipartFile) {
 		return ResponseEntity.ok(userService.updateUserProfileImage(userId, multipartFile));
 	}
